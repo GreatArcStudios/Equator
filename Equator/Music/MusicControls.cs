@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using Equator.Helpers;
 using WMPLib;
 
@@ -31,7 +32,19 @@ namespace Equator.Music
         public static void PauseVideo(MediaElement musicPlayer)
         {
             musicPlayer.Pause();
-            ;
+           
+        }
+        //add in parm for video url 
+        public static void ReplayVideo()
+        {
+            player.URL = FilePaths.SaveLocation() + GetMusic.SongTitle;
+            player.controls.play();
+        }
+
+        public static void Shuffle()
+        {
+            
+            
         }
     }
 }

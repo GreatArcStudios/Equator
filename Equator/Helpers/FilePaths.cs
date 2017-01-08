@@ -14,7 +14,8 @@ namespace Equator.Helpers
         private static readonly string thumbLocation =
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Equator Music\\cache\\images";
-
+        private static readonly string userImageLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+            "\\Equator Music\\userdata\\images";
         public static string SaveLocation()
         {
             if (!Directory.Exists(saveLocation))
@@ -28,7 +29,12 @@ namespace Equator.Helpers
                 Directory.CreateDirectory(thumbLocation);
             return thumbLocation;
         }
-
+        public static string saveUserImage()
+        {
+            if (!Directory.Exists(userImageLocation))
+                Directory.CreateDirectory(userImageLocation);
+            return userImageLocation;
+        }
         public static string RemoveIllegalPathCharacters(string path)
         {
             var regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());

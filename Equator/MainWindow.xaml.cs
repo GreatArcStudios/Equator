@@ -1,12 +1,13 @@
 ﻿using System.Windows;
 using Equator.Helpers;
+using MahApps.Metro.Controls;
 
 namespace Equator
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         public MainWindow()
         {
@@ -15,7 +16,7 @@ namespace Equator
 
         private async void Login1_Click(object sender, RoutedEventArgs e)
         {
-            await AuthGoogle.AuthUserCredential();
+            await GoogleServices.AuthUserCredential();
             var window = new MusicPanel();
             Close();
             window.ShowDialog();

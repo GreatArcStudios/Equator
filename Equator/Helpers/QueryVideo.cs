@@ -12,7 +12,7 @@ namespace Equator.Helpers
         {
             var videos = new List<string>();
 
-            var service = AuthGoogle.CreateService(AuthGoogle.ApiKey, false, null);
+            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
             var musicList = service.Search.List("snippet");
             musicList.Q = song; // Replace with your search term.
             musicList.MaxResults = songCount;

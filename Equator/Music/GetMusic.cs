@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Equator.Helpers;
 using MediaToolkit;
 using MediaToolkit.Model;
 using MediaToolkit.Options;
+using NReco.VideoConverter;
 using VideoLibrary;
 
 namespace Equator.Music
@@ -16,6 +18,7 @@ namespace Equator.Music
         public static async Task<string> DownloadVideo()
         {
             var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoID;
+            Console.WriteLine(uri);
             var youTube = YouTube.Default;
             var video = youTube.GetVideo(uri);
             var fullName = video.FullName; // same thing as title + fileExtension
@@ -49,24 +52,11 @@ namespace Equator.Music
 
         public static async Task ConvertWebmToMp4(string inputFilePath, string saveName)
         {
-            var inputFile = new MediaFile {Filename = inputFilePath};
-            var outputFile = new MediaFile
-            {
-                Filename = Path.Combine(FilePaths.SaveLocation(),
-                    FilePaths.RemoveIllegalPathCharacters(saveName))
-            };
-
-            var conversionOptions = new ConversionOptions
-            {
-                VideoAspectRatio = VideoAspectRatio.R16_9,
-                VideoSize = VideoSize.Hd720,
-                AudioSampleRate = AudioSampleRate.Hz44100
-            };
-
-            using (var engine = new Engine())
-            {
-                engine.Convert(inputFile, outputFile, conversionOptions);
-            }
+            var ffMpeg = new NReco.VideoConverter.FFMpegConverter();
+            ffMpeg.FFMpegProcessPriority = ProcessPriorityClass.BelowNormal;
+            ffMpeg.ConvertMedia(inputFilePath, Path.Combine(FilePaths.SaveLocation(),
+                    FilePaths.RemoveIllegalPathCharacters(saveName)), Format.mp4);
+            ffMpeg.Stop();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Threading.Tasks;
 using Equator.Helpers;
 
@@ -7,10 +8,10 @@ namespace Equator.Music
     internal class GetSong
     {
         public static string VideoID;
-
         public static async Task GetMusic(string song)
         {
             QueryVideo.QueryList(song);
+
             //use video id to get the song
             VideoID = QueryVideo.searchListResponse.Items[0].Id.VideoId;
             try

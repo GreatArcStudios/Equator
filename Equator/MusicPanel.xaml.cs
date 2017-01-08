@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Animation;
 using Equator.Helpers;
 using Equator.Music;
+using MahApps.Metro.Controls;
 using VideoLibrary;
 
 namespace Equator
@@ -10,7 +13,7 @@ namespace Equator
     /// <summary>
     ///     Interaction logic for MusicPanel.xaml
     /// </summary>
-    public partial class MusicPanel : Window
+    public partial class MusicPanel : MetroWindow
     {
         public MusicPanel()
         {
@@ -59,6 +62,37 @@ namespace Equator
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             MusicControls.PlayVideo(VideoPlayer);
+        }
+        private void ShowHideMenu(string Storyboard, Button btnHide, Button btnShow, StackPanel pnl)
+        {
+            Storyboard sb = Resources[Storyboard] as Storyboard;
+            sb.Begin(pnl);
+
+            if (Storyboard.Contains("Show"))
+            {
+                btnHide.Visibility = System.Windows.Visibility.Visible;
+                btnShow.Visibility = System.Windows.Visibility.Hidden;
+            }
+            else if (Storyboard.Contains("Hide"))
+            {
+                btnHide.Visibility = System.Windows.Visibility.Hidden;
+                btnShow.Visibility = System.Windows.Visibility.Visible;
+            }
+        }
+
+        private void Show_Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowHideMenu("sbShowLeftMenu", Hide_Button, Show_Button, Nav_Panel);
+        }
+
+        private void Hide_Button_Click(object sender, RoutedEventArgs e)
+        {
+            ShowHideMenu("sbHideLeftMenu", Hide_Button, Show_Button, Nav_Panel);
+        }
+
+        private void User_login_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

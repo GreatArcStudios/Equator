@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel.Design.Serialization;
+using System.Threading.Tasks;
 using Equator.Helpers;
 using Google.Apis.YouTube.v3.Data;
 
@@ -17,10 +18,10 @@ namespace Equator.Music
 
         }  **/
 
-        public static async Task<PlaylistListResponse> ListPlaylist()
+        public static async Task<PlaylistListResponse> GetUserPlaylist()
         {
-            var credential = AuthGoogle.credential;
-            var service = AuthGoogle.CreateService(AuthGoogle.ApiKey, true, credential);
+            var credential = GoogleServices.credential;
+            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, true, credential);
             var userPlaylistRequest = service.Playlists.List("snippet");
             userPlaylistRequest.Mine = true;
             var userPlaylistResponse = await userPlaylistRequest.ExecuteAsync();
@@ -33,7 +34,7 @@ namespace Equator.Music
 
         public static PlaylistItemListResponse GetTopSongs()
         {
-            var service = AuthGoogle.CreateService(AuthGoogle.ApiKey, false, null);
+            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
             var topPlaylistItemRequest = service.PlaylistItems.List("snippet");
             topPlaylistItemRequest.PlaylistId = "PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG";
             var playlistItemResponse = topPlaylistItemRequest.Execute();
@@ -42,11 +43,12 @@ namespace Equator.Music
 
         public static PlaylistItemListResponse GetNewSongs()
         {
-            var service = AuthGoogle.CreateService(AuthGoogle.ApiKey, false, null);
+            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
             var topPlaylistItemRequest = service.PlaylistItems.List("snippet");
             topPlaylistItemRequest.PlaylistId = "PLvFYFNbi-IBFeP5ALr50hoOmKiYRMvzUq";
             var playlistItemResponse = topPlaylistItemRequest.Execute();
             return playlistItemResponse;
         }
+
     }
 }
