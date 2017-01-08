@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Blend for Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Equator", "Equator\Equator.csproj", "{7115494A-7AB2-4126-B2A6-CF027484C1BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		32|Any CPU = 32|Any CPU
+		32|x64 = 32|x64
+		32|x86 = 32|x86
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Equator x64|Any CPU = Equator x64|Any CPU
+		Equator x64|x64 = Equator x64|x64
+		Equator x64|x86 = Equator x64|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.32|Any CPU.ActiveCfg = 32|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.32|Any CPU.Build.0 = 32|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.32|x64.ActiveCfg = 32|x64
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.32|x64.Build.0 = 32|x64
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.32|x86.ActiveCfg = 32|x86
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.32|x86.Build.0 = 32|x86
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Debug|x64.ActiveCfg = Debug|x64
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Debug|x64.Build.0 = Debug|x64
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Debug|x86.ActiveCfg = Debug|x86
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Debug|x86.Build.0 = Debug|x86
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Equator x64|Any CPU.ActiveCfg = Equator x64|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Equator x64|Any CPU.Build.0 = Equator x64|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Equator x64|x64.ActiveCfg = Equator 32|x86
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Equator x64|x64.Build.0 = Equator 32|x86
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Equator x64|x86.ActiveCfg = Equator x64|x86
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Equator x64|x86.Build.0 = Equator x64|x86
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|x64.ActiveCfg = Release|x64
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|x64.Build.0 = Release|x64
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|x86.ActiveCfg = Release|x86
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
