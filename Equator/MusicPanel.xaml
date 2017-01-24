@@ -10,7 +10,7 @@
         xmlns:interactivity="http://schemas.microsoft.com/expression/2010/interactivity"
         x:Class="Equator.MusicPanel"
         mc:Ignorable="d"
-        Title="Window1" Height="899.4" Width="1440">
+        Title="Equator Music" Height="899.4" Width="1440" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" d:IsEffectDisabled="True" Background="Black">
     <Controls:MetroWindow.Resources>
         <Storyboard x:Key="sbShowLeftMenu" >
             <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-220,0,0,0" To="0,0,0,0" DecelerationRatio=".9" Duration="0:0:1" />
@@ -20,51 +20,51 @@
         </Storyboard>
     </Controls:MetroWindow.Resources>
     <Grid>
+        <Grid.Background>
+            <ImageBrush/>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="630*"/>
-            <RowDefinition Height="165*"/>
+            <RowDefinition Height="65*"/>
+            <RowDefinition Height="730*"/>
             <RowDefinition Height="73*"/>
         </Grid.RowDefinitions>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"
-			Margin="344,14,0,0" Height="50" Click="button_Click" />
-        <TextBox x:Name="Searchfield" HorizontalAlignment="Left" Height="20" TextWrapping="Wrap" Text="TextBox"
-			VerticalAlignment="Top" Width="190" Margin="134,30,0,0" />
-        <MediaElement x:Name="VideoPlayer" HorizontalAlignment="Left" Height="170" VerticalAlignment="Top" Width="302"
-			Margin="1103,565,0,0" LoadedBehavior="Manual" Volume="2" OpacityMask="Black" Grid.RowSpan="2" />
-        <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="221"
-			Margin="74,75,0,0" Height="50" Click="button1_Click" Grid.Row="1" />
-        <Button x:Name="button2" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="195"
-			Margin="905,131,0,0" Height="54" Click="button2_Click" Grid.RowSpan="2" Grid.Row="1" />
-        <StackPanel x:Name="Nav_Panel" HorizontalAlignment="Left" Height="878" Width="380" Margin="-505,-18,0,8" Background="Black" Panel.ZIndex="-1" Grid.RowSpan="3">
-            <StackPanel.Effect>
-                <BlurEffect/>
-            </StackPanel.Effect>
-            <Label x:Name="label" Content="Search" HorizontalAlignment="Left" VerticalAlignment="Top" Height="55" Width="200" Foreground="White"/>
-
-            <Grid Height="885" VerticalAlignment="Top">
-
-                <Button x:Name="Hide_Button" Content="Hide" HorizontalAlignment="Left" Margin="220,-55,0,0" VerticalAlignment="Top" Width="160" Height="80" Click="Hide_Button_Click"/>
-                <Button x:Name="Show_Button" VerticalAlignment="Center" Width="160" Height="80" Margin="0,-55,0,860" HorizontalAlignment="Right" Click="Show_Button_Click" Content="Show"/>
-            </Grid>
-        </StackPanel>
-        <Button x:Name="User_login" Content="Userlogin" HorizontalAlignment="Left" Height="50" Margin="10,14,0,0" VerticalAlignment="Top" Width="75" Click="User_login_Click"/>
-        <Image x:Name="Equator_Concept_12_31_16_png" Margin="-1710,30,1634,-10" Source="Equator Concept 12-31-16.png" Stretch="Fill" Grid.RowSpan="3"/>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="If I lose myself" VerticalAlignment="Top" Margin="-759,495,0,0" Foreground="White" FontSize="33.333">
+        <Image x:Name="Equator_Concept_12_31_16_png" Margin="-1665,0,1589,20" Source="Equator Concept 12-31-16.png" Stretch="Fill" Grid.RowSpan="3"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="If I lose myself" VerticalAlignment="Top" Margin="-759,420,0,0" Foreground="White" FontSize="33.333" Height="44" Width="210" Grid.Row="1" Panel.ZIndex="10">
             <TextBlock.Effect>
                 <DropShadowEffect/>
 
             </TextBlock.Effect>
         </TextBlock>
-        <Rectangle x:Name="Background" HorizontalAlignment="Right" Height="1070" Margin="-120,-55,-103,-147" Stroke="Black" VerticalAlignment="Top" Width="1655" Grid.RowSpan="3">
+        <Rectangle x:Name="Background" Margin="0" Stroke="Black" Grid.RowSpan="3" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="-0.112" AngleX="0"/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
             <Rectangle.Effect>
-                <BlurEffect Radius="50"/>
+                <BlurEffect Radius="70"/>
             </Rectangle.Effect>
             <Rectangle.Fill>
-                <ImageBrush ImageSource="Images/Onerepublic.png"/>
+                <ImageBrush ImageSource="Images/Onerepublic.png" Stretch="UniformToFill">
+                    <ImageBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleX="1.2" ScaleY="1.2"/>
+                            <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                            <RotateTransform CenterY="0.5" CenterX="0.5"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
             </Rectangle.Fill>
         </Rectangle>
 
-        <Rectangle HorizontalAlignment="Left" Height="73" Grid.Row="2" VerticalAlignment="Top" Width="1525" Fill="#FFAEAEAE" Margin="-50,0,-43,0">
+        <Rectangle Height="73" VerticalAlignment="Bottom" Fill="#FFAEAEAE" Panel.ZIndex="1" Grid.Row="2">
             <interactivity:Interaction.Behaviors>
                 <global1:BackgroundEffectBehavior  Visual="{Binding ElementName= Background, Mode=OneWay}">
                     <global1:BackgroundEffectBehavior.Effect>
@@ -76,7 +76,7 @@
             </interactivity:Interaction.Behaviors>
 
         </Rectangle>
-        <Rectangle HorizontalAlignment="Left" Height="73" VerticalAlignment="Top" Width="1525" Fill="#FF444444" Margin="-50,0,-43,0">
+        <Rectangle Height="64" VerticalAlignment="Top" Fill="#FF444444" Panel.ZIndex="1">
             <interactivity:Interaction.Behaviors>
                 <global1:BackgroundEffectBehavior  Visual="{Binding ElementName=Background, Mode=OneWay}">
                     <global1:BackgroundEffectBehavior.Effect>
@@ -88,6 +88,17 @@
             </interactivity:Interaction.Behaviors>
 
         </Rectangle>
+        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"
+        	Margin="1103,10,0,0" Height="50" Click="button_Click" Panel.ZIndex="10" />
+        <TextBox x:Name="Searchfield" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="TextBox"
+        	VerticalAlignment="Top" Width="190" Margin="200,29,0,0" Panel.ZIndex="10" />
+        <MediaElement x:Name="VideoPlayer" HorizontalAlignment="Left" Height="170" VerticalAlignment="Top" Width="302"
+        	Margin="1103,490,0,0" LoadedBehavior="Manual" Volume="2" OpacityMask="Black" Grid.Row="1" Panel.ZIndex="10" />
+        <Button x:Name="button2" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="195"
+        	Margin="1155,10,0,0" Height="54" Click="button2_Click" Grid.Row="2" Panel.ZIndex="10" />
+        <Button x:Name="User_login" HorizontalAlignment="Left" Height="50" Margin="65,5,0,0" VerticalAlignment="Top" Width="75" Click="User_login_Click" Panel.ZIndex="10"/>
+        <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="221"
+        	Height="50" Click="button1_Click" Panel.ZIndex="10" Margin="419,10,0,0" />
 
 
     </Grid>

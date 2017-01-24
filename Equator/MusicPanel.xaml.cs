@@ -80,7 +80,7 @@ namespace Equator
             }
         }
 
-        private void Show_Button_Click(object sender, RoutedEventArgs e)
+        /*private void Show_Button_Click(object sender, RoutedEventArgs e)
         {
             ShowHideMenu("sbShowLeftMenu", Hide_Button, Show_Button, Nav_Panel);
         }
@@ -88,7 +88,7 @@ namespace Equator
         private void Hide_Button_Click(object sender, RoutedEventArgs e)
         {
             ShowHideMenu("sbHideLeftMenu", Hide_Button, Show_Button, Nav_Panel);
-        }
+        }  */
 
         private void User_login_Click(object sender, RoutedEventArgs e)
         {
