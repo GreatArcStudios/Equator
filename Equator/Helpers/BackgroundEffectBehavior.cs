@@ -31,21 +31,21 @@ public class BackgroundEffectBehavior : Behavior<FrameworkElement>
         public BackgroundEffectBehavior()
         {
             // Let's setup some possible optimizations
-            RenderOptions.SetEdgeMode(m_attachedObjectVisualBrush, EdgeMode.Aliased);
-            RenderOptions.SetCachingHint(m_attachedObjectVisualBrush, CachingHint.Cache);
+            RenderOptions.SetEdgeMode(_mAttachedObjectVisualBrush, EdgeMode.Aliased);
+            RenderOptions.SetCachingHint(_mAttachedObjectVisualBrush, CachingHint.Cache);
 
-            RenderOptions.SetEdgeMode(m_backgroundVisualBrush, EdgeMode.Aliased);
-            RenderOptions.SetCachingHint(m_backgroundVisualBrush, CachingHint.Cache);
+            RenderOptions.SetEdgeMode(_mBackgroundVisualBrush, EdgeMode.Aliased);
+            RenderOptions.SetCachingHint(_mBackgroundVisualBrush, CachingHint.Cache);
 
             // This makes sure our brush is not stretched.
             // This would make the glass not look correct relative to the visual it is displaying.
-            m_attachedObjectVisualBrush.Stretch = Stretch.None;
+            _mAttachedObjectVisualBrush.Stretch = Stretch.None;
 
             // The ViewboxUnits are absolute because our transformation values will be in absolute,
             // so this makes things easier.
-            m_backgroundVisualBrush.ViewboxUnits = BrushMappingMode.Absolute;
-            m_backgroundVisualBrush.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
-            m_backgroundVisualBrush.Viewport = new Rect(0, 0, 1, 1);
+            _mBackgroundVisualBrush.ViewboxUnits = BrushMappingMode.Absolute;
+            _mBackgroundVisualBrush.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
+            _mBackgroundVisualBrush.Viewport = new Rect(0, 0, 1, 1);
         }
         #endregion
 
@@ -111,24 +111,24 @@ public class BackgroundEffectBehavior : Behavior<FrameworkElement>
         /// </summary>
         protected override void OnAttached()
         {
-            if (m_attachedObject != null)
+            if (_mAttachedObject != null)
             {
                 // Unhook our old event and avoid any hidden refs.
-                m_attachedObject.LayoutUpdated -= AssociatedObject_LayoutUpdated;
+                _mAttachedObject.LayoutUpdated -= AssociatedObject_LayoutUpdated;
             }
 
-            m_attachedObject = AssociatedObject;
+            _mAttachedObject = AssociatedObject;
 
             // Search for a property we can set our VisualBrush to.
             // Right now we search for a Background or Fill property.
-            PropertyInfo info = FindFillProperty(m_attachedObject);
+            PropertyInfo info = FindFillProperty(_mAttachedObject);
             if (info != null)
             {
-                info.SetValue(m_attachedObject, m_attachedObjectVisualBrush, null);
+                info.SetValue(_mAttachedObject, _mAttachedObjectVisualBrush, null);
             }
 
             // Hook into the LayoutUpdated so we can keep everything in sync when the layout changes.
-            m_attachedObject.LayoutUpdated += AssociatedObject_LayoutUpdated;
+            _mAttachedObject.LayoutUpdated += AssociatedObject_LayoutUpdated;
 
             // Make sure our Visual is setup.
             SetupVisual();
@@ -141,10 +141,10 @@ public class BackgroundEffectBehavior : Behavior<FrameworkElement>
         /// </summary>
         protected override void OnDetaching()
         {
-            if (m_attachedObject != null)
+            if (_mAttachedObject != null)
             {
                 // Remove our handler to avoid any leaks.
-                m_attachedObject.LayoutUpdated -= AssociatedObject_LayoutUpdated;
+                _mAttachedObject.LayoutUpdated -= AssociatedObject_LayoutUpdated;
             }
 
             base.OnDetaching();
@@ -166,7 +166,7 @@ public class BackgroundEffectBehavior : Behavior<FrameworkElement>
         {
             var element = Visual as FrameworkElement;
 
-            if (element == null || m_attachedObject == null)
+            if (element == null || _mAttachedObject == null)
                 return;
 
             // Set our pixel shader, if any.
@@ -175,13 +175,13 @@ public class BackgroundEffectBehavior : Behavior<FrameworkElement>
             // 1. Set the background VisualBrush's Visual to the passed in Visual (which should be the background of the attached object).
             // 2. Fill the background Visual (upon which the Effect is applied) with the background VisualBrush (set in Step 1).
             //    Now, our effect has a background brush for AInput.
-            m_backgroundVisualBrush.Visual = element;
-            m_backgroundVisual.Fill = m_backgroundVisualBrush;
+            _mBackgroundVisualBrush.Visual = element;
+            _mBackgroundVisual.Fill = _mBackgroundVisualBrush;
 
             // 3. Set the attached object VisualBrush's Visual to the background Visual (set in Step 2) on which the Effect is applied.
             //    This causes the attached object to look as if it has been blended into the background with the blend mode effect
             //    that has been applied.
-            m_attachedObjectVisualBrush.Visual = m_backgroundVisual;
+            _mAttachedObjectVisualBrush.Visual = _mBackgroundVisual;
 
             EnsureBrushSyncWithVisual();
         }
@@ -191,10 +191,10 @@ public class BackgroundEffectBehavior : Behavior<FrameworkElement>
         /// </summary>
         private void SetEffect()
         {
-            if (m_backgroundVisual == null)
+            if (_mBackgroundVisual == null)
                 return;
 
-            m_backgroundVisual.Effect = Effect;
+            _mBackgroundVisual.Effect = Effect;
         }
 
         /// <summary>
@@ -203,15 +203,15 @@ public class BackgroundEffectBehavior : Behavior<FrameworkElement>
         /// </summary>
         private void EnsureBrushSyncWithVisual()
         {
-            if (m_attachedObject == null || Visual == null)
+            if (_mAttachedObject == null || Visual == null)
                 return;
 
             // Make the background visual the same size of our attached FrameworkElement.
-            m_backgroundVisual.Width = m_attachedObject.ActualWidth;
-            m_backgroundVisual.Height = m_attachedObject.ActualHeight;
+            _mBackgroundVisual.Width = _mAttachedObject.ActualWidth;
+            _mBackgroundVisual.Height = _mAttachedObject.ActualHeight;
 
             // Get the transform of our attached FrameworkElement to the Visual we want to use as our background.
-            GeneralTransform trans = m_attachedObject.TransformToVisual(Visual);
+            GeneralTransform trans = _mAttachedObject.TransformToVisual(Visual);
 
             // Calculate the difference between 0,0 coord of our attached FrameworkElement
             // and 0,0 coord of our target Visual for the background.
@@ -222,11 +222,11 @@ public class BackgroundEffectBehavior : Behavior<FrameworkElement>
             {
                 X = pos.X,
                 Y = pos.Y,
-                Width = m_attachedObject.ActualWidth,
-                Height = m_attachedObject.ActualHeight
+                Width = _mAttachedObject.ActualWidth,
+                Height = _mAttachedObject.ActualHeight
             };
 
-            m_backgroundVisualBrush.Viewbox = viewbox;
+            _mBackgroundVisualBrush.Viewbox = viewbox;
         }
 
         /// <summary>
@@ -248,23 +248,23 @@ public class BackgroundEffectBehavior : Behavior<FrameworkElement>
         /// <summary>
         /// This is the object the behavior is currently attached to. This will be null if no object is attached.
         /// </summary>
-        private FrameworkElement m_attachedObject;
+        private FrameworkElement _mAttachedObject;
 
         /// <summary>
         /// The VisualBrush that is used directly on the background/fill of the attached object.
         /// It's visual is the background Visual.
         /// </summary>
-        private readonly VisualBrush m_attachedObjectVisualBrush = new VisualBrush();
+        private readonly VisualBrush _mAttachedObjectVisualBrush = new VisualBrush();
 
         /// <summary>
         /// This is the visual that is used to apply the effect on and is filled with the background VisualBrush.
         /// </summary>
-        private readonly Rectangle m_backgroundVisual = new Rectangle();
+        private readonly Rectangle _mBackgroundVisual = new Rectangle();
 
         /// <summary>
         /// This is the VisualBrush of the background.
         /// </summary>
-        private readonly VisualBrush m_backgroundVisualBrush = new VisualBrush();
+        private readonly VisualBrush _mBackgroundVisualBrush = new VisualBrush();
         #endregion
     }
 

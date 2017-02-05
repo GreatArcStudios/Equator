@@ -1,44 +1,47 @@
-﻿<Controls:MetroWindow
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+﻿<controls:MetroWindow
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Equator"
-        xmlns:BlendModeEffectLibrary="clr-namespace:BlendModeEffectLibrary;assembly=BlendModeEffectLibrary"
+        xmlns:blendModeEffectLibrary="clr-namespace:BlendModeEffectLibrary;assembly=BlendModeEffectLibrary"
         xmlns:global1="clr-namespace:Equator.Helpers.Background"
-        xmlns:interactivity="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:interactivity="http://schemas.microsoft.com/expression/2010/interactivity" x:Name="MusicPlayer"
         x:Class="Equator.MusicPanel"
         mc:Ignorable="d"
-        Title="Equator Music" Height="899.4" Width="1440" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" d:IsEffectDisabled="True" Background="Black">
-    <Controls:MetroWindow.Resources>
-        <Storyboard x:Key="sbShowLeftMenu" >
+        Title="Equator Music" Height="899.4" Width="1440" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen" d:IsEffectDisabled="True" Background="#FF303030" Foreground="Black" OverlayBrush="Black">
+    <controls:MetroWindow.Resources>
+        <Storyboard x:Key="SbShowLeftMenu" >
             <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-220,0,0,0" To="0,0,0,0" DecelerationRatio=".9" Duration="0:0:1" />
         </Storyboard>
-        <Storyboard x:Key="sbHideLeftMenu">
+        <Storyboard x:Key="SbHideLeftMenu">
             <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,0,0,0" To="-220,0,0,0" AccelerationRatio=".9" Duration="0:0:1" />
         </Storyboard>
-    </Controls:MetroWindow.Resources>
-    <Grid>
+    </controls:MetroWindow.Resources>
+    <Grid x:Name="FullGrid">
         <Grid.Background>
             <ImageBrush/>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="105*"/>
+            <ColumnDefinition Width="611*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="65*"/>
-            <RowDefinition Height="730*"/>
-            <RowDefinition Height="73*"/>
+            <RowDefinition Height="80*"/>
+            <RowDefinition Height="205*"/>
+            <RowDefinition Height="305*"/>
+            <RowDefinition Height="215*"/>
+            <RowDefinition Height="63*"/>
         </Grid.RowDefinitions>
-        <Image x:Name="Equator_Concept_12_31_16_png" Margin="-1665,0,1589,20" Source="Equator Concept 12-31-16.png" Stretch="Fill" Grid.RowSpan="3"/>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="If I lose myself" VerticalAlignment="Top" Margin="-759,420,0,0" Foreground="White" FontSize="33.333" Height="44" Width="210" Grid.Row="1" Panel.ZIndex="10">
+        <Image x:Name="EquatorConcept123116Png" Margin="-1720,-38,422,58" Source="Equator Concept 12-31-16.png" Stretch="Fill" Grid.RowSpan="5"/>
+        <TextBlock x:Name="TextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="If I lose myself" VerticalAlignment="Top" Margin="-759,3,0,0" Foreground="White" FontSize="33.333" Height="44" Width="210" Grid.Row="4" Panel.ZIndex="10">
             <TextBlock.Effect>
                 <DropShadowEffect/>
 
             </TextBlock.Effect>
         </TextBlock>
-        <Rectangle x:Name="Background" Margin="0" Stroke="Black" Grid.RowSpan="3" RenderTransformOrigin="0.5,0.5">
+        <Rectangle x:Name="Background" Margin="-75,0,-28,0" Stroke="White" Grid.RowSpan="5" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" StrokeThickness="0" StrokeStartLineCap="Square">
             <Rectangle.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -51,7 +54,7 @@
                 <BlurEffect Radius="70"/>
             </Rectangle.Effect>
             <Rectangle.Fill>
-                <ImageBrush ImageSource="Images/Onerepublic.png" Stretch="UniformToFill">
+                <ImageBrush ImageSource="Icons/Onerepublic.png" Stretch="UniformToFill">
                     <ImageBrush.RelativeTransform>
                         <TransformGroup>
                             <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleX="1.2" ScaleY="1.2"/>
@@ -63,43 +66,103 @@
                 </ImageBrush>
             </Rectangle.Fill>
         </Rectangle>
+        <Grid x:Name="TopBarCotainer" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="7*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="295*"/>
+                <ColumnDefinition Width="1137*"/>
+            </Grid.ColumnDefinitions>
+            <Rectangle x:Name="TopBar" Fill="#8CAEAEAE" Grid.ColumnSpan="2" Margin="0,0,0,5" Panel.ZIndex="-7">
+                <interactivity:Interaction.Behaviors>
+                    <global1:BackgroundEffectBehavior  Visual="{Binding ElementName=Background, Mode=OneWay}">
+                        <global1:BackgroundEffectBehavior.Effect>
 
-        <Rectangle Height="73" VerticalAlignment="Bottom" Fill="#FFAEAEAE" Panel.ZIndex="1" Grid.Row="2">
-            <interactivity:Interaction.Behaviors>
-                <global1:BackgroundEffectBehavior  Visual="{Binding ElementName= Background, Mode=OneWay}">
-                    <global1:BackgroundEffectBehavior.Effect>
+                            <blendModeEffectLibrary:LightenEffect/>
 
-                        <BlendModeEffectLibrary:OverlayEffect/>
+                        </global1:BackgroundEffectBehavior.Effect>
+                    </global1:BackgroundEffectBehavior>
+                </interactivity:Interaction.Behaviors>
 
-                    </global1:BackgroundEffectBehavior.Effect>
-                </global1:BackgroundEffectBehavior>
-            </interactivity:Interaction.Behaviors>
+            </Rectangle>
+            <StackPanel Grid.ColumnSpan="2" Margin="30,11,982,10" Orientation="Horizontal">
+                <controls:SplitButton x:Name="Userbutton" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,2" Height="44" Width="55" BorderThickness="3">
+                    <controls:SplitButton.Background>
+                        <ImageBrush Stretch="Uniform"/>
+                    </controls:SplitButton.Background>
+                </controls:SplitButton>
+                <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="46" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Width="255" Margin="20,1,0,2" FontSize="26.667" Background="{x:Null}" Foreground="White" SelectionBrush="White" BorderThickness="3" BorderBrush="White"/>
+                <Button x:Name="SearchButton" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Margin="15,1,0,0" Height="45" BorderBrush="#00CCCCCC" Foreground="Transparent">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Icons/Search.png" Stretch="Uniform"/>
+                    </Button.Background>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid x:Name="BottomContainer" Grid.Row="4" Margin="0,0,-3,-10" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="42*"/>
+                <ColumnDefinition Width="202*"/>
+                <ColumnDefinition Width="40*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="PlayBar" Fill="#33FFFFFF" Margin="-10,0,2,5" Grid.RowSpan="2" Grid.ColumnSpan="5">
+                <interactivity:Interaction.Behaviors>
+                    <global1:BackgroundEffectBehavior  Visual="{Binding ElementName=Background, Mode=OneWay}">
+                        <global1:BackgroundEffectBehavior.Effect>
 
-        </Rectangle>
-        <Rectangle Height="64" VerticalAlignment="Top" Fill="#FF444444" Panel.ZIndex="1">
-            <interactivity:Interaction.Behaviors>
-                <global1:BackgroundEffectBehavior  Visual="{Binding ElementName=Background, Mode=OneWay}">
-                    <global1:BackgroundEffectBehavior.Effect>
+                            <blendModeEffectLibrary:LightenEffect/>
 
-                        <BlendModeEffectLibrary:OverlayEffect/>
+                        </global1:BackgroundEffectBehavior.Effect>
+                    </global1:BackgroundEffectBehavior>
+                </interactivity:Interaction.Behaviors>
 
-                    </global1:BackgroundEffectBehavior.Effect>
-                </global1:BackgroundEffectBehavior>
-            </interactivity:Interaction.Behaviors>
+            </Rectangle>
+            <StackPanel Margin="0,20,5,21" Orientation="Horizontal" Grid.RowSpan="2" Grid.Column="2">
+                <Label x:Name="label" Content="1:23" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,10,0" FontSize="16" Background="{x:Null}" Foreground="White"/>
+                <Slider x:Name="slider" HorizontalAlignment="Left" VerticalAlignment="Top" Width="895" Style="{DynamicResource FlatSlider}" Background="#7F6C6C6C" Foreground="#CC000000" Height="27" BorderBrush="Black"/>
+                <Label x:Name="label_Copy" Content="1:23" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" FontSize="16" Foreground="White"/>
+            </StackPanel>
+            <StackPanel Margin="5,2,17,8" Orientation="Horizontal" Grid.RowSpan="2" Grid.Column="1">
 
-        </Rectangle>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"
-        	Margin="1103,10,0,0" Height="50" Click="button_Click" Panel.ZIndex="10" />
-        <TextBox x:Name="Searchfield" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="TextBox"
-        	VerticalAlignment="Top" Width="190" Margin="200,29,0,0" Panel.ZIndex="10" />
-        <MediaElement x:Name="VideoPlayer" HorizontalAlignment="Left" Height="170" VerticalAlignment="Top" Width="302"
-        	Margin="1103,490,0,0" LoadedBehavior="Manual" Volume="2" OpacityMask="Black" Grid.Row="1" Panel.ZIndex="10" />
-        <Button x:Name="button2" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="195"
-        	Margin="1155,10,0,0" Height="54" Click="button2_Click" Grid.Row="2" Panel.ZIndex="10" />
-        <Button x:Name="User_login" HorizontalAlignment="Left" Height="50" Margin="65,5,0,0" VerticalAlignment="Top" Width="75" Click="User_login_Click" Panel.ZIndex="10"/>
-        <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="221"
-        	Height="50" Click="button1_Click" Panel.ZIndex="10" Margin="419,10,0,0" />
+                <Button x:Name="button" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="55" Margin="0,2,0,0" Style="{DynamicResource MetroCircleButtonStyle}" Height="55" BorderBrush="{x:Null}">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Icons/16 back.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="button_Copy1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="61" Style="{DynamicResource MetroCircleButtonStyle}" Height="61" BorderBrush="{x:Null}">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Icons/playstop.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="button_Copy" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="55" Margin="0,2,0,0" Style="{DynamicResource MetroCircleButtonStyle}" Height="55" BorderBrush="{x:Null}">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Icons/16 forwards copy.png"/>
+                    </Button.Background>
+                </Button>
+            </StackPanel>
+            <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Margin="15,12,0,0" Grid.RowSpan="2" Height="45" BorderBrush="{x:Null}" Foreground="{x:Null}" Grid.Column="3">
+                <Button.Background>
+                    <ImageBrush ImageSource="Icons/16 volume.png"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="button1_Copy" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Margin="85,12,0,0" Grid.RowSpan="2" Height="45" BorderBrush="{x:Null}" Foreground="{x:Null}" Grid.Column="3">
+                <Button.Background>
+                    <ImageBrush ImageSource="Icons/16 replay.png"/>
+                </Button.Background>
+            </Button>
+        </Grid>
+        <Grid x:Name="MusicGrid" HorizontalAlignment="Left" Height="725" VerticalAlignment="Top" Width="1432" Grid.Row="1" Grid.RowSpan="4" Margin="0,5,0,0" Grid.ColumnSpan="2">
+            <ScrollBar x:Name="scrollBar" HorizontalAlignment="Right" Margin="1415,-7,0,0" Height="732" Width="17" Background="White"/>
+        </Grid>
 
 
     </Grid>
-</Controls:MetroWindow>
+</controls:MetroWindow>

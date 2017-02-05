@@ -11,13 +11,16 @@ using VideoLibrary;
 
 namespace Equator.Music
 {
+    /// <summary>
+    /// The class that gets the particular song
+    /// </summary>
     internal class GetMusic
     {
         public static string SongTitle;
 
         public static async Task<string> DownloadVideo()
         {
-            var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoID;
+            var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoId;
             Console.WriteLine(uri);
             var youTube = YouTube.Default;
             var video = youTube.GetVideo(uri);

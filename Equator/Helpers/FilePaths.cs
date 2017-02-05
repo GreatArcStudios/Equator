@@ -11,11 +11,13 @@ namespace Equator.Helpers
         private static readonly string saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
                                                       "\\Equator Music\\cache";
 
-        private static readonly string thumbLocation =
+        private static readonly string ThumbLocation =
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Equator Music\\cache\\images";
-        private static readonly string userImageLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+        private static readonly string UserImageLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Equator Music\\userdata\\images";
+        private static readonly string UserCredLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+            "\\Equator Music\\userdata\\credentials";
         public static string SaveLocation()
         {
             if (!Directory.Exists(saveLocation))
@@ -23,17 +25,23 @@ namespace Equator.Helpers
             return saveLocation;
         }
 
-        public static string saveThumb()
+        public static string SaveThumb()
         {
-            if (!Directory.Exists(thumbLocation))
-                Directory.CreateDirectory(thumbLocation);
-            return thumbLocation;
+            if (!Directory.Exists(ThumbLocation))
+                Directory.CreateDirectory(ThumbLocation);
+            return ThumbLocation;
         }
-        public static string saveUserImage()
+        public static string SaveUserImage()
         {
-            if (!Directory.Exists(userImageLocation))
-                Directory.CreateDirectory(userImageLocation);
-            return userImageLocation;
+            if (!Directory.Exists(UserImageLocation))
+                Directory.CreateDirectory(UserImageLocation);
+            return UserImageLocation;
+        }
+        public static string SaveUserCreds()
+        {
+            if (!Directory.Exists(UserCredLocation))
+                Directory.CreateDirectory(UserCredLocation);
+            return UserCredLocation;
         }
         public static string RemoveIllegalPathCharacters(string path)
         {
@@ -44,7 +52,7 @@ namespace Equator.Helpers
 
         public static bool InCache()
         {
-            var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoID;
+            var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoId;
             var youTube = YouTube.Default;
             var video = youTube.GetVideo(uri);
             var fullName = video.FullName;

@@ -131,10 +131,6 @@
       <HintPath>..\packages\BouncyCastle.1.7.0\lib\Net40-Client\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ColorPicker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\WPFSLBlendModeFx (1)\WPFSLBlendModeFx\ColorPicker\bin\Debug\ColorPicker.dll</HintPath>
-    </Reference>
     <Reference Include="Google.Apis, Version=1.20.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Apis.1.20.0\lib\net45\Google.Apis.dll</HintPath>
       <Private>True</Private>
@@ -228,7 +224,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\MusicCards.xaml.cs">
+      <DependentUpon>MusicCards.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\BackgroundEffectBehavior.cs" />
+    <Page Include="Controls\MusicCards.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -237,6 +240,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers\CardHelper.cs" />
     <Compile Include="Helpers\GoogleServices.cs" />
     <Compile Include="Helpers\FilePaths.cs" />
     <Compile Include="Helpers\QueryVideo.cs" />
@@ -295,15 +299,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\btn_google_signin_dark_focus_web.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\btn_google_signin_dark_normal_web.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\btn_google_signin_dark_pressed_web.png" />
-  </ItemGroup>
-  <ItemGroup>
     <COMReference Include="WMPLib">
       <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -315,14 +310,22 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\" />
     <Folder Include="Video\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Equator Concept 12-31-16.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Onerepublic.png" />
+    <Resource Include="Icons\16 back.png" />
+    <Resource Include="Icons\16 forwards copy.png" />
+    <Resource Include="Icons\16 replay.png" />
+    <Resource Include="Icons\16 volume.png" />
+    <Resource Include="Icons\32 shuffle.png" />
+    <Resource Include="Icons\Equator logo purple no background.png" />
+    <Resource Include="Icons\Equator logo.png" />
+    <Resource Include="Icons\Onerepublic.png" />
+    <Resource Include="Icons\playstop.png" />
+    <Resource Include="Icons\Search.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\cef.redist.x64.3.2454.1344\build\cef.redist.x64.targets" Condition="Exists('..\packages\cef.redist.x64.3.2454.1344\build\cef.redist.x64.targets')" />

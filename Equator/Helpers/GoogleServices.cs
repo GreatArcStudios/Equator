@@ -14,32 +14,32 @@ namespace Equator.Helpers
     internal class GoogleServices
     {
         public static string ApiKey = "AIzaSyCFb8JKlmaP95MqqwYYBDoqvsy7YwRxztM";
-        public static UserCredential credential;
-        private static YouTubeService youtubeService;
-        private static PlusService plusService;
-        public static YouTubeService CreateYoutubeService(string apiKey, bool OAuth2, UserCredential credential)
+        public static UserCredential Credential;
+        private static YouTubeService _youtubeService;
+        private static PlusService _plusService;
+        public static YouTubeService CreateYoutubeService(string apiKey, bool oAuth2, UserCredential credential)
         {
-            if (OAuth2)
-                youtubeService = new YouTubeService(new BaseClientService.Initializer
+            if (oAuth2)
+                _youtubeService = new YouTubeService(new BaseClientService.Initializer
                 {
                     HttpClientInitializer = credential,
                     ApplicationName = "EQUATORPLAYER"
                 });
             else
-                youtubeService = new YouTubeService(new BaseClientService.Initializer
+                _youtubeService = new YouTubeService(new BaseClientService.Initializer
                 {
                     ApiKey = apiKey,
                     ApplicationName = "EQUATORPLAYER"
                 });
 
-            return youtubeService;
+            return _youtubeService;
         }
 
-        public static PlusService CreatePlusService(string apiKey, bool OAuth2, UserCredential credential)
+        public static PlusService CreatePlusService(string apiKey, bool oAuth2, UserCredential credential)
         {
-            if (OAuth2)
+            if (oAuth2)
             {
-                plusService= new PlusService(new BaseClientService.Initializer()
+                _plusService= new PlusService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
                     ApplicationName = "EQUATORPLAYER",
@@ -47,18 +47,18 @@ namespace Equator.Helpers
             }
             else
             {
-                plusService = new PlusService(new BaseClientService.Initializer()
+                _plusService = new PlusService(new BaseClientService.Initializer()
                 {
                     ApiKey = apiKey,
                     ApplicationName = "EQUATORPLAYER",
                 });
             }
            
-            return plusService;
+            return _plusService;
         }
         public static async Task AuthUserCredential()
         {
-            credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+            Credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                 new ClientSecrets
                 {
                     ClientId = "440102560893-e959uso94cdvtea9kou6e5uc0a8qkfro.apps.googleusercontent.com",
@@ -66,21 +66,27 @@ namespace Equator.Helpers
                 },
                 // This OAuth 2.0 access scope allows for read-only access to the authenticated 
                 // user's account, but not other types of account access.
-                new[] {YouTubeService.Scope.Youtube, PlusService.Scope.UserinfoProfile},
+                new[] {YouTubeService.Scope.Youtube, PlusService.Scope.PlusMe},
                 "user",
                 CancellationToken.None,
-                new FileDataStore(FilePaths.SaveLocation(), true)
+                new FileDataStore(FilePaths.SaveUserCreds(), true)
             );
+            GetUserPicture();
             Console.WriteLine("Authenticated");
         }
 
-        public string GetUserPicture()
+        public static string GetUserPicture()
         {
-            Person userPerson = CreatePlusService(ApiKey, true, credential).People.Get("me").Execute();
+            Person userPerson = CreatePlusService(ApiKey, true, Credential).People.Get("me").Execute();
             var webClient = new WebClient();
             webClient.DownloadFile(userPerson.Image.Url,
-                FilePaths.saveUserImage() + "\\" + "Userimage.png");
-            return FilePaths.saveUserImage() + "\\" + "Userimage.png";
+                FilePaths.SaveUserImage() + "\\" + "Userimage.png");
+            return FilePaths.SaveUserImage() + "\\" + "Userimage.png";
+        }
+
+        public static async void LogOut()
+        {
+            await Credential.RevokeTokenAsync(CancellationToken.None);
         }
     }
 }

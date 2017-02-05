@@ -20,7 +20,7 @@ namespace Equator.Music
 
         public static async Task<PlaylistListResponse> GetUserPlaylist()
         {
-            var credential = GoogleServices.credential;
+            var credential = GoogleServices.Credential;
             var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, true, credential);
             var userPlaylistRequest = service.Playlists.List("snippet");
             userPlaylistRequest.Mine = true;

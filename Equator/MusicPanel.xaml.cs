@@ -2,9 +2,12 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using Equator.Helpers;
 using Equator.Music;
+using Google.Apis.YouTube.v3.Data;
 using MahApps.Metro.Controls;
 using VideoLibrary;
 
@@ -18,9 +21,12 @@ namespace Equator
         public MusicPanel()
         {
             InitializeComponent();
+            ImageBrush userImageBrush = new ImageBrush(new BitmapImage(new Uri(GoogleServices.GetUserPicture())));
+            userImageBrush.TileMode = TileMode.None;
+            Userbutton.Icon = userImageBrush;
         }
 
-        private async void button_Click(object sender, RoutedEventArgs e)
+        /*private async void button_Click(object sender, RoutedEventArgs e)
         {
             await GetSong.GetMusic(Searchfield.Text);
             if (!FilePaths.InCache())
@@ -30,7 +36,7 @@ namespace Equator
             }
             else
             {
-                var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoID;
+                var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoId;
                 var youTube = YouTube.Default;
                 var video = youTube.GetVideo(uri);
                 var fullName = video.FullName;
@@ -63,17 +69,17 @@ namespace Equator
         {
             MusicControls.PlayVideo(VideoPlayer);
         }
-        private void ShowHideMenu(string Storyboard, Button btnHide, Button btnShow, StackPanel pnl)
+        private void ShowHideMenu(string storyboard, Button btnHide, Button btnShow, StackPanel pnl)
         {
-            Storyboard sb = Resources[Storyboard] as Storyboard;
+            Storyboard sb = Resources[storyboard] as Storyboard;
             sb.Begin(pnl);
 
-            if (Storyboard.Contains("Show"))
+            if (storyboard.Contains("Show"))
             {
                 btnHide.Visibility = System.Windows.Visibility.Visible;
                 btnShow.Visibility = System.Windows.Visibility.Hidden;
             }
-            else if (Storyboard.Contains("Hide"))
+            else if (storyboard.Contains("Hide"))
             {
                 btnHide.Visibility = System.Windows.Visibility.Hidden;
                 btnShow.Visibility = System.Windows.Visibility.Visible;
@@ -89,10 +95,6 @@ namespace Equator
         {
             ShowHideMenu("sbHideLeftMenu", Hide_Button, Show_Button, Nav_Panel);
         }  */
-
-        private void User_login_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 }

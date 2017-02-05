@@ -1,4 +1,7 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Windows.Media;
+using Equator.Controls;
 
 namespace Equator.Helpers
 {
@@ -6,10 +9,12 @@ namespace Equator.Helpers
     {
         public static string GetSongThumb(string url, string songName)
         {
+            string filepath = FilePaths.SaveThumb() + "\\" + FilePaths.RemoveIllegalPathCharacters(songName) + ".png";
             var webClient = new WebClient();
             webClient.DownloadFile(url,
-                FilePaths.saveThumb() + "\\" + FilePaths.RemoveIllegalPathCharacters(songName) + ".png");
-            return FilePaths.saveThumb() + "\\" + songName + ".png";
+               filepath );
+            return FilePaths.SaveThumb() + "\\" + songName + ".png";
         }
+
     }
 }
