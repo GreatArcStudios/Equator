@@ -1,27 +1,27 @@
-﻿<Controls:MetroWindow
+﻿<controls:MetroWindow
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:local="clr-namespace:Equator"
-    xmlns:Themes="clr-namespace:;assembly=System" x:Name="Login" x:Class="Equator.MainWindow"
+    xmlns:themes="clr-namespace:;assembly=System" x:Name="Login" x:Class="Equator.MainWindow"
     mc:Ignorable="d"
     Title="Login" Height="600" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid HorizontalAlignment="Left" Height="600" VerticalAlignment="Top" Width="600" Margin="0,1,0,-1">
-        <Label x:Name="label" Content="Welcome!" HorizontalAlignment="Left" Height="45" Margin="232,315,0,0"
+        <Label x:Name="Label" Content="Welcome!" HorizontalAlignment="Left" Height="45" Margin="232,315,0,0"
                VerticalAlignment="Top" Width="130" FontSize="26.667" Foreground="#FF838383" />
-        <Image x:Name="image" HorizontalAlignment="Left" Height="260" Margin="0,10,0,0" VerticalAlignment="Top"
-               Width="590" />
+        <Image x:Name="Image" HorizontalAlignment="Center" Height="260" Margin="155,40,165,0" VerticalAlignment="Top"
+               Width="280" Source="Icons/Equator logo purple no background.png" />
         <Button x:Name="Login1" Content="Login" HorizontalAlignment="Left" Height="40" Margin="220,381,0,0"
                 VerticalAlignment="Top" Width="152" Background="Red" BorderBrush="Red" Foreground="White"
                 Click="Login1_Click" FontSize="13.333" />
-        <Label x:Name="label1" Content="© 2016 Eric Zhu" HorizontalAlignment="Left" VerticalAlignment="Top"
+        <Label x:Name="Label1" Content="© 2016 Eric Zhu" HorizontalAlignment="Left" VerticalAlignment="Top"
                Margin="247,510,0,0" Width="103" />
-        <Label x:Name="label1_Copy"
+        <Label x:Name="Label1Copy"
                Content="Disclaimer: Eric Zhu is not in any way, shape or form associated with Google"
                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,541,-13,0" Width="433"
                RenderTransformOrigin="0.466,2.115" FontSize="6.667" />
     </Grid>
 
-</Controls:MetroWindow>
+</controls:MetroWindow>
