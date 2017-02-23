@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Equator.Helpers;
 using MediaToolkit;
@@ -8,6 +10,7 @@ using MediaToolkit.Model;
 using MediaToolkit.Options;
 using NReco.VideoConverter;
 using VideoLibrary;
+using YoutubeExtractor;
 
 namespace Equator.Music
 {
@@ -20,16 +23,40 @@ namespace Equator.Music
 
         public static async Task<string> DownloadVideo()
         {
-            var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoId;
-            Console.WriteLine(uri);
-            var youTube = YouTube.Default;
-            var video = youTube.GetVideo(uri);
-            var fullName = video.FullName; // same thing as title + fileExtension
-            var bytes = await video.GetBytesAsync();
-            var stream = video.Stream();
+           /* // Our test youtube link
+            string link = "https://www.youtube.com/watch?v=" + GetSong.VideoId;
+
+            IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(link);
+
+            VideoInfo video = videoInfos
+                .First(info => info.VideoType == VideoType.Mp4 && info.Resolution == 360);
+
+            if (video.RequiresDecryption)
+            {
+                DownloadUrlResolver.DecryptDownloadUrl(video);
+            }
+            var fullName = video.Title;
+            var saveName = fullName.Replace("- YouTube", "");
+
+            var videoDownloader = new VideoDownloader(video, Path.Combine(FilePaths.SaveLocation(),
+                FilePaths.RemoveIllegalPathCharacters(saveName)));
+  
+            videoDownloader.DownloadProgressChanged += (sender, args) => Console.WriteLine(args.ProgressPercentage);
+
+            videoDownloader.Execute();      */
+
+           // Other youtube library libvideo
+          var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoId;
+          Console.WriteLine(uri);
+          var youTube = YouTube.Default;
+          var video = youTube.GetVideo(uri);
+          var fullName = video.FullName; // same thing as title + fileExtension
+          var bytes = await video.GetBytesAsync();
+          var stream = video.Stream(); 
+         
             var saveName = fullName.Replace("- YouTube", "");
             File.WriteAllBytes(Path.Combine(FilePaths.SaveLocation(),
-                FilePaths.RemoveIllegalPathCharacters(saveName)), bytes);
+                FilePaths.RemoveIllegalPathCharacters(saveName)), bytes);     */
             SongTitle = saveName;
             Console.WriteLine("Done downloading " + SongTitle);
             return Path.Combine(FilePaths.SaveLocation(),
