@@ -1,72 +1,120 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#define USE_YOUTUBEEXPLODE
+using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Equator.Helpers;
 using MediaToolkit;
 using MediaToolkit.Model;
-using MediaToolkit.Options;
 using NReco.VideoConverter;
-using VideoLibrary;
+using CefSharp;
 using YoutubeExtractor;
+using System.Collections.Generic;
+using System.Linq;
+using YoutubeExplode;
+using YoutubeExplode.Models;
+using CefSharp.Wpf;
 
 namespace Equator.Music
 {
     /// <summary>
-    /// The class that gets the particular song
+    ///     The class that gets the particular song
     /// </summary>
+    
     internal class GetMusic
     {
         public static string SongTitle;
+        private static bool isConverting;
+        public static FFMpegConverter FFMpeg = new FFMpegConverter();
 
-        public static async Task<string> DownloadVideo()
+        public static bool IsConverting
         {
-           /* // Our test youtube link
-            string link = "https://www.youtube.com/watch?v=" + GetSong.VideoId;
-
-            IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(link);
-
-            VideoInfo video = videoInfos
-                .First(info => info.VideoType == VideoType.Mp4 && info.Resolution == 360);
-
-            if (video.RequiresDecryption)
+            get
             {
-                DownloadUrlResolver.DecryptDownloadUrl(video);
+                return isConverting;
             }
+
+            set
+            {
+                isConverting = value;
+            }
+        }
+
+        public static async Task<string> DownloadVideo(ChromiumWebBrowser youtubePlayer)
+        {
+#if USE_YOUTUBE_EXTRACTOR
+            string link = "https://www.youtube.com/watch?v=" + GetSong.VideoId;
+ 
+             IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(link);
+ 
+             VideoInfo video = videoInfos
+                 .First(info => info.VideoType == VideoType.WebM && info.Resolution == 360);
+            
+             if (video.RequiresDecryption)
+             {
+                 DownloadUrlResolver.DecryptDownloadUrl(video);
+             }
+            
             var fullName = video.Title;
-            var saveName = fullName.Replace("- YouTube", "");
+             var saveName = fullName.Replace("- YouTube", "");
+ 
+             var videoDownloader = new VideoDownloader(video, Path.Combine(FilePaths.SaveLocation(),
+                 FilePaths.RemoveIllegalPathCharacters(saveName)));
+   
+             videoDownloader.DownloadProgressChanged += (sender, args) => Console.WriteLine(args.ProgressPercentage);
+ 
+             videoDownloader.Execute();
+#endif
+#if USE_LIBVIDEO
+            /*// Other youtube library libvideo
+            var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoId;
+            var youTube = YouTube.Default;
+            var video = youTube.GetVideo(uri);*/
 
-            var videoDownloader = new VideoDownloader(video, Path.Combine(FilePaths.SaveLocation(),
-                FilePaths.RemoveIllegalPathCharacters(saveName)));
-  
-            videoDownloader.DownloadProgressChanged += (sender, args) => Console.WriteLine(args.ProgressPercentage);
+            //youtubePlayer.Address = "http://33232463.nhd.weebly.com/";
+            /*var fullName = video.FullName; // same thing as title + fileExtension
+            var saveName = FilePaths.RemoveIllegalPathCharacters(fullName.Replace("- YouTube", ""));
+            saveName = saveName.Replace("_", "");
+            var bytes = await video.GetBytesAsync();
+            //var stream = video.Stream();*/
+#endif
+#if USE_YOUTUBEEXPLODE
+            // Client
+            var client = new YoutubeClient();
+            var videoInfo = await client.GetVideoInfoAsync(GetSong.VideoId);
+            // Print metadata
+            Console.WriteLine($"Id: {videoInfo.Id} | Title: {videoInfo.Title} | Author: {videoInfo.Author.Title}");
 
-            videoDownloader.Execute();      */
-
-           // Other youtube library libvideo
-          var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoId;
-          Console.WriteLine(uri);
-          var youTube = YouTube.Default;
-          var video = youTube.GetVideo(uri);
-          var fullName = video.FullName; // same thing as title + fileExtension
-          var bytes = await video.GetBytesAsync();
-          var stream = video.Stream(); 
-         
-            var saveName = fullName.Replace("- YouTube", "");
-            File.WriteAllBytes(Path.Combine(FilePaths.SaveLocation(),
-                FilePaths.RemoveIllegalPathCharacters(saveName)), bytes);     */
-            SongTitle = saveName;
+            // Get the most preferable stream
+            Console.WriteLine("Looking for the best mixed stream...");
+            var streamInfo = videoInfo.MixedStreams
+                .OrderBy(s => s.VideoEncoding == YoutubeExplode.Models.MediaStreams.VideoEncoding.Vp8)
+                .Last();
+            youtubePlayer.LoadHtml("<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" height = \"270\" width = \"480\" autoplay = \"true\" >" + "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
+            streamInfo = videoInfo.MixedStreams
+               .OrderBy(s => s.VideoEncoding == YoutubeExplode.Models.MediaStreams.VideoEncoding.H264)
+               .Last();
+            // Compose file name, based on metadata
+            string fileExtension = streamInfo.Container.GetFileExtension();
+            string saveName = $"{videoInfo.Title}.{fileExtension}";
+            // Remove illegal characters from file name
+            saveName = FilePaths.RemoveIllegalPathCharacters(saveName);
+            // Download video
+            Console.WriteLine($"Downloading to [{saveName}]...");
+            string savePath = Path.Combine(FilePaths.SaveLocation(),
+               saveName);
+            await client.DownloadMediaStreamAsync(streamInfo, savePath);
+#endif  
+            //File.WriteAllBytes(savePath, bytes);
+            SongTitle = savePath;
             Console.WriteLine("Done downloading " + SongTitle);
-            return Path.Combine(FilePaths.SaveLocation(),
-                FilePaths.RemoveIllegalPathCharacters(saveName));
+            return savePath;
         }
 
         //extract music from the file (currently too slow) 
-        public static async void ExtractMusic()
+        public static async void ExtractMusic(ChromiumWebBrowser youtubePlayer)
         {
-            var filePath = await DownloadVideo();
+            var filePath = await DownloadVideo(youtubePlayer);
             var inputFile = new MediaFile {Filename = filePath};
             var outputFile = new MediaFile
             {
@@ -82,11 +130,18 @@ namespace Equator.Music
 
         public static async Task ConvertWebmToMp4(string inputFilePath, string saveName)
         {
-            var ffMpeg = new NReco.VideoConverter.FFMpegConverter();
-            ffMpeg.FFMpegProcessPriority = ProcessPriorityClass.BelowNormal;
-            ffMpeg.ConvertMedia(inputFilePath, Path.Combine(FilePaths.SaveLocation(),
-                    FilePaths.RemoveIllegalPathCharacters(saveName)), Format.mp4);
-            ffMpeg.Stop();
+            FFMpeg.FFMpegProcessPriority = ProcessPriorityClass.RealTime;
+            isConverting = true;
+            await Task.Run(async () => { await ConvertTask(FFMpeg, inputFilePath, saveName); });
         }
+
+        private static async Task ConvertTask(FFMpegConverter ffMpegConverter, string inputFilePath, string saveName)
+        {
+            ffMpegConverter.ConvertMedia(inputFilePath, Path.Combine(FilePaths.SaveLocation(),
+                FilePaths.RemoveIllegalPathCharacters(saveName)), Format.mp4);
+            ffMpegConverter.Stop();
+            isConverting = false;
+        }
+
     }
 }

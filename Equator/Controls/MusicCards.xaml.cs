@@ -1,48 +1,84 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.IO;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Equator.Helpers;
+using Equator.Music;
+using Path = System.IO.Path;
+using CefSharp.Wpf;
 
 namespace Equator.Controls
 {
     /// <summary>
-    /// Interaction logic for Music_Cards.xaml
-    /// TODO: create logic to update the background of the music panel to match the current song
+    ///     Interaction logic for Music_Cards.xaml
     /// </summary>
     public partial class MusicCards : UserControl
     {
-        public CardHelper CardHelper = new CardHelper();
-        public MusicCards(string songTitle, Uri backgroundImageUri)
+        private readonly Rectangle _backgroundRect;
+        private readonly MediaElement _mediaElement;
+        private readonly string _musicLink;
+        private readonly Label _songLabel;
+        private readonly ChromiumWebBrowser youtubePlayer;
+        private Label _endTimeLabel;
+        private Slider _playBarSlider;
+        public int index;
+
+        public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
+            ref MediaElement mediaElement, ref Label songLabel, ref Label endTimeLabel,
+            ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer)
         {
+            //Set the text to song name 
+            //set image to song thumb
             InitializeComponent();
-            SongTitle.Content = songTitle;
-            MusicImage.Source = new BitmapImage(
-                CardHelper.GetMusicThumbUri());
-           MusicCardContent.MouseEnter += new MouseEventHandler(MusicCard_Content_MouseEnter);
-           MusicCardContent.MouseLeave += new MouseEventHandler(MusicCard_Content_MouseLeave);
+            SongTitle.Text = songTitle;
+            Artist_name.Content = artistName;
+            _musicLink = musicLink;
+
+            var backgroundBrush = new ImageBrush(new BitmapImage(backgroundImageUri));
+            backgroundBrush.Stretch = Stretch.UniformToFill;
+            MusicImage.Fill = backgroundBrush;
+
+            MusicCardContent.MouseEnter += MusicCard_Content_MouseEnter;
+            MusicCardContent.MouseLeave += MusicCard_Content_MouseLeave;
+            Overlay.Opacity = 0;
+            Play.Opacity = 0;
+            _mediaElement = mediaElement;
+            _songLabel = songLabel;
+            _endTimeLabel = endTimeLabel;
+            _playBarSlider = slider;
+            this.index = index;
+            _backgroundRect = backgroundRectangle;
+            this.youtubePlayer = youtubePlayer;
         }
 
         private void MusicCard_Content_MouseLeave(object sender, MouseEventArgs e)
         {
-            MusicCardContent = (Grid) sender;
+            MusicCardContent = (Canvas) sender;
             Play.Opacity = 0;
+            Overlay.Opacity = 0;
         }
 
         public void MusicCard_Content_MouseEnter(object sender, MouseEventArgs e)
         {
-            MusicCardContent = (Grid)sender;
+            MusicCardContent = (Canvas) sender;
             Play.Opacity = 100;
+            Overlay.Opacity = 0.4;
         }
-    }
-}
+
+        /// <summary>
+        ///     Returns a string split into the format "link to the music/video" + "song name"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private async void LeftMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MusicCardContent = (Canvas) sender;
+            Play.Opacity = 100;
+            await GetSong.PlaySpecifiedSong(_backgroundRect, _mediaElement, _musicLink, index, SongTitle.Text, _songLabel, youtubePlayer);
+
+        }
+}}

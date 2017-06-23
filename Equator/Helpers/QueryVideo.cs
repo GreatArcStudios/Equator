@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Google.Apis.YouTube.v3.Data;
 
 namespace Equator.Helpers
 {
-    internal class QueryVideo
+    internal static class QueryVideo
     {
-        public static int SongCount = 10;
         public static SearchListResponse SearchListResponse;
+        public static string CurrentSongTitle; 
+        public static int SongCount { get; set; } = 50;
+
         /// <summary>
-        /// Gets a list of songs of size <c>int SongCount</c>
+        ///     Gets a list of songs of size <c>int SongCount</c>
         /// </summary>
         /// <param name="song"></param>
         public static void QueryList(string song)
@@ -22,6 +25,15 @@ namespace Equator.Helpers
 
             // Call the search.list method to retrieve results matching the specified query term.
             SearchListResponse = musicList.Execute();
+            try
+            {
+                Console.WriteLine("Queryed Youtube for SearchListResponse and SearchListResponse created with " +
+                                  SearchListResponse.Items.Count + " items" + "Fist item is: " +
+                                  SearchListResponse.Items[0].Id.VideoId);
+            }
+            catch
+            {
+            }
         }
     }
 }

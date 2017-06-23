@@ -1,7 +1,8 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using Equator.Helpers;
 using WMPLib;
+using CefSharp.Wpf;
+using CefSharp;
 
 namespace Equator.Music
 {
@@ -24,28 +25,29 @@ namespace Equator.Music
             Player.controls.pause();
         }
 
-        public static void PlayVideo(MediaElement musicPlayer)
+        public static void PlayVideo(ChromiumWebBrowser youtubePlayer)
         {
-            musicPlayer.Play();       
-            
+            string script = "var youtubePlayer = document.getElementById(\"youtubePlayer\");";
+            script += "youtubePlayer.play();";
+            youtubePlayer.ExecuteScriptAsync(script);
         }
 
-        public static void PauseVideo(MediaElement musicPlayer)
+        public static void PauseVideo(ChromiumWebBrowser youtubePlayer)
         {
-            musicPlayer.Pause();
-           
+            string script = "var youtubePlayer = document.getElementById(\"youtubePlayer\");";
+            script += "youtubePlayer.pause();";
+            youtubePlayer.ExecuteScriptAsync(script);
         }
+
         //add in parm for video url 
         public static void ReplayVideo()
         {
-            Player.URL = FilePaths.SaveLocation() + GetMusic.SongTitle;
-            Player.controls.play();
+            //Player.URL = FilePaths.SaveLocation() + GetMusic.SongTitle;
+            //Player.controls.play();
         }
 
         public static void Shuffle()
         {
-            
-            
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Design.Serialization;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Equator.Helpers;
 using Google.Apis.YouTube.v3.Data;
 
@@ -49,6 +48,5 @@ namespace Equator.Music
             var playlistItemResponse = topPlaylistItemRequest.Execute();
             return playlistItemResponse;
         }
-
     }
 }

@@ -1,6 +1,11 @@
 ﻿using System.Windows;
 using Equator.Helpers;
 using MahApps.Metro.Controls;
+using System;
+using SuperfastBlur;
+using System.Diagnostics;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace Equator
 {
@@ -18,8 +23,9 @@ namespace Equator
         {
             await GoogleServices.AuthUserCredential();
             var window = new MusicPanel();
+            window.Show();
+            GC.Collect();
             Close();
-            window.ShowDialog();
         }
     }
 }
