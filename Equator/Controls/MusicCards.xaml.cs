@@ -25,6 +25,16 @@ namespace Equator.Controls
         private Label _endTimeLabel;
         private Slider _playBarSlider;
         public int index;
+        private string videoId;
+        private string title;
+        private string artistName;
+        private Uri uri;
+        private Label currentSong;
+        private Label endTimeLabel;
+        private Rectangle background;
+        private Slider playBarSlider;
+        private int i;
+        private ChromiumWebBrowser cefPlayer;
 
         public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
             ref MediaElement mediaElement, ref Label songLabel, ref Label endTimeLabel,
@@ -46,6 +56,31 @@ namespace Equator.Controls
             Overlay.Opacity = 0;
             Play.Opacity = 0;
             _mediaElement = mediaElement;
+            _songLabel = songLabel;
+            _endTimeLabel = endTimeLabel;
+            _playBarSlider = slider;
+            this.index = index;
+            _backgroundRect = backgroundRectangle;
+            this.youtubePlayer = youtubePlayer;
+        }
+
+        public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
+             ref Label songLabel, ref Label endTimeLabel,
+            ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer)
+        {
+            InitializeComponent();
+            SongTitle.Text = songTitle;
+            Artist_name.Content = artistName;
+            _musicLink = musicLink;
+
+            var backgroundBrush = new ImageBrush(new BitmapImage(backgroundImageUri));
+            backgroundBrush.Stretch = Stretch.UniformToFill;
+            MusicImage.Fill = backgroundBrush;
+
+            MusicCardContent.MouseEnter += MusicCard_Content_MouseEnter;
+            MusicCardContent.MouseLeave += MusicCard_Content_MouseLeave;
+            Overlay.Opacity = 0;
+            Play.Opacity = 0;
             _songLabel = songLabel;
             _endTimeLabel = endTimeLabel;
             _playBarSlider = slider;
@@ -78,7 +113,7 @@ namespace Equator.Controls
         {
             MusicCardContent = (Canvas) sender;
             Play.Opacity = 100;
-            await GetSong.PlaySpecifiedSong(_backgroundRect, _mediaElement, _musicLink, index, SongTitle.Text, _songLabel, youtubePlayer);
+            await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, index, SongTitle.Text, _songLabel, youtubePlayer);
 
         }
 }}

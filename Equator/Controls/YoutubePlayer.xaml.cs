@@ -1,4 +1,5 @@
-﻿using Equator.Helpers;
+﻿using CefSharp;
+using Equator.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,6 @@ namespace Equator.Controls
         public YoutubePlayer()
         {
             InitializeComponent();
-           
         }
     }
 }

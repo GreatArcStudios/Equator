@@ -14,6 +14,7 @@ using System.Windows.Interop;
 using System.Windows;
 using System.Runtime.InteropServices;
 using CefSharp.Wpf;
+using CefSharp;
 
 namespace Equator.Music
 {
@@ -143,8 +144,59 @@ namespace Equator.Music
             ///<summary>Renable this when coding in the offline mode</summary>
             ///
             //mediaElement.Play();
-            
-            
+        }
+
+        public static async Task PlaySpecifiedSong(System.Windows.Shapes.Rectangle backgroundRect,
+            string musicLink, int index, string songTitle, Label songLabel, ChromiumWebBrowser youtubePlayer)
+        {
+            songLabel.Content = "Now Playing: " + songTitle;
+            MusicPanel.IsPlaying = true;
+            MusicPanel.SetIndex(index);
+            if (GetMusic.IsConverting)
+            {
+                GetMusic.FFMpeg.Stop();
+            }
+            //songLabel.Content = "Loading...";
+            Console.WriteLine("Music links: " + musicLink + " " + VideoId);
+            //TODO: test for possible issue
+            var fullSavePath = await GetMusicVideo(musicLink, youtubePlayer);
+
+            ///<summary>Set the background</summary>
+            var fileName = SongThumb.GetSongThumb(
+                                QueryVideo.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
+                         Path.GetFileNameWithoutExtension(fullSavePath));
+            var image = System.Drawing.Image.FromFile(fileName);
+            var blur = new GaussianBlur(image as Bitmap);
+            var blurredThumb = blur.Process(50);
+            image.Dispose();
+            var hBitmap = blurredThumb.GetHbitmap();
+            var backgroundImageBrush = new ImageBrush();
+            backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
+                                                         IntPtr.Zero,
+                                                         Int32Rect.Empty,
+                                                         BitmapSizeOptions.FromEmptyOptions()
+            );
+            DeleteObject(hBitmap);
+            blurredThumb.Dispose();
+            backgroundImageBrush.Stretch = Stretch.UniformToFill;
+            backgroundRect.Fill = backgroundImageBrush;
+            backgroundRect.Effect = null;
+           
+
+
+            var saveName = Path.GetFileName(fullSavePath);
+            Console.WriteLine("Save name variable in PlaySpecifiedSong method " + saveName);
+            try
+            {
+                var mp4SaveName = saveName.Replace(".webm", ".mp4");
+
+                fullSavePath = Path.Combine(FilePaths.SaveLocation(), mp4SaveName);
+            }
+            catch (NullReferenceException nullReferenceException)
+            {
+                Console.WriteLine("Some how fullSavePath was not a file path...");
+            }
+
         }
     }
 }

@@ -27,8 +27,7 @@ namespace Equator.Music
 
         public static void PlayVideo(ChromiumWebBrowser youtubePlayer)
         {
-            string script = "var youtubePlayer = document.getElementById(\"youtubePlayer\");";
-            script += "youtubePlayer.play();";
+            string script = "(function(){var youtubePlayer = document.getElementById('youtubePlayer')})();";
             youtubePlayer.ExecuteScriptAsync(script);
         }
 

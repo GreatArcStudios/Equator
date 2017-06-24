@@ -24,7 +24,6 @@ namespace Equator
             await GoogleServices.AuthUserCredential();
             var window = new MusicPanel();
             window.Show();
-            GC.Collect();
             Close();
         }
     }

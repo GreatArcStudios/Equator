@@ -214,6 +214,7 @@
     </Compile>
     <Compile Include="Controls\YoutubePlayer.xaml.cs">
       <DependentUpon>YoutubePlayer.xaml</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Controls\VolumePanel.xaml.cs">
       <DependentUpon>VolumePanel.xaml</DependentUpon>

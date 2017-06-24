@@ -155,7 +155,7 @@
                         <Button x:Name="Play_Pause_Button" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Width="56" Style="{DynamicResource MetroCircleButtonStyle}" Height="57"
                                 BorderBrush="{x:Null}" Margin="0,0,0,-2" Foreground="#7F787878" OpacityMask="White"
-                                Click="button_Copy1_Click">
+                                Click="Play_Pause_Button_Click">
                             <Button.Background>
                                 <ImageBrush ImageSource="Icons/playstop.png" />
                             </Button.Background>
@@ -182,14 +182,14 @@
                 <StackPanel Margin="1225,14,0,14" Orientation="Horizontal" HorizontalAlignment="Left"
                             VerticalAlignment="Center">
                     <Button x:Name="Volume_Button" Content="Button" HorizontalAlignment="Right" VerticalAlignment="Top"
-                            Width="35" Height="35" BorderBrush="{x:Null}" Foreground="{x:Null}"
+                            Width="28" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}"
                             BorderThickness="0,1,1,1" Margin="0,0,20,0"  Style="{DynamicResource MetroCircleButtonStyle}">
                         <Button.Background>
                             <ImageBrush ImageSource="Icons/16 volume.png" />
                         </Button.Background>
                     </Button>
-                    <Button x:Name="Replay_Button" Content="Button" HorizontalAlignment="Right" VerticalAlignment="Top"
-                            Width="35" Height="35" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="10,0,0,0" Click="Replay_Button_Click"  Style="{DynamicResource MetroCircleButtonStyle}">
+                    <Button x:Name="Replay_Button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"
+                            Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="10,0,0,0" Click="Replay_Button_Click"  Style="{DynamicResource MetroCircleButtonStyle}" HorizontalContentAlignment="Left">
                         <Button.Background>
                             <ImageBrush ImageSource="Icons/16 replay.png" />
                         </Button.Background>
@@ -200,8 +200,8 @@
         <ScrollViewer x:Name="Scrollviewer" VerticalScrollBarVisibility="Auto"  Grid.RowSpan="2" Margin="0,50,0,0" Grid.Row="1" Foreground="Black" VerticalContentAlignment="Stretch" CanContentScroll="True">
             <WrapPanel x:Name="MusicContainer" Grid.Row="2"  ItemHeight="279.5" ItemWidth="250" Margin="50,0,0,0" />
         </ScrollViewer>
-        <MediaElement x:Name="mediaElement" HorizontalAlignment="Right" Height="212" VerticalAlignment="Bottom"
-                      Width="372" Grid.Row="2" LoadedBehavior="Manual" UnloadedBehavior="Manual" MediaOpened="MediaElement_MediaOpened" Margin="0,0,21,0"  d:IsHidden="True" />
+        <!---><MediaElement x:Name="mediaElement" HorizontalAlignment="Right" Height="212" VerticalAlignment="Bottom"
+                      Width="372" Grid.Row="2" LoadedBehavior="Manual" UnloadedBehavior="Manual" MediaOpened="MediaElement_MediaOpened" Margin="0,0,21,0"  d:IsHidden="True" />-->
         <Label x:Name="BoredLabel" Content="Play Some Music! Have Some Fun!" HorizontalContentAlignment="Center"
                HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Margin="130,265,137,337"
                Height="125" Width="1100" FontSize="66.667" Foreground="White" FontWeight="Bold">
