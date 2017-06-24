@@ -90,8 +90,9 @@ namespace Equator.Music
             var streamInfo = videoInfo.MixedStreams
                 .OrderBy(s => s.VideoEncoding == YoutubeExplode.Models.MediaStreams.VideoEncoding.Vp8)
                 .Last();
-            youtubePlayer.LoadHtml("<html><head><script>function pause(){var youtubePlayer = document.getElementById('youtubePlayer');}</script></head><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" height = \"270\" width = \"480\" autoplay>" + "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
-            Console.WriteLine("Can execute JS: "+ youtubePlayer.CanExecuteJavascriptInMainFrame);
+            youtubePlayer.LoadHtml("<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" height = \"270\" width = \"480\" autoplay>" + "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
+            //Console.WriteLine("Can execute JS: "+ youtubePlayer.CanExecuteJavascriptInMainFrame);
+#if OFFLINE_IMPLEMENTED
             streamInfo = videoInfo.MixedStreams
                .OrderBy(s => s.VideoEncoding == YoutubeExplode.Models.MediaStreams.VideoEncoding.H264)
                .Last();
@@ -103,15 +104,20 @@ namespace Equator.Music
             // Download video
             Console.WriteLine($"Downloading to [{saveName}]...");
             string savePath = Path.Combine(FilePaths.SaveLocation(),
+
                saveName);
             await client.DownloadMediaStreamAsync(streamInfo, savePath);
-#endif  
+
+
             //File.WriteAllBytes(savePath, bytes);
             SongTitle = savePath;
             Console.WriteLine("Done downloading " + SongTitle);
             return savePath;
+#endif
+#endif
+            return videoInfo.Title;
         }
-
+        /*
         //extract music from the file (currently too slow) 
         public static async void ExtractMusic(ChromiumWebBrowser youtubePlayer)
         {
@@ -128,7 +134,7 @@ namespace Equator.Music
             }
             File.Delete(filePath);
         }
-
+        */
         public static async Task ConvertWebmToMp4(string inputFilePath, string saveName)
         {
             FFMpeg.FFMpegProcessPriority = ProcessPriorityClass.RealTime;

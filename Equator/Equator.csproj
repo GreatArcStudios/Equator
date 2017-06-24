@@ -219,7 +219,6 @@
     <Compile Include="Controls\VolumePanel.xaml.cs">
       <DependentUpon>VolumePanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\BackgroundEffectBehavior.cs" />
     <Page Include="Controls\MusicCards.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

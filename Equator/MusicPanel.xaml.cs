@@ -11,7 +11,6 @@ using System.Windows.Threading;
 using BlendModeEffectLibrary;
 using Equator.Controls;
 using Equator.Helpers;
-using Equator.Helpers.Background;
 using Equator.Music;
 using MahApps.Metro.Controls;
 using CefSharp;
@@ -28,14 +27,13 @@ namespace Equator
         public static bool IsPlaying;
 
         private static int _index;
-        private readonly BackgroundEffectBehavior _backgroundEffectBehavior = new BackgroundEffectBehavior();
-        private BehaviorCollection _behaviorCollection;
         private MusicCards _musicCards;
         private bool sliderDragging = false;
         private bool isReplay = false;
-        private string songURI;
+        //private string songURI;
         private const string currentTimeScript = "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.currentTime;})();";
-        private double songDuration;
+        private double songDuration = 0;
+        private bool songLoaded = false;
         public MusicPanel()
         {
             InitializeComponent();
@@ -68,7 +66,7 @@ namespace Equator
                 PlayBarSlider.Value = mediaElement.Position.TotalSeconds;
             }
 #endif
-            if ((songDuration > 0) && (!sliderDragging))
+            if ((songDuration > 0) && (!sliderDragging) && songLoaded)
             {
                 media.CefPlayer.GetMainFrame().EvaluateScriptAsync(currentTimeScript).ContinueWith(x =>
             {
@@ -80,7 +78,20 @@ namespace Equator
                     {
                         PlayBarSlider.Minimum = 0;
                         PlayBarSlider.Maximum = songDuration;
-                        PlayBarSlider.Value = (double)response.Result;
+                        Console.WriteLine(response.Result.ToString());
+                        try
+                        {
+                            PlayBarSlider.Value = (double)response.Result;
+                            if(PlayBarSlider.Value == PlayBarSlider.Maximum)
+                            {
+                                playBackEnded();
+                            }
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Media hasn't loaded yet");
+                        }
+                       
                     });
                 }
             });
@@ -247,9 +258,10 @@ namespace Equator
             BoredLabel.IsEnabled = false;
             SetIndex(_index + 1);
             //make it play the first song
-            if (GetIndex() == MusicContainer.Children.Count - 1)
+            if (GetIndex() == MusicContainer.Children.Count)
             {
                 // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
+                SetIndex(0);
                 await
               GetSong.PlaySpecifiedSong(Background,
                   QueryVideo.SearchListResponse.Items[0].Id.VideoId,
@@ -257,12 +269,16 @@ namespace Equator
                   QueryVideo.SearchListResponse.Items[0].Snippet.Title,
                   CurrentSong, media.CefPlayer);
             }
-            //otherwise play the next song
-            await GetSong.PlaySpecifiedSong(Background,
-                 QueryVideo.SearchListResponse.Items[_index].Id.VideoId,
-                 _index,
-                 QueryVideo.SearchListResponse.Items[_index].Snippet.Title,
-                 CurrentSong, media.CefPlayer);
+            else
+            {
+                //otherwise play the next song
+                await GetSong.PlaySpecifiedSong(Background,
+                     QueryVideo.SearchListResponse.Items[_index].Id.VideoId,
+                     _index,
+                     QueryVideo.SearchListResponse.Items[_index].Snippet.Title,
+                     CurrentSong, media.CefPlayer);
+            }
+            
         }
 
         private void PanelKeyDown(object sender, KeyEventArgs e)
@@ -319,16 +335,17 @@ namespace Equator
                     songDuration = (double)response.Result;
                     Dispatcher.Invoke(() => { EndTimeLabel.Content = TimeSpan.FromSeconds(songDuration).ToString(@"mm\:ss"); });
                     // Console.WriteLine("Song duration: " + songDuration);
+                    songLoaded = true;
                 }
             });           
         }
         private async void GoLeftButtonClick(object sender, RoutedEventArgs e)
         {
             SetIndex(_index - 1);
-            //make it play the first song
-            if (GetIndex() == 0)
+            //make it play the last song
+            if (GetIndex() <= 0)
             {
-                // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
+                SetIndex(QueryVideo.SearchListResponse.Items.Count - 1);
                 await
               GetSong.PlaySpecifiedSong(Background,
                   QueryVideo.SearchListResponse.Items[QueryVideo.SearchListResponse.Items.Count - 1].Id.VideoId,
@@ -336,12 +353,32 @@ namespace Equator
                   QueryVideo.SearchListResponse.Items[QueryVideo.SearchListResponse.Items.Count - 1].Snippet.Title,
                   CurrentSong, media.CefPlayer);
             }
-            //otherwise play the next song
-            await GetSong.PlaySpecifiedSong(Background,
-                 QueryVideo.SearchListResponse.Items[_index].Id.VideoId,
-                 _index,
-                 QueryVideo.SearchListResponse.Items[_index].Snippet.Title,
-                 CurrentSong, media.CefPlayer);
+            else
+            {
+                //otherwise play the next song
+                await GetSong.PlaySpecifiedSong(Background,
+                     QueryVideo.SearchListResponse.Items[_index].Id.VideoId,
+                     _index,
+                     QueryVideo.SearchListResponse.Items[_index].Snippet.Title,
+                     CurrentSong, media.CefPlayer);
+            }
+          
+        }
+        private async void playBackEnded()
+        {
+            IsPlaying = false;
+            songLoaded = false;
+            if (isReplay)
+            {
+                media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync("var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = 0; youtubePlayer.play();");
+                IsPlaying = true;
+                songLoaded = true;
+            }
+            else
+            {
+                await GetSong.AutoPlaySong(_index + 1, CurrentSong, MusicContainer, Background, media.CefPlayer);
+                IsPlaying = true;
+            }
         }
         /*
         private async void MediaElement_MediaEnded(object sender, RoutedEventArgs e)

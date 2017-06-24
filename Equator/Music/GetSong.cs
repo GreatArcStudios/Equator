@@ -18,8 +18,10 @@ using CefSharp;
 
 namespace Equator.Music
 {
+   
     internal class GetSong
     {
+        [DllImport("gdi32.dll")] static extern bool DeleteObject(IntPtr hObject);
         public static string VideoId;
 
         /// <summary>
@@ -49,8 +51,32 @@ namespace Equator.Music
                  QueryVideo.SearchListResponse.Items[index].Snippet.Title,
                  CurrentSong, youtubePlayer);
         }
-        
-        public static async Task<string> GetMusicVideo(string videoId, ChromiumWebBrowser youtubePlayer)
+        public static async Task AutoPlaySong(int index, Label CurrentSong, WrapPanel MusicContainer, System.Windows.Shapes.Rectangle Background, ChromiumWebBrowser youtubePlayer)
+        {
+            //make it play the first song
+            if (MusicPanel.GetIndex() == MusicContainer.Children.Count)
+            {
+                // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
+                MusicPanel.SetIndex(0);
+                await
+              GetSong.PlaySpecifiedSong(Background,
+                  QueryVideo.SearchListResponse.Items[0].Id.VideoId,
+                  index,
+                  QueryVideo.SearchListResponse.Items[0].Snippet.Title,
+                  CurrentSong, youtubePlayer);
+            }
+            else
+            {
+                //otherwise play the next song
+                await GetSong.PlaySpecifiedSong(Background,
+                     QueryVideo.SearchListResponse.Items[index].Id.VideoId,
+                     index,
+                     QueryVideo.SearchListResponse.Items[index].Snippet.Title,
+                     CurrentSong, youtubePlayer);
+            }
+           
+        }
+            public static async Task<string> GetMusicVideo(string videoId, ChromiumWebBrowser youtubePlayer)
         {
             //use video id to get the song
             VideoId = videoId;
@@ -75,7 +101,7 @@ namespace Equator.Music
         /// <summary>
         ///     Gets the song
         /// </summary>
-        [DllImport("gdi32.dll")] static extern bool DeleteObject(IntPtr hObject);
+       
         public static async Task PlaySpecifiedSong(System.Windows.Shapes.Rectangle backgroundRect, MediaElement mediaElement,
             string musicLink, int index, string songTitle, Label songLabel, ChromiumWebBrowser youtubePlayer)
         {
@@ -159,12 +185,12 @@ namespace Equator.Music
             //songLabel.Content = "Loading...";
             Console.WriteLine("Music links: " + musicLink + " " + VideoId);
             //TODO: test for possible issue
-            var fullSavePath = await GetMusicVideo(musicLink, youtubePlayer);
+            var songName = await GetMusicVideo(musicLink, youtubePlayer);
 
             ///<summary>Set the background</summary>
             var fileName = SongThumb.GetSongThumb(
                                 QueryVideo.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
-                         Path.GetFileNameWithoutExtension(fullSavePath));
+                         FilePaths.RemoveIllegalPathCharacters(songName));
             var image = System.Drawing.Image.FromFile(fileName);
             var blur = new GaussianBlur(image as Bitmap);
             var blurredThumb = blur.Process(50);
@@ -184,7 +210,7 @@ namespace Equator.Music
            
 
 
-            var saveName = Path.GetFileName(fullSavePath);
+           /* var saveName = Path.GetFileName(fullSavePath);
             Console.WriteLine("Save name variable in PlaySpecifiedSong method " + saveName);
             try
             {
@@ -195,7 +221,7 @@ namespace Equator.Music
             catch (NullReferenceException nullReferenceException)
             {
                 Console.WriteLine("Some how fullSavePath was not a file path...");
-            }
+            }*/
 
         }
     }
