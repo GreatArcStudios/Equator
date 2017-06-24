@@ -26,7 +26,7 @@ namespace Equator
     public partial class MusicPanel : MetroWindow
     {
         public static bool IsPlaying;
-        public static double songDuration;
+
         private static int _index;
         private readonly BackgroundEffectBehavior _backgroundEffectBehavior = new BackgroundEffectBehavior();
         private BehaviorCollection _behaviorCollection;
@@ -35,6 +35,7 @@ namespace Equator
         private bool isReplay = false;
         private string songURI;
         private const string currentTimeScript = "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.currentTime;})();";
+        private double songDuration;
         public MusicPanel()
         {
             InitializeComponent();
@@ -67,7 +68,9 @@ namespace Equator
                 PlayBarSlider.Value = mediaElement.Position.TotalSeconds;
             }
 #endif
-            media.CefPlayer.GetMainFrame().EvaluateScriptAsync(currentTimeScript).ContinueWith(x =>
+            if ((songDuration > 0) && (!sliderDragging))
+            {
+                media.CefPlayer.GetMainFrame().EvaluateScriptAsync(currentTimeScript).ContinueWith(x =>
             {
                 var response = x.Result;
 
@@ -78,9 +81,10 @@ namespace Equator
                         PlayBarSlider.Minimum = 0;
                         PlayBarSlider.Maximum = songDuration;
                         PlayBarSlider.Value = (double)response.Result;
-                    }); 
+                    });
                 }
             });
+            }
         }
 
         public static int GetIndex()
@@ -223,7 +227,7 @@ namespace Equator
             {
                 //mediaElement.Pause();
                 //mediaElement.Opacity = 0;
-                media.CefPlayer.ShowDevTools();
+                //media.CefPlayer.ShowDevTools();
                 string script = "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
                 media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                 IsPlaying = false;
@@ -289,13 +293,13 @@ namespace Equator
         {
             PlayBarSlider = (Slider)sender;
             sliderDragging = false;
-            string script = String.Format("(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = {0}}})();", TimeSpan.FromSeconds(PlayBarSlider.Value).ToString());
+            string script = String.Format("(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = {0}}})();", PlayBarSlider.Value);
             media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
         }
         private void PlayBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             PlayBarSlider = (Slider)sender;
-            CurrentTimeLabel.Content = TimeSpan.FromSeconds(PlayBarSlider.Value).ToString(@"mm\:ss");
+            Dispatcher.Invoke(() => { CurrentTimeLabel.Content = TimeSpan.FromSeconds(PlayBarSlider.Value).ToString(@"mm\:ss"); });
         }
 #if OFFLINE_IMPLEMENTED
         private void MediaElement_MediaOpened(object sender, RoutedEventArgs e)
@@ -313,9 +317,10 @@ namespace Equator
                 if (response.Success && response.Result != null)
                 {
                     songDuration = (double)response.Result;
+                    Dispatcher.Invoke(() => { EndTimeLabel.Content = TimeSpan.FromSeconds(songDuration).ToString(@"mm\:ss"); });
+                    // Console.WriteLine("Song duration: " + songDuration);
                 }
-            });
-            this.Dispatcher.Invoke(() => { EndTimeLabel.Content = TimeSpan.FromSeconds(songDuration); });
+            });           
         }
         private async void GoLeftButtonClick(object sender, RoutedEventArgs e)
         {
