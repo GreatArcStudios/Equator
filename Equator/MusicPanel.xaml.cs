@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using BlendModeEffectLibrary;
 using Equator.Controls;
 using Equator.Helpers;
 using Equator.Music;
 using MahApps.Metro.Controls;
 using CefSharp;
-using System.IO;
 using System.Diagnostics;
 
 namespace Equator

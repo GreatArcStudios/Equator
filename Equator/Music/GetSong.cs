@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Equator.Helpers;
-using VideoLibrary;
 using Path = System.IO.Path;
 using System.Drawing;
 using SuperfastBlur;
@@ -14,7 +12,7 @@ using System.Windows.Interop;
 using System.Windows;
 using System.Runtime.InteropServices;
 using CefSharp.Wpf;
-using CefSharp;
+using YoutubeExplode;
 
 namespace Equator.Music
 {
@@ -29,7 +27,7 @@ namespace Equator.Music
         /// </summary>
         /// <param name="song"></param>
         /// <returns></returns>
-        /// TODO: make sure to call QueryVideo.QueryList(song)
+#if OFFLINE_IMPLEMENTED
         public static async Task AutoPlaySong(int index, Label CurrentSong, WrapPanel MusicContainer, MediaElement mediaElement, System.Windows.Shapes.Rectangle Background, ChromiumWebBrowser youtubePlayer)
         {
             MusicPanel.SetIndex(index + 1);
@@ -51,6 +49,7 @@ namespace Equator.Music
                  QueryVideo.SearchListResponse.Items[index].Snippet.Title,
                  CurrentSong, youtubePlayer);
         }
+#endif
         public static async Task AutoPlaySong(int index, Label CurrentSong, WrapPanel MusicContainer, System.Windows.Shapes.Rectangle Background, ChromiumWebBrowser youtubePlayer)
         {
             //make it play the first song
@@ -86,10 +85,13 @@ namespace Equator.Music
                 return await GetMusic.DownloadVideo(youtubePlayer);
             }
 
-            var uri = "https://www.youtube.com/watch?v=" + VideoId;
-            var youTube = YouTube.Default;
-            var video = youTube.GetVideo(uri);
-            var fullName = video.FullName; // same thing as title + fileExtension
+            // Client
+            var client = new YoutubeClient();
+            var videoInfo = await client.GetVideoInfoAsync(VideoId);
+            // Print metadata
+           // Console.WriteLine($"Id: {videoInfo.Id} | Title: {videoInfo.Title} | Author: {videoInfo.Author.Title}");
+            var fullName = videoInfo.Title;
+            //code for the video library api
             var saveName = FilePaths.RemoveIllegalPathCharacters(fullName.Replace("- YouTube", ""));
             saveName = saveName.Replace("_", "");
             string savePath = Path.Combine(FilePaths.SaveLocation(),
@@ -101,7 +103,7 @@ namespace Equator.Music
         /// <summary>
         ///     Gets the song
         /// </summary>
-       
+#if OFFLINE_IMPLEMENTED
         public static async Task PlaySpecifiedSong(System.Windows.Shapes.Rectangle backgroundRect, MediaElement mediaElement,
             string musicLink, int index, string songTitle, Label songLabel, ChromiumWebBrowser youtubePlayer)
         {
@@ -171,17 +173,13 @@ namespace Equator.Music
             ///
             //mediaElement.Play();
         }
-
+#endif
         public static async Task PlaySpecifiedSong(System.Windows.Shapes.Rectangle backgroundRect,
             string musicLink, int index, string songTitle, Label songLabel, ChromiumWebBrowser youtubePlayer)
         {
             songLabel.Content = "Now Playing: " + songTitle;
             MusicPanel.IsPlaying = true;
             MusicPanel.SetIndex(index);
-            if (GetMusic.IsConverting)
-            {
-                GetMusic.FFMpeg.Stop();
-            }
             //songLabel.Content = "Loading...";
             Console.WriteLine("Music links: " + musicLink + " " + VideoId);
             //TODO: test for possible issue

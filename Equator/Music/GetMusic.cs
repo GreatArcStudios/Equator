@@ -1,18 +1,9 @@
 ﻿#define USE_YOUTUBEEXPLODE
 using System;
-using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
-using Equator.Helpers;
-using MediaToolkit;
-using MediaToolkit.Model;
-using NReco.VideoConverter;
 using CefSharp;
-using YoutubeExtractor;
-using System.Collections.Generic;
 using System.Linq;
 using YoutubeExplode;
-using YoutubeExplode.Models;
 using CefSharp.Wpf;
 
 namespace Equator.Music
@@ -23,6 +14,7 @@ namespace Equator.Music
     
     internal class GetMusic
     {
+#if OFFLINE_IMPLEMENTED
         public static string SongTitle;
         private static bool isConverting;
         public static FFMpegConverter FFMpeg = new FFMpegConverter();
@@ -39,7 +31,7 @@ namespace Equator.Music
                 isConverting = value;
             }
         }
-
+#endif
         public static async Task<string> DownloadVideo(ChromiumWebBrowser youtubePlayer)
         {
 #if USE_YOUTUBE_EXTRACTOR
@@ -135,6 +127,7 @@ namespace Equator.Music
             File.Delete(filePath);
         }
         */
+#if OFFLINE_IMPLEMENTED
         public static async Task ConvertWebmToMp4(string inputFilePath, string saveName)
         {
             FFMpeg.FFMpegProcessPriority = ProcessPriorityClass.RealTime;
@@ -149,6 +142,7 @@ namespace Equator.Music
             ffMpegConverter.Stop();
             isConverting = false;
         }
+#endif
 
     }
 }
