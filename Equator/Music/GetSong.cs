@@ -22,15 +22,12 @@ namespace Equator.Music
         [DllImport("gdi32.dll")] static extern bool DeleteObject(IntPtr hObject);
         public static string VideoId;
 
-
+        /// <summary>
+        ///     Downloads the first song in the Searchlist response list
+        /// </summary>
+        /// <param name="song"></param>
+        /// <returns></returns>
 #if OFFLINE_IMPLEMENTED
-/// <summary>
-///     Downloads the first song in the Searchlist response list
-/// </summary>
-/// <param name="song"></param>
-/// <param name="index"></param>
-/// <param name="CurrentSong"></param>
-/// <returns></returns>
         public static async Task AutoPlaySong(int index, Label CurrentSong, WrapPanel MusicContainer, MediaElement mediaElement, System.Windows.Shapes.Rectangle Background, ChromiumWebBrowser youtubePlayer)
         {
             MusicPanel.SetIndex(index + 1);
@@ -53,37 +50,28 @@ namespace Equator.Music
                  CurrentSong, youtubePlayer);
         }
 #endif
-        /// <summary>
-        ///     Downloads the first song in the Searchlist response list
-        /// </summary>
-        /// <param name="song"></param>
-        /// <param name="index"></param>
-        /// <param name="currentSong"></param>
-        /// <param name="musicContainer"></param>
-        /// <param name="background"></param>
-        /// <returns></returns>
-        public static async Task AutoPlaySong(int index, Label currentSong, WrapPanel musicContainer, System.Windows.Shapes.Rectangle background, ChromiumWebBrowser youtubePlayer)
+        public static async Task AutoPlaySong(int index, Label CurrentSong, WrapPanel MusicContainer, System.Windows.Shapes.Rectangle Background, ChromiumWebBrowser youtubePlayer)
         {
             //make it play the first song
-            if (MusicPanel.GetIndex() == musicContainer.Children.Count)
+            if (MusicPanel.GetIndex() == MusicContainer.Children.Count)
             {
                 // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
                 MusicPanel.SetIndex(0);
                 await
-              GetSong.PlaySpecifiedSong(background,
+              GetSong.PlaySpecifiedSong(Background,
                   QueryVideo.SearchListResponse.Items[0].Id.VideoId,
                   index,
                   QueryVideo.SearchListResponse.Items[0].Snippet.Title,
-                  currentSong, youtubePlayer);
+                  CurrentSong, youtubePlayer);
             }
             else
             {
                 //otherwise play the next song
-                await GetSong.PlaySpecifiedSong(background,
+                await GetSong.PlaySpecifiedSong(Background,
                      QueryVideo.SearchListResponse.Items[index].Id.VideoId,
                      index,
                      QueryVideo.SearchListResponse.Items[index].Snippet.Title,
-                     currentSong, youtubePlayer);
+                     CurrentSong, youtubePlayer);
             }
            
         }

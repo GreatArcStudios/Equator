@@ -21,10 +21,21 @@ namespace Equator.Controls
         private readonly MediaElement _mediaElement;
         private readonly string _musicLink;
         private readonly Label _songLabel;
-        private readonly ChromiumWebBrowser _youtubePlayer;
+        private readonly ChromiumWebBrowser youtubePlayer;
         private Label _endTimeLabel;
         private Slider _playBarSlider;
-        public int Index;
+        public int index;
+        private string videoId;
+        private string title;
+        private string artistName;
+        private Uri uri;
+        private Label currentSong;
+        private Label endTimeLabel;
+        private Rectangle background;
+        private Slider playBarSlider;
+        private int i;
+        private ChromiumWebBrowser cefPlayer;
+
         public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
             ref MediaElement mediaElement, ref Label songLabel, ref Label endTimeLabel,
             ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer)
@@ -48,9 +59,9 @@ namespace Equator.Controls
             _songLabel = songLabel;
             _endTimeLabel = endTimeLabel;
             _playBarSlider = slider;
-            this.Index = index;
+            this.index = index;
             _backgroundRect = backgroundRectangle;
-            this._youtubePlayer = youtubePlayer;
+            this.youtubePlayer = youtubePlayer;
         }
 
         public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
@@ -73,9 +84,9 @@ namespace Equator.Controls
             _songLabel = songLabel;
             _endTimeLabel = endTimeLabel;
             _playBarSlider = slider;
-            this.Index = index;
+            this.index = index;
             _backgroundRect = backgroundRectangle;
-            this._youtubePlayer = youtubePlayer;
+            this.youtubePlayer = youtubePlayer;
         }
 
         private void MusicCard_Content_MouseLeave(object sender, MouseEventArgs e)
@@ -102,7 +113,7 @@ namespace Equator.Controls
         {
             MusicCardContent = (Canvas) sender;
             Play.Opacity = 100;
-            await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, Index, SongTitle.Text, _songLabel, _youtubePlayer);
+            await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, index, SongTitle.Text, _songLabel, youtubePlayer);
 
         }
 }}
