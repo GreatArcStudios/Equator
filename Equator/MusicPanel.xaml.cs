@@ -398,7 +398,10 @@ namespace Equator
             {
                 isReplay = false;
             }
-            isReplay = true;
+            else
+            {
+                isReplay = true;
+            }
         }
     }
 
