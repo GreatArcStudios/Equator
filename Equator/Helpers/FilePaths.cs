@@ -8,12 +8,9 @@ namespace Equator.Helpers
 {
     internal static class FilePaths
     {
-        public static readonly string DEFAULT_IMAGE_LOCATION =
+        public static readonly string DefaultImageLocation =
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Equator Music\\userdata\\DefaultImage.png";
-        public static readonly string PLAYER_HTML_LOCATION =
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
-            "\\Equator Music\\userdata\\EquatorPlayer.html";
         private static readonly string saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
                                                       "\\Equator Music\\cache";
 
