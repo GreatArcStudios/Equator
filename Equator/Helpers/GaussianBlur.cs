@@ -76,13 +76,13 @@ namespace SuperfastBlur
 
         private void gaussBlur_4(int[] source, int[] dest, int r)
         {
-            var bxs = BoxesForGauss(r, 3);
+            var bxs = boxesForGauss(r, 3);
             boxBlur_4(source, dest, _width, _height, (bxs[0] - 1) / 2);
             boxBlur_4(dest, source, _width, _height, (bxs[1] - 1) / 2);
             boxBlur_4(source, dest, _width, _height, (bxs[2] - 1) / 2);
         }
 
-        private int[] BoxesForGauss(int sigma, int n)
+        private int[] boxesForGauss(int sigma, int n)
         {
             var wIdeal = Math.Sqrt((12 * sigma * sigma / n) + 1);
             var wl = (int)Math.Floor(wIdeal);

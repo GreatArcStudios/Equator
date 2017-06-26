@@ -11,6 +11,7 @@ namespace Equator.Helpers
         public static readonly string DefaultImageLocation =
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Equator Music\\userdata\\DefaultImage.png";
+
         private static readonly string saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
                                                       "\\Equator Music\\cache";
 

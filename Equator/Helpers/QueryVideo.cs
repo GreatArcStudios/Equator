@@ -7,7 +7,7 @@ namespace Equator.Helpers
     internal static class QueryVideo
     {
         public static SearchListResponse SearchListResponse;
-        public static string CurrentSongTitle; 
+        //public static string CurrentSongTitle; 
         public static int SongCount { get; set; } = 50;
 
         /// <summary>
