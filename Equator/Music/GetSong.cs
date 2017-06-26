@@ -79,13 +79,13 @@ namespace Equator.Music
         {
             //use video id to get the song
             VideoId = videoId;
+#if OFFLINE_IMPLEMENTED
             if (!FilePaths.InCache())
             {
                 Console.WriteLine("Video not in cache; video is downloading now");
                 return await GetMusic.DownloadVideo(youtubePlayer);
             }
-
-            // Client
+              // Client
             var client = new YoutubeClient();
             var videoInfo = await client.GetVideoInfoAsync(VideoId);
             // Print metadata
@@ -98,6 +98,8 @@ namespace Equator.Music
                 (saveName));
 
             return savePath;
+#endif
+            return await GetMusic.DownloadVideo(youtubePlayer); 
         }
 
         /// <summary>

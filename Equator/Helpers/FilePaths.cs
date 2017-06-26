@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using Equator.Music;
-using VideoLibrary;
+//using VideoLibrary;
 
 namespace Equator.Helpers
 {
@@ -64,7 +64,7 @@ namespace Equator.Helpers
             GC.Collect();
             return r.Replace(path, "");
         }
-
+#if OFFLINE_IMPLEMENTED
         public static bool InCache()
         {
             var uri = "https://www.youtube.com/watch?v=" + GetSong.VideoId;
@@ -78,5 +78,6 @@ namespace Equator.Helpers
                 return false;
             return true;
         }
+#endif
     }
 }
