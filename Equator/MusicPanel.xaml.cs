@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -6,12 +7,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using CefSharp;
 using Equator.Controls;
 using Equator.Helpers;
 using Equator.Music;
 using MahApps.Metro.Controls;
-using CefSharp;
-using System.Diagnostics;
 
 namespace Equator
 {
@@ -24,40 +24,42 @@ namespace Equator
 
         private static int _index;
         private MusicCards _musicCards;
-        private bool _sliderDragging = false;
-        private bool _isReplay = false;
+        private bool _sliderDragging;
+
+        private bool _isReplay;
+
         //private string songURI;
-        private const string CurrentTimeScript = "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.currentTime;})();";
-        private double _songDuration = 0;
-        private bool _songLoaded = false;
+        private const string CurrentTimeScript =
+                "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.currentTime;})();"
+            ;
+
+        private double _songDuration;
+        private bool _songLoaded;
+
         public MusicPanel()
         {
             InitializeComponent();
             var userImageBrush = new ImageBrush(new BitmapImage(new Uri(GoogleServices.GetUserPicture())));
             userImageBrush.TileMode = TileMode.None;
             Userbutton.Background = userImageBrush;
-            DispatcherTimer playTimer = new DispatcherTimer();
+            var playTimer = new DispatcherTimer();
             playTimer.Interval = TimeSpan.FromSeconds(1);
-            playTimer.Tick += new EventHandler(timer_Tick);
+            playTimer.Tick += timer_Tick;
             playTimer.Start();
 
             var backgroundImageBrush = new ImageBrush(
-                    new BitmapImage(
-                        new Uri(FilePaths.DefaultImageLocation)));
+                new BitmapImage(
+                    new Uri(FilePaths.DefaultImageLocation)));
             backgroundImageBrush.Stretch = Stretch.UniformToFill;
             Background.Fill = backgroundImageBrush;
             media.CefPlayer.LoadingStateChanged += CefPlayer_LoadingStateChanged;
-
-            VolumeControl.Opacity = 0;
-            Panel.SetZIndex(VolumeControl, -9999999);
         }
 
         //Change this for JS
         private void timer_Tick(object sender, EventArgs e)
         {
-#if OFFINE_IMPLEMENTED
-            //Thanks for the baseplate 
-            //http://www.wpf-tutorial.com/audio-video/how-to-creating-a-complete-audio-video-player/
+#if OFFINE_IMPLEMENTED //Thanks for the baseplate 
+//http://www.wpf-tutorial.com/audio-video/how-to-creating-a-complete-audio-video-player/
             if ((mediaElement.Source != null) && (mediaElement.NaturalDuration.HasTimeSpan) && (!sliderDragging))
             {
                 PlayBarSlider.Minimum = 0;
@@ -65,36 +67,29 @@ namespace Equator
                 PlayBarSlider.Value = mediaElement.Position.TotalSeconds;
             }
 #endif
-            if ((_songDuration > 0) && (!_sliderDragging) && _songLoaded)
-            {
+            if (_songDuration > 0 && !_sliderDragging && _songLoaded)
                 media.CefPlayer.GetMainFrame().EvaluateScriptAsync(CurrentTimeScript).ContinueWith(x =>
-            {
-                var response = x.Result;
-
-                if (response.Success && response.Result != null)
                 {
-                    Dispatcher.Invoke(() =>
-                    {
-                        PlayBarSlider.Minimum = 0;
-                        PlayBarSlider.Maximum = _songDuration;
-                        Console.WriteLine(response.Result.ToString());
-                        try
+                    var response = x.Result;
+
+                    if (response.Success && response.Result != null)
+                        Dispatcher.Invoke(() =>
                         {
-                            PlayBarSlider.Value = (double)response.Result;
-                            if(PlayBarSlider.Value == PlayBarSlider.Maximum)
+                            PlayBarSlider.Minimum = 0;
+                            PlayBarSlider.Maximum = _songDuration;
+                            Console.WriteLine(response.Result.ToString());
+                            try
                             {
-                                PlayBackEnded();
+                                PlayBarSlider.Value = (double) response.Result;
+                                if (Math.Abs(PlayBarSlider.Value - PlayBarSlider.Maximum) < 0.001)
+                                    PlayBackEnded();
                             }
-                        }
-                        catch
-                        {
-                            Console.WriteLine("media hasn't loaded yet");
-                        }
-                       
-                    });
-                }
-            });
-            }
+                            catch
+                            {
+                                Console.WriteLine("Media hasn't loaded yet");
+                            }
+                        });
+                });
         }
 
         public static int GetIndex()
@@ -125,8 +120,7 @@ namespace Equator
             topBlurEffect.Radius = 100;
             TopBar.Effect = topBlurEffect;
         }  */
-#if USING_SPECIAL_EFFECTS
-        //not used
+#if USING_SPECIAL_EFFECTS //not used
         public void RefreshTopBar()
         {
             _behaviorCollection = Interaction.GetBehaviors(TopBar);
@@ -194,21 +188,18 @@ namespace Equator
         {
             Panel.SetZIndex(BoredLabel, -9999999);
             MusicContainer.Children.RemoveRange(0, MusicContainer.Children.Count);
-            QueryYoutube.QueryVideoList(SearchBox.Text);
+            QueryVideo.QueryList(SearchBox.Text);
             //add card add logic here
-            for (var i = 0; i < QueryYoutube.SongCount; i++)
+            for (var i = 0; i < QueryVideo.SongCount; i++)
             {
-                var artistName = QueryYoutube.SearchListResponse.Items[i].Snippet.ChannelTitle;
+                var artistName = QueryVideo.SearchListResponse.Items[i].Snippet.ChannelTitle;
                 if (artistName.Contains("VEVO"))
-                {
                     artistName.Replace("VEVO", "");
-                }
-                _musicCards = new MusicCards(QueryYoutube.SearchListResponse.Items[i].Id.VideoId,
-                    QueryYoutube.SearchListResponse.Items[i].Snippet.Title, artistName,
-                    new Uri(QueryYoutube.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
+                _musicCards = new MusicCards(QueryVideo.SearchListResponse.Items[i].Id.VideoId,
+                    QueryVideo.SearchListResponse.Items[i].Snippet.Title, artistName,
+                    new Uri(QueryVideo.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
                     ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i, ref media.CefPlayer);
                 MusicContainer.Children.Add(_musicCards);
-
             }
         }
 
@@ -238,13 +229,15 @@ namespace Equator
                 //mediaElement.Pause();
                 //mediaElement.Opacity = 0;
                 //media.CefPlayer.ShowDevTools();
-                string script = "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
+                var script =
+                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
                 media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                 IsPlaying = false;
             }
             else
             {
-                string script = "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
+                var script =
+                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
                 media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                 //mediaElement.Play();
                 ///mediaElement.Opacity = 100;
@@ -262,22 +255,21 @@ namespace Equator
                 // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
                 SetIndex(0);
                 await
-              GetSong.PlaySpecifiedSong(Background,
-                  QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
-                  _index,
-                  QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
-                  CurrentSong, media.CefPlayer);
+                    GetSong.PlaySpecifiedSong(Background,
+                        QueryVideo.SearchListResponse.Items[0].Id.VideoId,
+                        _index,
+                        QueryVideo.SearchListResponse.Items[0].Snippet.Title,
+                        CurrentSong, media.CefPlayer);
             }
             else
             {
                 //otherwise play the next song
                 await GetSong.PlaySpecifiedSong(Background,
-                     QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
-                     _index,
-                     QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
-                     CurrentSong, media.CefPlayer);
+                    QueryVideo.SearchListResponse.Items[_index].Id.VideoId,
+                    _index,
+                    QueryVideo.SearchListResponse.Items[_index].Snippet.Title,
+                    CurrentSong, media.CefPlayer);
             }
-            
         }
 
         private void PanelKeyDown(object sender, KeyEventArgs e)
@@ -286,14 +278,16 @@ namespace Equator
                 if (IsPlaying)
                 {
                     //mediaElement.Pause();
-                    string script = "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
+                    var script =
+                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
                     media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                     IsPlaying = false;
                 }
                 else
                 {
                     //mediaElement.Play();
-                    string script = "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
+                    var script =
+                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
                     media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                     IsPlaying = true;
                 }
@@ -301,75 +295,94 @@ namespace Equator
 
         private void PlayBar_DragStarted(object sender, DragStartedEventArgs e)
         {
-            PlayBarSlider = (Slider)sender;
+            PlayBarSlider = (Slider) sender;
             _sliderDragging = true;
         }
+
         private void PlayBar_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            PlayBarSlider = (Slider)sender;
+            PlayBarSlider = (Slider) sender;
             _sliderDragging = false;
-            string script = String.Format("(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = {0}}})();", PlayBarSlider.Value);
+            var script =
+                string.Format(
+                    "(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = {0}}})();",
+                    PlayBarSlider.Value);
             media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
         }
+
         private void PlayBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            PlayBarSlider = (Slider)sender;
-            Dispatcher.Invoke(() => { CurrentTimeLabel.Content = TimeSpan.FromSeconds(PlayBarSlider.Value).ToString(@"mm\:ss"); });
+            PlayBarSlider = (Slider) sender;
+            Dispatcher.Invoke(() =>
+            {
+                CurrentTimeLabel.Content = TimeSpan.FromSeconds(PlayBarSlider.Value).ToString(@"mm\:ss");
+            });
         }
 #if OFFLINE_IMPLEMENTED
-        private void mediaElement_mediaOpened(object sender, RoutedEventArgs e)
+        private void MediaElement_MediaOpened(object sender, RoutedEventArgs e)
         {
-            EndTimeLabel.Content = TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToString(@"mm\:ss");
+            EndTimeLabel.Content =
+TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToString(@"mm\:ss");
             songURI = mediaElement.Source.AbsoluteUri;
         }
 #endif
         private void CefPlayer_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
         {
-            media.CefPlayer.GetMainFrame().EvaluateScriptAsync("(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.duration;})();").ContinueWith(x =>
-            {
-                var response = x.Result;
-
-                if (response.Success && response.Result != null)
+            media.CefPlayer.GetMainFrame()
+                .EvaluateScriptAsync(
+                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.duration;})();")
+                .ContinueWith(x =>
                 {
-                    _songDuration = (double)response.Result;
-                    Dispatcher.Invoke(() => { EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss"); });
-                    // Console.WriteLine("Song duration: " + songDuration);
-                    _songLoaded = true;
-                }
-            });           
+                    var response = x.Result;
+
+                    if (response.Success && response.Result != null)
+                    {
+                        _songDuration = (double) response.Result;
+                        Dispatcher.Invoke(() =>
+                        {
+                            EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss");
+                        });
+                        // Console.WriteLine("Song duration: " + songDuration);
+                        _songLoaded = true;
+                    }
+                });
         }
+
         private async void GoLeftButtonClick(object sender, RoutedEventArgs e)
         {
             SetIndex(_index - 1);
             //make it play the last song
             if (GetIndex() <= 0)
             {
-                SetIndex(QueryYoutube.SearchListResponse.Items.Count - 1);
+                SetIndex(QueryVideo.SearchListResponse.Items.Count - 1);
                 await
-              GetSong.PlaySpecifiedSong(Background,
-                  QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1].Id.VideoId,
-                  _index,
-                  QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1].Snippet.Title,
-                  CurrentSong, media.CefPlayer);
+                    GetSong.PlaySpecifiedSong(Background,
+                        QueryVideo.SearchListResponse.Items[QueryVideo.SearchListResponse.Items.Count - 1].Id.VideoId,
+                        _index,
+                        QueryVideo.SearchListResponse.Items[QueryVideo.SearchListResponse.Items.Count - 1].Snippet
+                            .Title,
+                        CurrentSong, media.CefPlayer);
             }
             else
             {
                 //otherwise play the next song
                 await GetSong.PlaySpecifiedSong(Background,
-                     QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
-                     _index,
-                     QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
-                     CurrentSong, media.CefPlayer);
+                    QueryVideo.SearchListResponse.Items[_index].Id.VideoId,
+                    _index,
+                    QueryVideo.SearchListResponse.Items[_index].Snippet.Title,
+                    CurrentSong, media.CefPlayer);
             }
-          
         }
+
         private async void PlayBackEnded()
         {
             IsPlaying = false;
             _songLoaded = false;
             if (_isReplay)
             {
-                media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync("var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = 0; youtubePlayer.play();");
+                media.CefPlayer.GetMainFrame()
+                    .ExecuteJavaScriptAsync(
+                        "var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = 0; youtubePlayer.play();");
                 IsPlaying = true;
                 _songLoaded = true;
             }
@@ -380,7 +393,7 @@ namespace Equator
             }
         }
         /*
-        private async void mediaElement_mediaEnded(object sender, RoutedEventArgs e)
+        private async void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
             IsPlaying = false;
             mediaElement.Opacity = 0;
@@ -394,55 +407,9 @@ namespace Equator
         private void Replay_Button_Click(object sender, RoutedEventArgs e)
         {
             if (_isReplay)
-            {
                 _isReplay = false;
-            }
             else
-            {
                 _isReplay = true;
-            }
-        }
-        private void VolumeControl_OnDragCompleted(object sender, DragCompletedEventArgs e)
-        {
-           VolumeControl.slider = (Slider)sender;
-            VolumeControl.Volume = VolumeControl.slider.Value;
-            VolumeControl.label.Content = VolumeControl.slider.Value + "%";
-            //_mediaElement.Volume = Volume;
-            media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(String.Format("(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.volume = {0}})();", VolumeControl.Volume));
-        }
-
-        private void VolumeControl_OnLoaded(object sender, RoutedEventArgs e)
-        {
-             media.CefPlayer.GetMainFrame()
-                .EvaluateScriptAsync(
-                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.volume})();")
-                .ContinueWith(
-                    x =>
-                    {
-                        var response = x.Result;
-
-                        if (response.Success && response.Result != null)
-                        {
-                            Dispatcher.Invoke(() =>
-                            {
-                                VolumeControl.slider.Value = (double)response.Result;
-                                VolumeControl.label.Content = VolumeControl.slider.Value * 100 + "%";
-                            });
-                        }
-                    });
-        }
-
-        private void VolumeControl_OnLostFocus(object sender, RoutedEventArgs e)
-        {
-            Panel.SetZIndex(VolumeControl, -999999);
-            VolumeControl.Opacity = 0;
-        }
-
-        private void Volume_Button_Click(object sender, RoutedEventArgs e)
-        {
-            Panel.SetZIndex(VolumeControl, 3);
-            VolumeControl.Opacity = 100;
         }
     }
-
 }

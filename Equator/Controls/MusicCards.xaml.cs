@@ -25,7 +25,6 @@ namespace Equator.Controls
         private Label _endTimeLabel;
         private Slider _playBarSlider;
         public int Index;
-
         public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
             ref MediaElement mediaElement, ref Label songLabel, ref Label endTimeLabel,
             ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer)
