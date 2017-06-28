@@ -176,14 +176,14 @@
                                 Foreground="White" Height="26" BorderBrush="White" Margin="0,9,0,-3" Thumb.DragStarted = "PlayBar_DragStarted"  Thumb.DragCompleted ="PlayBar_DragCompleted"  ValueChanged="PlayBar_ValueChanged" />
                         <Label x:Name="EndTimeLabel" Content="0:00" HorizontalAlignment="Right"
                                VerticalAlignment="Center" Margin="10,-2,0,2" FontSize="20" Foreground="White"
-                               RenderTransformOrigin="0.846,0.484" />
+                               RenderTransformOrigin="0.846,0.484" Padding="5,5,25,5" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="1225,14,0,14" Orientation="Horizontal" HorizontalAlignment="Left"
                             VerticalAlignment="Center">
                     <Button x:Name="Volume_Button" Content="Button" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Width="28" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}"
-                            BorderThickness="0,1,1,1" Margin="0,0,20,0"  Style="{DynamicResource MetroCircleButtonStyle}" Click="Volume_Button_Click">
+                            BorderThickness="0,1,1,1" Margin="0,0,20,0"  Style="{DynamicResource MetroCircleButtonStyle}" Click="Volume_Button_Click" >
                         <Button.Background>
                             <ImageBrush ImageSource="Icons/16 volume.png" />
                         </Button.Background>

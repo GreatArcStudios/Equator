@@ -71,18 +71,18 @@ namespace Equator.Music
                 MusicPanel.SetIndex(0);
                 await
               GetSong.PlaySpecifiedSong(background,
-                  QueryVideo.SearchListResponse.Items[0].Id.VideoId,
+                  QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
                   index,
-                  QueryVideo.SearchListResponse.Items[0].Snippet.Title,
+                  QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
                   currentSong, youtubePlayer);
             }
             else
             {
                 //otherwise play the next song
                 await GetSong.PlaySpecifiedSong(background,
-                     QueryVideo.SearchListResponse.Items[index].Id.VideoId,
+                    QueryYoutube.SearchListResponse.Items[index].Id.VideoId,
                      index,
-                     QueryVideo.SearchListResponse.Items[index].Snippet.Title,
+                    QueryYoutube.SearchListResponse.Items[index].Snippet.Title,
                      currentSong, youtubePlayer);
             }
            
@@ -201,7 +201,7 @@ namespace Equator.Music
 
             ///<summary>Set the background</summary>
             var fileName = SongThumb.GetSongThumb(
-                                QueryVideo.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
+                QueryYoutube.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
                          FilePaths.RemoveIllegalPathCharacters(songName));
             var image = System.Drawing.Image.FromFile(fileName);
             var blur = new GaussianBlur(image as Bitmap);
