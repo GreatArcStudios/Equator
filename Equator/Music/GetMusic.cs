@@ -86,7 +86,7 @@ namespace Equator.Music
             //Console.WriteLine("Can execute JS: "+ youtubePlayer.CanExecuteJavascriptInMainFrame);
 #if OFFLINE_IMPLEMENTED
             streamInfo = videoInfo.MixedStreams
-               .OrderBy(s => s.VideoEncoding == YoutubeExplode.Models.MediaStreams.VideoEncoding.H264)
+               .OrderBy(s => s.VideoEncoding == YoutubeExplode.Models.mediaStreams.VideoEncoding.H264)
                .Last();
             // Compose file name, based on metadata
             string fileExtension = streamInfo.Container.GetFileExtension();
@@ -98,7 +98,7 @@ namespace Equator.Music
             string savePath = Path.Combine(FilePaths.SaveLocation(),
 
                saveName);
-            await client.DownloadMediaStreamAsync(streamInfo, savePath);
+            await client.DownloadmediaStreamAsync(streamInfo, savePath);
 
 
             //File.WriteAllBytes(savePath, bytes);
@@ -114,8 +114,8 @@ namespace Equator.Music
         public static async void ExtractMusic(ChromiumWebBrowser youtubePlayer)
         {
             var filePath = await DownloadVideo(youtubePlayer);
-            var inputFile = new MediaFile {Filename = filePath};
-            var outputFile = new MediaFile
+            var inputFile = new mediaFile {Filename = filePath};
+            var outputFile = new mediaFile
             {
                 Filename = Path.Combine(FilePaths.SaveLocation(),
                     FilePaths.RemoveIllegalPathCharacters(SongTitle + ".mp3"))
@@ -137,7 +137,7 @@ namespace Equator.Music
 
         private static async Task ConvertTask(FFMpegConverter ffMpegConverter, string inputFilePath, string saveName)
         {
-            ffMpegConverter.ConvertMedia(inputFilePath, Path.Combine(FilePaths.SaveLocation(),
+            ffMpegConverter.Convertmedia(inputFilePath, Path.Combine(FilePaths.SaveLocation(),
                 FilePaths.RemoveIllegalPathCharacters(saveName)), Format.mp4);
             ffMpegConverter.Stop();
             isConverting = false;

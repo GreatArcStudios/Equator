@@ -22,7 +22,7 @@
         </Image>
         <Label x:Name="Artist_name" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
                VerticalAlignment="Bottom" Background="#00000000" Foreground="White" Height="27" Width="250"
-               Canvas.Top="244" Content="Label" FontSize="13.333">
+               Canvas.Top="244" Content="Label" FontSize="13.333" Margin="0,-5,0,0">
             <Label.Effect>
                 <DropShadowEffect BlurRadius="7" />
             </Label.Effect>
@@ -30,7 +30,7 @@
         <Label x:Name="SongTitleHolder" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="#00000000" Foreground="White"
                Height="55" Width="250" FontWeight="Bold" FontSize="16" Canvas.Top="189">
-            <TextBlock x:Name="SongTitle" TextAlignment="Center" Text="sdfsdfsafasf" TextWrapping="WrapWithOverflow">
+            <TextBlock x:Name="SongTitle" TextAlignment="Center" Text="sdfsdfsafasf" TextWrapping="WrapWithOverflow" Margin="5,0,0,0" Padding="5">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="16" />
                 </TextBlock.Effect>

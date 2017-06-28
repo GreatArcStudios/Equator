@@ -47,6 +47,9 @@ namespace Equator
             backgroundImageBrush.Stretch = Stretch.UniformToFill;
             Background.Fill = backgroundImageBrush;
             media.CefPlayer.LoadingStateChanged += CefPlayer_LoadingStateChanged;
+
+            VolumeControl.Opacity = 0;
+            Panel.SetZIndex(VolumeControl, -9999999);
         }
 
         //Change this for JS
@@ -85,7 +88,7 @@ namespace Equator
                         }
                         catch
                         {
-                            Console.WriteLine("Media hasn't loaded yet");
+                            Console.WriteLine("media hasn't loaded yet");
                         }
                        
                     });
@@ -191,18 +194,18 @@ namespace Equator
         {
             Panel.SetZIndex(BoredLabel, -9999999);
             MusicContainer.Children.RemoveRange(0, MusicContainer.Children.Count);
-            QueryVideo.QueryList(SearchBox.Text);
+            QueryYoutube.QueryVideoList(SearchBox.Text);
             //add card add logic here
-            for (var i = 0; i < QueryVideo.SongCount; i++)
+            for (var i = 0; i < QueryYoutube.SongCount; i++)
             {
-                var artistName = QueryVideo.SearchListResponse.Items[i].Snippet.ChannelTitle;
+                var artistName = QueryYoutube.SearchListResponse.Items[i].Snippet.ChannelTitle;
                 if (artistName.Contains("VEVO"))
                 {
                     artistName.Replace("VEVO", "");
                 }
-                _musicCards = new MusicCards(QueryVideo.SearchListResponse.Items[i].Id.VideoId,
-                    QueryVideo.SearchListResponse.Items[i].Snippet.Title, artistName,
-                    new Uri(QueryVideo.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
+                _musicCards = new MusicCards(QueryYoutube.SearchListResponse.Items[i].Id.VideoId,
+                    QueryYoutube.SearchListResponse.Items[i].Snippet.Title, artistName,
+                    new Uri(QueryYoutube.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
                     ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i, ref media.CefPlayer);
                 MusicContainer.Children.Add(_musicCards);
 
@@ -260,18 +263,18 @@ namespace Equator
                 SetIndex(0);
                 await
               GetSong.PlaySpecifiedSong(Background,
-                  QueryVideo.SearchListResponse.Items[0].Id.VideoId,
+                  QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
                   _index,
-                  QueryVideo.SearchListResponse.Items[0].Snippet.Title,
+                  QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
                   CurrentSong, media.CefPlayer);
             }
             else
             {
                 //otherwise play the next song
                 await GetSong.PlaySpecifiedSong(Background,
-                     QueryVideo.SearchListResponse.Items[_index].Id.VideoId,
+                     QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
                      _index,
-                     QueryVideo.SearchListResponse.Items[_index].Snippet.Title,
+                     QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
                      CurrentSong, media.CefPlayer);
             }
             
@@ -314,7 +317,7 @@ namespace Equator
             Dispatcher.Invoke(() => { CurrentTimeLabel.Content = TimeSpan.FromSeconds(PlayBarSlider.Value).ToString(@"mm\:ss"); });
         }
 #if OFFLINE_IMPLEMENTED
-        private void MediaElement_MediaOpened(object sender, RoutedEventArgs e)
+        private void mediaElement_mediaOpened(object sender, RoutedEventArgs e)
         {
             EndTimeLabel.Content = TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToString(@"mm\:ss");
             songURI = mediaElement.Source.AbsoluteUri;
@@ -341,21 +344,21 @@ namespace Equator
             //make it play the last song
             if (GetIndex() <= 0)
             {
-                SetIndex(QueryVideo.SearchListResponse.Items.Count - 1);
+                SetIndex(QueryYoutube.SearchListResponse.Items.Count - 1);
                 await
               GetSong.PlaySpecifiedSong(Background,
-                  QueryVideo.SearchListResponse.Items[QueryVideo.SearchListResponse.Items.Count - 1].Id.VideoId,
+                  QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1].Id.VideoId,
                   _index,
-                  QueryVideo.SearchListResponse.Items[QueryVideo.SearchListResponse.Items.Count - 1].Snippet.Title,
+                  QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1].Snippet.Title,
                   CurrentSong, media.CefPlayer);
             }
             else
             {
                 //otherwise play the next song
                 await GetSong.PlaySpecifiedSong(Background,
-                     QueryVideo.SearchListResponse.Items[_index].Id.VideoId,
+                     QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
                      _index,
-                     QueryVideo.SearchListResponse.Items[_index].Snippet.Title,
+                     QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
                      CurrentSong, media.CefPlayer);
             }
           
@@ -377,7 +380,7 @@ namespace Equator
             }
         }
         /*
-        private async void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
+        private async void mediaElement_mediaEnded(object sender, RoutedEventArgs e)
         {
             IsPlaying = false;
             mediaElement.Opacity = 0;
@@ -398,6 +401,47 @@ namespace Equator
             {
                 _isReplay = true;
             }
+        }
+        private void VolumeControl_OnDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+           VolumeControl.slider = (Slider)sender;
+            VolumeControl.Volume = VolumeControl.slider.Value;
+            VolumeControl.label.Content = VolumeControl.slider.Value + "%";
+            //_mediaElement.Volume = Volume;
+            media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(String.Format("(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.volume = {0}})();", VolumeControl.Volume));
+        }
+
+        private void VolumeControl_OnLoaded(object sender, RoutedEventArgs e)
+        {
+             media.CefPlayer.GetMainFrame()
+                .EvaluateScriptAsync(
+                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.volume})();")
+                .ContinueWith(
+                    x =>
+                    {
+                        var response = x.Result;
+
+                        if (response.Success && response.Result != null)
+                        {
+                            Dispatcher.Invoke(() =>
+                            {
+                                VolumeControl.slider.Value = (double)response.Result;
+                                VolumeControl.label.Content = VolumeControl.slider.Value * 100 + "%";
+                            });
+                        }
+                    });
+        }
+
+        private void VolumeControl_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            Panel.SetZIndex(VolumeControl, -999999);
+            VolumeControl.Opacity = 0;
+        }
+
+        private void Volume_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Panel.SetZIndex(VolumeControl, 3);
+            VolumeControl.Opacity = 100;
         }
     }
 

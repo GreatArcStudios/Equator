@@ -1,5 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using CefSharp;
+using CefSharp.Wpf;
 
 namespace Equator.Controls
 {
@@ -8,30 +11,29 @@ namespace Equator.Controls
     /// </summary>
     public partial class VolumePanel : UserControl
     {
-        public static double Volume = 100.00;
-        private MediaElement _mediaElement; 
-        public VolumePanel(MediaElement mediaElement)
+        public double Volume = 100.00;
+        private MediaElement _mediaElement;
+        public VolumePanel()
         {
             InitializeComponent();
-            slider.Value = mediaElement.Volume;
-            Volume = mediaElement.Volume;
-            _mediaElement = mediaElement;
+            slider.Maximum = 1;
+            slider.Minimum = 0; 
         }
-        private void VolumeBar_DragStarted(object sender, DragStartedEventArgs e)
+       /* private void VolumeBar_DragStarted(object sender, DragStartedEventArgs e)
         {
             slider = (Slider)sender;
         }
-        private void VolumeBar_DragEnded(object sender, DragStartedEventArgs e)
+        private void VolumeBar_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             slider = (Slider)sender;
             Volume = slider.Value;
-            label.Content = slider.Value.ToString();
-            _mediaElement.Volume = Volume;
+            label.Content = slider.Value + "%";
+            //_mediaElement.Volume = Volume;
+            _youtubePlayer.GetMainFrame().ExecuteJavaScriptAsync(String.Format("(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.volume = {0}})();",Volume));
         }
-
         private void button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             this.Visibility = System.Windows.Visibility.Hidden;
-        }
+        }*/
     }
 }
