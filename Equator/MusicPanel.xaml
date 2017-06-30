@@ -14,7 +14,7 @@
     Loaded="MusicPanel_OnLoaded"
     Title="Equator Music" Height="899.4" Width="1373" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen"
     d:IsEffectDisabled="True" Background="#FF494949" Foreground="Black" OverlayBrush="Black"
-    KeyDown="PanelKeyDown" WindowStyle="ThreeDBorderWindow" MinWidth="1341" MinHeight="500">
+    KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown"  WindowStyle="ThreeDBorderWindow" MinWidth="1341" MinHeight="500">
     <controls:MetroWindow.Resources>
         <Storyboard x:Key="SbShowLeftMenu">
             <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-220,0,0,0" To="0,0,0,0"
@@ -213,7 +213,7 @@
 
 
         <Controls:YoutubePlayer  x:Name="media" x:FieldModifier ="public"  HorizontalAlignment="Right" Height="270" VerticalAlignment="Bottom" Width="480" Margin="0,0,16,0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
-        <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="55" VerticalAlignment="Bottom" Width="250" Margin="1115,670,0,0" Grid.Row="2" Thumb.DragCompleted ="VolumeControl_OnDragCompleted" Loaded="VolumeControl_OnLoaded" LostFocus="VolumeControl_OnLostFocus" MinWidth="250" MinHeight="55"/>
+        <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="57" VerticalAlignment="Bottom" Width="245" Grid.Row="2" Thumb.DragCompleted ="VolumeControl_OnDragCompleted" Loaded="VolumeControl_OnLoaded" MouseLeave="VolumeControl_OnMouseLeave"  MinWidth="250" MinHeight="55" MaxWidth="300" MaxHeight="75" Margin="0,0,18,0"/>
 
 
     </Grid>

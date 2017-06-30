@@ -207,6 +207,7 @@ namespace Equator
         {
             if (e.Key == Key.Enter)
                 SearchButton_Click(this, new RoutedEventArgs());
+           
         }
 
         private void Userbutton_Click(object sender, RoutedEventArgs e)
@@ -275,6 +276,7 @@ namespace Equator
         private void PanelKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Space)
+            {
                 if (IsPlaying)
                 {
                     //mediaElement.Pause();
@@ -291,6 +293,8 @@ namespace Equator
                     media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                     IsPlaying = true;
                 }
+            }
+           
         }
 
         private void PlayBar_DragStarted(object sender, DragStartedEventArgs e)
@@ -315,7 +319,10 @@ namespace Equator
             PlayBarSlider = (Slider) sender;
             Dispatcher.Invoke(() =>
             {
+                if(PlayBarSlider.Value <= 60*60)
                 CurrentTimeLabel.Content = TimeSpan.FromSeconds(PlayBarSlider.Value).ToString(@"mm\:ss");
+                else
+                    CurrentTimeLabel.Content = TimeSpan.FromSeconds(PlayBarSlider.Value).ToString(@"hh\:mm\:ss");
             });
         }
 #if OFFLINE_IMPLEMENTED
@@ -340,7 +347,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                         _songDuration = (double) response.Result;
                         Dispatcher.Invoke(() =>
                         {
-                            if (_songDuration <= 60*60*60) 
+                            if (_songDuration <= 60*60) 
                             EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss");
                             else
                             {
@@ -450,14 +457,31 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             Panel.SetZIndex(VolumeControl, -99999);    
         }
 
-        private void VolumeControl_OnLostFocus(object sender, RoutedEventArgs e)
+        private void Volume_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(_songLoaded)
+            Panel.SetZIndex(VolumeControl, 3);
+        }
+
+        private void VolumeControl_OnMouseLeave(object sender, MouseEventArgs e)
         {
             Panel.SetZIndex(VolumeControl, -99999);
         }
 
-        private void Volume_Button_Click(object sender, RoutedEventArgs e)
+        private void MusicPanel_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            Panel.SetZIndex(VolumeControl, 3);
+            if (e.Key == Key.Right)
+            {
+                media.CefPlayer.GetMainFrame()
+                    .ExecuteJavaScriptAsync(
+                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = youtubePlayer.currentTime+10;})();");
+            }
+            else if (e.Key == Key.Left)
+            {
+                media.CefPlayer.GetMainFrame()
+                    .ExecuteJavaScriptAsync(
+                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = youtubePlayer.currentTime-10;})();");
+            }
         }
     }
 }

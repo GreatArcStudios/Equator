@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using CefSharp;
@@ -35,5 +36,14 @@ namespace Equator.Controls
         {
             this.Visibility = System.Windows.Visibility.Hidden;
         }*/
+        private void Slider_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                Volume = slider.Value;
+                int labelContent = (int)(Volume * 100);
+                label.Content = labelContent + "%";
+            });
+        }
     }
 }
