@@ -17,22 +17,22 @@
         <Image x:Name="Play" HorizontalAlignment="Left" Height="112" VerticalAlignment="Center" Width="115"
                Source="/Equator;component/Icons/playstop.png" Canvas.Left="69" Canvas.Top="33">
             <Image.Effect>
-                <DropShadowEffect BlurRadius="15" Color="#CC404040" ShadowDepth="4" />
+                <DropShadowEffect BlurRadius="5" Color="#CC404040" ShadowDepth="6" />
             </Image.Effect>
         </Image>
         <Label x:Name="Artist_name" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
-               VerticalAlignment="Bottom" Background="#00000000" Foreground="White" Height="27" Width="250"
-               Canvas.Top="244" Content="Label" FontSize="13.333" Margin="0,-5,0,0">
+               VerticalAlignment="Bottom" Background="#00000000" Foreground="White" Height="35" Width="250"
+               Canvas.Top="240" Content="Label" FontSize="13.333">
             <Label.Effect>
-                <DropShadowEffect BlurRadius="7" />
+                <DropShadowEffect BlurRadius="5" ShadowDepth="4" />
             </Label.Effect>
         </Label>
         <Label x:Name="SongTitleHolder" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="#00000000" Foreground="White"
                Height="55" Width="250" FontWeight="Bold" FontSize="16" Canvas.Top="189">
-            <TextBlock x:Name="SongTitle" TextAlignment="Center" Text="sdfsdfsafasf" TextWrapping="WrapWithOverflow" Margin="5,0,0,0" Padding="5">
+            <TextBlock TextWrapping="Wrap" TextTrimming ="WordEllipsis" x:Name="SongTitle" TextAlignment="Center" Text="sdfsdfsafasf"  Padding="0" Height="56" Width="243" Margin="0,-5,0,0">
                 <TextBlock.Effect>
-                    <DropShadowEffect BlurRadius="16" />
+                    <DropShadowEffect BlurRadius="16" ShadowDepth="2" />
                 </TextBlock.Effect>
             </TextBlock>
 

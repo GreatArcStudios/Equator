@@ -62,7 +62,7 @@ namespace Equator.Music
         /// <param name="musicContainer"></param>
         /// <param name="background"></param>
         /// <returns></returns>
-        public static async Task AutoPlaySong(int index, Label currentSong, WrapPanel musicContainer, System.Windows.Shapes.Rectangle background, ChromiumWebBrowser youtubePlayer)
+        public static async Task AutoPlaySong(int index, TextBlock currentSong, WrapPanel musicContainer, System.Windows.Shapes.Rectangle background, ChromiumWebBrowser youtubePlayer)
         {
             //make it play the first song
             if (MusicPanel.GetIndex() == musicContainer.Children.Count)
@@ -189,16 +189,15 @@ namespace Equator.Music
         }
 #endif
         public static async Task PlaySpecifiedSong(System.Windows.Shapes.Rectangle backgroundRect,
-            string musicLink, int index, string songTitle, Label songLabel, ChromiumWebBrowser youtubePlayer)
+            string musicLink, int index, string songTitle, TextBlock songLabel, ChromiumWebBrowser youtubePlayer)
         {
-            songLabel.Content = "Now Playing: " + songTitle;
-            MusicPanel.IsPlaying = true;
+            songLabel.Text = "Loading...";
             MusicPanel.SetIndex(index);
-            //songLabel.Content = "Loading...";
             Console.WriteLine("Music links: " + musicLink + " " + VideoId);
             //TODO: test for possible issue
             var songName = await GetMusicVideo(musicLink, youtubePlayer);
-
+            MusicPanel.IsPlaying = true;
+            songLabel.Text = "Now Playing: " + songTitle;
             ///<summary>Set the background</summary>
             var fileName = SongThumb.GetSongThumb(
                 QueryYoutube.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,

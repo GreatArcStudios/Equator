@@ -27,6 +27,7 @@ namespace Equator
         private bool _sliderDragging;
 
         private bool _isReplay;
+        private bool _isShuffle;
 
         //private string songURI;
         private const string CurrentTimeScript =
@@ -223,7 +224,7 @@ namespace Equator
             }
         }
 
-        private void Play_Pause_Button_Click(object sender, RoutedEventArgs e)
+        private void Play_Pause_Button_Click(object sender, EventArgs e)
         {
             if (IsPlaying)
             {
@@ -243,33 +244,6 @@ namespace Equator
                 //mediaElement.Play();
                 ///mediaElement.Opacity = 100;
                 IsPlaying = true;
-            }
-        }
-
-        private async void button_Copy_Click(object sender, RoutedEventArgs e)
-        {
-            BoredLabel.IsEnabled = false;
-            SetIndex(_index + 1);
-            //make it play the first song
-            if (GetIndex() == MusicContainer.Children.Count)
-            {
-                // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
-                SetIndex(0);
-                await
-                    GetSong.PlaySpecifiedSong(Background,
-                        QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
-                        _index,
-                        QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
-                        CurrentSong, media.CefPlayer);
-            }
-            else
-            {
-                //otherwise play the next song
-                await GetSong.PlaySpecifiedSong(Background,
-                    QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
-                    _index,
-                    QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
-                    CurrentSong, media.CefPlayer);
             }
         }
 
@@ -379,7 +353,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     });
         }
 
-        private async void GoLeftButtonClick(object sender, RoutedEventArgs e)
+        private async void GoLeftButtonClick(object sender, EventArgs e)
         {
             SetIndex(_index - 1);
             //make it play the last song
@@ -417,10 +391,18 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 IsPlaying = true;
                 _songLoaded = true;
             }
+            else if (_isShuffle)
+            {
+                var random = new Random();
+                await GetSong.AutoPlaySong(random.Next(0, 50), CurrentSong, MusicContainer, Background, media.CefPlayer);
+                IsPlaying = true;
+                _songLoaded = true;
+            }
             else
             {
                 await GetSong.AutoPlaySong(_index + 1, CurrentSong, MusicContainer, Background, media.CefPlayer);
                 IsPlaying = true;
+                _songLoaded = true;
             }
         }
         /*
@@ -435,7 +417,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             mediaElement.Play();
         }*/
 
-        private void Replay_Button_Click(object sender, RoutedEventArgs e)
+        private void Replay_Button_Click(object sender, EventArgs e)
         {
             if (_isReplay)
                 _isReplay = false;
@@ -459,7 +441,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 
         private void Volume_Button_Click(object sender, RoutedEventArgs e)
         {
-            if(_songLoaded)
+            if(_songLoaded || IsPlaying)
             Panel.SetZIndex(VolumeControl, 3);
         }
 
@@ -481,6 +463,47 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 media.CefPlayer.GetMainFrame()
                     .ExecuteJavaScriptAsync(
                         "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = youtubePlayer.currentTime-10;})();");
+            }
+        }
+
+        private void Shuffle_Button_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_isShuffle)
+            { 
+                _isShuffle = false;
+            }
+            else
+            {
+                _isShuffle = true;
+                _isReplay = false;
+            }
+        }
+
+
+        private async void Next_Song_Button_OnClick(object sender, EventArgs e)
+        {
+            BoredLabel.IsEnabled = false;
+            SetIndex(_index + 1);
+            //make it play the first song
+            if (GetIndex() == MusicContainer.Children.Count)
+            {
+                // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
+                SetIndex(0);
+                await
+                    GetSong.PlaySpecifiedSong(Background,
+                        QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
+                        _index,
+                        QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
+                        CurrentSong, media.CefPlayer);
+            }
+            else
+            {
+                //otherwise play the next song
+                await GetSong.PlaySpecifiedSong(Background,
+                    QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
+                    _index,
+                    QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
+                    CurrentSong, media.CefPlayer);
             }
         }
     }

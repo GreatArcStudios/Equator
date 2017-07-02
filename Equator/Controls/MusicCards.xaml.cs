@@ -20,13 +20,13 @@ namespace Equator.Controls
         private readonly Rectangle _backgroundRect;
         private readonly MediaElement _mediaElement;
         private readonly string _musicLink;
-        private readonly Label _songLabel;
+        private readonly TextBlock _songLabel;
         private readonly ChromiumWebBrowser _youtubePlayer;
         private Label _endTimeLabel;
         private Slider _playBarSlider;
         public int Index;
         public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
-            ref MediaElement mediaElement, ref Label songLabel, ref Label endTimeLabel,
+            ref MediaElement mediaElement, ref TextBlock songLabel, ref Label endTimeLabel,
             ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer)
         {
             //Set the text to song name 
@@ -54,7 +54,7 @@ namespace Equator.Controls
         }
 
         public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
-             ref Label songLabel, ref Label endTimeLabel,
+             ref TextBlock songLabel, ref Label endTimeLabel,
             ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer)
         {
             InitializeComponent();

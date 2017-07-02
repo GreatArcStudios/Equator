@@ -32,6 +32,12 @@
         <member name="P:Google.Apis.YouTube.v3.YouTubeService.BasePath">
             <summary>Gets the service base path.</summary>
         </member>
+        <member name="P:Google.Apis.YouTube.v3.YouTubeService.BatchUri">
+            <summary>Gets the batch base URI; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.YouTubeService.BatchPath">
+            <summary>Gets the batch base path; <c>null</c> if unspecified.</summary>
+        </member>
         <member name="T:Google.Apis.YouTube.v3.YouTubeService.Scope">
             <summary>Available OAuth 2.0 scopes for use with the YouTube Data API.</summary>
         </member>
@@ -116,6 +122,9 @@
         </member>
         <member name="P:Google.Apis.YouTube.v3.YouTubeService.Subscriptions">
             <summary>Gets the Subscriptions resource.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.YouTubeService.SuperChatEvents">
+            <summary>Gets the SuperChatEvents resource.</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.YouTubeService.Thumbnails">
             <summary>Gets the Thumbnails resource.</summary>
@@ -437,13 +446,26 @@
             <summary>Gets the media downloader.</summary>
         </member>
         <member name="M:Google.Apis.YouTube.v3.CaptionsResource.DownloadRequest.Download(System.IO.Stream)">
+            <summary>
+            <para>Synchronously download the media into the given stream.</para>
+            <para>Warning: This method hides download errors; use <see cref="M:Google.Apis.YouTube.v3.CaptionsResource.DownloadRequest.DownloadWithStatus(System.IO.Stream)"/> instead.</para>
+            </summary>
+        </member>
+        <member name="M:Google.Apis.YouTube.v3.CaptionsResource.DownloadRequest.DownloadWithStatus(System.IO.Stream)">
             <summary>Synchronously download the media into the given stream.</summary>
+            <returns>The final status of the download; including whether the download succeeded or failed.</returns>
         </member>
         <member name="M:Google.Apis.YouTube.v3.CaptionsResource.DownloadRequest.DownloadAsync(System.IO.Stream)">
             <summary>Asynchronously download the media into the given stream.</summary>
         </member>
         <member name="M:Google.Apis.YouTube.v3.CaptionsResource.DownloadRequest.DownloadAsync(System.IO.Stream,System.Threading.CancellationToken)">
             <summary>Asynchronously download the media into the given stream.</summary>
+        </member>
+        <member name="M:Google.Apis.YouTube.v3.CaptionsResource.DownloadRequest.DownloadRange(System.IO.Stream,System.Net.Http.Headers.RangeHeaderValue)">
+            <summary>Synchronously download a range of the media into the given stream.</summary>
+        </member>
+        <member name="M:Google.Apis.YouTube.v3.CaptionsResource.DownloadRequest.DownloadRangeAsync(System.IO.Stream,System.Net.Http.Headers.RangeHeaderValue,System.Threading.CancellationToken)">
+            <summary>Asynchronously download a range of the media into the given stream.</summary>
         </member>
         <member name="M:Google.Apis.YouTube.v3.CaptionsResource.Insert(Google.Apis.YouTube.v3.Data.Caption,System.String)">
             <summary>Uploads a caption track.</summary>
@@ -4230,6 +4252,63 @@
         <member name="M:Google.Apis.YouTube.v3.SubscriptionsResource.ListRequest.InitParameters">
             <summary>Initializes List parameter list.</summary>
         </member>
+        <member name="T:Google.Apis.YouTube.v3.SuperChatEventsResource">
+            <summary>The "superChatEvents" collection of methods.</summary>
+        </member>
+        <member name="F:Google.Apis.YouTube.v3.SuperChatEventsResource.service">
+            <summary>The service which this resource belongs to.</summary>
+        </member>
+        <member name="M:Google.Apis.YouTube.v3.SuperChatEventsResource.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new resource.</summary>
+        </member>
+        <member name="M:Google.Apis.YouTube.v3.SuperChatEventsResource.List(System.String)">
+            <summary>Lists Super Chat events for a channel.</summary>
+            <param name="part">The part parameter specifies the superChatEvent resource parts that the API response will
+            include. Supported values are id and snippet.</param>
+        </member>
+        <member name="T:Google.Apis.YouTube.v3.SuperChatEventsResource.ListRequest">
+            <summary>Lists Super Chat events for a channel.</summary>
+        </member>
+        <member name="M:Google.Apis.YouTube.v3.SuperChatEventsResource.ListRequest.#ctor(Google.Apis.Services.IClientService,System.String)">
+            <summary>Constructs a new List request.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.SuperChatEventsResource.ListRequest.Part">
+            <summary>The part parameter specifies the superChatEvent resource parts that the API response will
+            include. Supported values are id and snippet.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.SuperChatEventsResource.ListRequest.Hl">
+             <summary>The hl parameter instructs the API to retrieve localized resource metadata for a specific
+             application language that the YouTube website supports. The parameter value must be a language code
+             included in the list returned by the i18nLanguages.list method.
+            
+             If localized resource details are available in that language, the resource's snippet.localized object
+             will contain the localized values. However, if localized details are not available, the
+             snippet.localized object will contain resource details in the resource's default language.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.SuperChatEventsResource.ListRequest.MaxResults">
+            <summary>The maxResults parameter specifies the maximum number of items that should be returned in the
+            result set.</summary>
+            [default: 5]
+            [minimum: 0]
+            [maximum: 50]
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.SuperChatEventsResource.ListRequest.PageToken">
+            <summary>The pageToken parameter identifies a specific page in the result set that should be returned.
+            In an API response, the nextPageToken and prevPageToken properties identify other pages that could be
+            retrieved.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.SuperChatEventsResource.ListRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.SuperChatEventsResource.ListRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.SuperChatEventsResource.ListRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.YouTube.v3.SuperChatEventsResource.ListRequest.InitParameters">
+            <summary>Initializes List parameter list.</summary>
+        </member>
         <member name="T:Google.Apis.YouTube.v3.ThumbnailsResource">
             <summary>The "thumbnails" collection of methods.</summary>
         </member>
@@ -4764,8 +4843,8 @@
              <summary>The maxResults parameter specifies the maximum number of items that should be returned in the
              result set.
             
-             Note: This parameter is supported for use in conjunction with the myRating parameter, but it is not
-             supported for use in conjunction with the id parameter.</summary>
+             Note: This parameter is supported for use in conjunction with the myRating and chart parameters, but it
+             is not supported for use in conjunction with the id parameter.</summary>
              [default: 5]
              [minimum: 1]
              [maximum: 50]
@@ -4805,8 +4884,8 @@
              In an API response, the nextPageToken and prevPageToken properties identify other pages that could be
              retrieved.
             
-             Note: This parameter is supported for use in conjunction with the myRating parameter, but it is not
-             supported for use in conjunction with the id parameter.</summary>
+             Note: This parameter is supported for use in conjunction with the myRating and chart parameters, but it
+             is not supported for use in conjunction with the id parameter.</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.VideosResource.ListRequest.RegionCode">
             <summary>The regionCode parameter instructs the API to select a video chart available in the specified
@@ -6015,6 +6094,9 @@
         <member name="T:Google.Apis.YouTube.v3.Data.ChannelTopicDetails">
             <summary>Freebase topic information related to the channel.</summary>
         </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.ChannelTopicDetails.TopicCategories">
+            <summary>A list of Wikipedia URLs that describe the channel's content.</summary>
+        </member>
         <member name="P:Google.Apis.YouTube.v3.Data.ChannelTopicDetails.TopicIds">
             <summary>A list of Freebase topic IDs associated with the channel. You can retrieve information about each
             topic using the Freebase Topic API.</summary>
@@ -6203,7 +6285,7 @@
             <summary>The ETag of the item.</summary>
         </member>
         <member name="T:Google.Apis.YouTube.v3.Data.ContentRating">
-            <summary>Ratings schemes. The country-specific ratings are mostly for movies and shows. NEXT_ID: 68</summary>
+            <summary>Ratings schemes. The country-specific ratings are mostly for movies and shows. NEXT_ID: 69</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.ContentRating.AcbRating">
             <summary>The video's Australian Classification Board (ACB) or Australian Communications and Media Authority
@@ -6346,6 +6428,9 @@
         <member name="P:Google.Apis.YouTube.v3.Data.ContentRating.MccypRating">
             <summary>The video's rating from the Danish Film Institute's (Det Danske Filminstitut) Media Council for
             Children and Young People.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.ContentRating.McstRating">
+            <summary>The video's rating system for Vietnam - MCST</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.ContentRating.MdaRating">
             <summary>The video's rating from Singapore's Media Development Authority (MDA) and, specifically, it's Board
@@ -7185,7 +7270,7 @@
             the user that wrote the message fanFundingEvent - the user that funded the broadcast newSponsorEvent - the
             user that just became a sponsor messageDeletedEvent - the moderator that took the action
             messageRetractedEvent - the author that retracted their message userBannedEvent - the moderator that took
-            the action</summary>
+            the action superChatEvent - the user that made the purchase</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.LiveChatMessageSnippet.DisplayMessage">
             <summary>Contains a string that can be displayed to the user. If this field is not present the message is
@@ -7203,6 +7288,9 @@
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.LiveChatMessageSnippet.PublishedAt">
             <summary><seealso cref="T:System.DateTime"/> representation of <see cref="P:Google.Apis.YouTube.v3.Data.LiveChatMessageSnippet.PublishedAtRaw"/>.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.LiveChatMessageSnippet.SuperChatDetails">
+            <summary>Details about the Super Chat event, this is only set if the type is 'superChatEvent'.</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.LiveChatMessageSnippet.TextMessageDetails">
             <summary>Details about the text message, this is only set if the type is 'textMessageEvent'.</summary>
@@ -7289,6 +7377,25 @@
             <summary>The poll the user voted on.</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.LiveChatPollVotedDetails.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.LiveChatSuperChatDetails.AmountDisplayString">
+            <summary>A rendered string that displays the fund amount and currency to the user.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.LiveChatSuperChatDetails.AmountMicros">
+            <summary>The amount purchased by the user, in micros (1,750,000 micros = 1.75).</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.LiveChatSuperChatDetails.Currency">
+            <summary>The currency in which the purchase was made.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.LiveChatSuperChatDetails.Tier">
+            <summary>The tier in which the amount belongs to. Lower amounts belong to lower tiers. Starts at
+            1.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.LiveChatSuperChatDetails.UserComment">
+            <summary>The comment added by the user to this Super Chat event.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.LiveChatSuperChatDetails.ETag">
             <summary>The ETag of the item.</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.LiveChatTextMessageDetails.MessageText">
@@ -7582,6 +7689,13 @@
         <member name="P:Google.Apis.YouTube.v3.Data.PlaylistItemContentDetails.VideoId">
             <summary>The ID that YouTube uses to uniquely identify a video. To retrieve the video resource, set the id
             query parameter to this value in your API request.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.PlaylistItemContentDetails.VideoPublishedAtRaw">
+            <summary>The date and time that the video was published to YouTube. The value is specified in ISO 8601
+            (YYYY-MM-DDThh:mm:ss.sZ) format.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.PlaylistItemContentDetails.VideoPublishedAt">
+            <summary><seealso cref="T:System.DateTime"/> representation of <see cref="P:Google.Apis.YouTube.v3.Data.PlaylistItemContentDetails.VideoPublishedAtRaw"/>.</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.PlaylistItemContentDetails.ETag">
             <summary>The ETag of the item.</summary>
@@ -8069,6 +8183,76 @@
             <summary>The title of the subscriber.</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.SubscriptionSubscriberSnippet.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.YouTube.v3.Data.SuperChatEvent">
+            <summary>A superChatEvent resource represents a Super Chat purchase on a YouTube channel.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEvent.ETag">
+            <summary>Etag of this resource.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEvent.Id">
+            <summary>The ID that YouTube assigns to uniquely identify the Super Chat event.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEvent.Kind">
+            <summary>Identifies what kind of resource this is. Value: the fixed string
+            "youtube#superChatEvent".</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEvent.Snippet">
+            <summary>The snippet object contains basic details about the Super Chat event.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventListResponse.ETag">
+            <summary>Etag of this resource.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventListResponse.EventId">
+            <summary>Serialized EventId of the request which produced this response.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventListResponse.Items">
+            <summary>A list of Super Chat purchases that match the request criteria.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventListResponse.Kind">
+            <summary>Identifies what kind of resource this is. Value: the fixed string
+            "youtube#superChatEventListResponse".</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventListResponse.NextPageToken">
+            <summary>The token that can be used as the value of the pageToken parameter to retrieve the next page in the
+            result set.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventListResponse.VisitorId">
+            <summary>The visitorId identifies the visitor.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.AmountMicros">
+            <summary>The purchase amount, in micros of the purchase currency. e.g., 1 is represented as
+            1000000.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.ChannelId">
+            <summary>Channel id where the event occurred.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.CommentText">
+            <summary>The text contents of the comment left by the user.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.CreatedAtRaw">
+            <summary>The date and time when the event occurred. The value is specified in ISO 8601 (YYYY-MM-
+            DDThh:mm:ss.sZ) format.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.CreatedAt">
+            <summary><seealso cref="T:System.DateTime"/> representation of <see cref="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.CreatedAtRaw"/>.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.Currency">
+            <summary>The currency in which the purchase was made. ISO 4217.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.DisplayString">
+            <summary>A rendered string that displays the purchase amount and currency (e.g., "$1.00"). The string is
+            rendered for the given language.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.MessageType">
+            <summary>The tier for the paid message, which is based on the amount of money spent to purchase the
+            message.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.SupporterDetails">
+            <summary>Details about the supporter.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.ETag">
             <summary>The ETag of the item.</summary>
         </member>
         <member name="T:Google.Apis.YouTube.v3.Data.Thumbnail">
@@ -8886,6 +9070,9 @@
             <summary>Similar to topic_id, except that these topics are merely relevant to the video. These are topics
             that may be mentioned in, or appear in the video. You can retrieve information about each topic using
             Freebase Topic API.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.VideoTopicDetails.TopicCategories">
+            <summary>A list of Wikipedia URLs that provide a high-level description of the video's content.</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.VideoTopicDetails.TopicIds">
             <summary>A list of Freebase topic IDs that are centrally associated with the video. These are topics that

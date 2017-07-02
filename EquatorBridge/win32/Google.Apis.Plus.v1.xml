@@ -32,6 +32,12 @@
         <member name="P:Google.Apis.Plus.v1.PlusService.BasePath">
             <summary>Gets the service base path.</summary>
         </member>
+        <member name="P:Google.Apis.Plus.v1.PlusService.BatchUri">
+            <summary>Gets the batch base URI; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="P:Google.Apis.Plus.v1.PlusService.BatchPath">
+            <summary>Gets the batch base path; <c>null</c> if unspecified.</summary>
+        </member>
         <member name="T:Google.Apis.Plus.v1.PlusService.Scope">
             <summary>Available OAuth 2.0 scopes for use with the Google+ API.</summary>
         </member>

@@ -154,14 +154,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Equator.exe" size="39385048">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Equator.exe" size="39386584">
       <assemblyIdentity name="Equator" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>N8tSmkc50nrUZuvuUDXzXPLB+SlH81xnOY/JrbltdB4=</dsig:DigestValue>
+        <dsig:DigestValue>8GikndmmC+rusVYGL721cQkkA10rnlktUOr7nyD6UDk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

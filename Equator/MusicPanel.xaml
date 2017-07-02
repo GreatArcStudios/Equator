@@ -14,19 +14,17 @@
     Loaded="MusicPanel_OnLoaded"
     Title="Equator Music" Height="899.4" Width="1373" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen"
     d:IsEffectDisabled="True" Background="#FF494949" Foreground="Black" OverlayBrush="Black"
-    KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown"  WindowStyle="ThreeDBorderWindow" MinWidth="1341" MinHeight="500">
-    <controls:MetroWindow.Resources>
-        <Storyboard x:Key="SbShowLeftMenu">
-            <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-220,0,0,0" To="0,0,0,0"
-                                DecelerationRatio=".9" Duration="0:0:1" />
-        </Storyboard>
-        <Storyboard x:Key="SbHideLeftMenu">
-            <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,0,0,0" To="-220,0,0,0"
-                                AccelerationRatio=".9" Duration="0:0:1" />
-        </Storyboard>
-
-    </controls:MetroWindow.Resources>
-
+    KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown" MinWidth="1341" MinHeight="500">
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo>
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfo Description="Back" Click ="GoLeftButtonClick" ImageSource="Icons/16 back.png"></ThumbButtonInfo>
+                <ThumbButtonInfo Description="Play" Click ="Play_Pause_Button_Click" ImageSource="Icons/playstop.png"></ThumbButtonInfo>
+                <ThumbButtonInfo Description="Next" Click ="Next_Song_Button_OnClick" ImageSource="Icons/16 forwards copy.png"></ThumbButtonInfo>
+                <ThumbButtonInfo Description="Replay" Click ="Replay_Button_Click" ImageSource="Icons/16 replay.png"></ThumbButtonInfo>
+            </TaskbarItemInfo.ThumbButtonInfos>
+        </TaskbarItemInfo>
+    </Window.TaskbarItemInfo>
     <Grid x:Name="FullGrid">
         <Grid.Background>
             <ImageBrush />
@@ -68,7 +66,7 @@
             </Grid.ColumnDefinitions>
             <Rectangle x:FieldModifier="public" x:Name="TopBar" Grid.ColumnSpan="4" Panel.ZIndex="-7"
                        OpacityMask="Black" Margin="-45,0,0,0" Fill="#750F0F0F" />
-            <StackPanel Grid.ColumnSpan="3" Margin="30,10,205,10" Orientation="Horizontal" VerticalAlignment="Center"
+            <StackPanel Grid.ColumnSpan="3" Margin="30,10,14,10" Orientation="Horizontal" VerticalAlignment="Center"
                         Height="40">
                 <Button x:Name="Userbutton" Content="" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="45"
                         Style="{DynamicResource MetroCircleButtonStyle}" Height="44" BorderBrush="{x:Null}"
@@ -88,12 +86,23 @@
                         <ImageBrush ImageSource="Icons/Search.png" Stretch="Uniform" />
                     </Button.Background>
                 </Button>
-                <Label x:Name="CurrentSong" Content="Now Playing: nothing!" HorizontalAlignment="Right"
-                       VerticalAlignment="Center" FontSize="24" Margin="40,-2,0,-4" Foreground="White" Height="46">
+                <Label x:Name="CurrentSongContainer"  HorizontalAlignment="Right"
+                       VerticalAlignment="Center" FontSize="24" Margin="40,-2,0,-4" Foreground="White" Height="46" >
                     <Label.Effect>
                         <DropShadowEffect Color="#3FD3D3D3" BlurRadius="9" ShadowDepth="1" />
                     </Label.Effect>
+                    <TextBlock Name ="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="500">Now Playing: nothing!</TextBlock>
                 </Label>
+                <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Height="36" Margin="12,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="5">
+                    <Button.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource Gray6}" Opacity="0"/>
+                    </Button.BorderBrush>
+                    <Button.Background>
+                        <SolidColorBrush Color="#FF7E7E7E" Opacity="0.5"/>
+                    </Button.Background>
+              
+                </Button>
+
             </StackPanel>
         </Grid>
         <Grid x:Name="BottomContainer" Grid.Row="3" Margin="0,0,-3,-10">
@@ -163,35 +172,41 @@
                         <Button x:Name="Next_Song_Button" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Width="55" Margin="0,2,0,0" Style="{DynamicResource MetroCircleButtonStyle}"
                                 Height="55" BorderBrush="{x:Null}" Foreground="#7F787878" OpacityMask="White"
-                                Click="button_Copy_Click">
+                                Click="Next_Song_Button_OnClick">
                             <Button.Background>
                                 <ImageBrush ImageSource="Icons/16 forwards copy.png" />
                             </Button.Background>
                         </Button>
                     </StackPanel>
                     <StackPanel Margin="0,15,0,16" Orientation="Horizontal" Width="1171">
-                        <Label x:Name="CurrentTimeLabel" HorizontalAlignment="Left" Margin="15,-3,10,-2"
+                        <Label x:Name="CurrentTimeLabel" HorizontalAlignment="Left" Margin="0,-3,10,-2"
                                FontSize="20" Background="{x:Null}" Foreground="White" VerticalAlignment="Center" Content="0:00" />
                         <Slider x:Name="PlayBarSlider" VerticalAlignment="Center" Width="895" Background="#00000000"
                                 Foreground="White" Height="26" BorderBrush="White" Margin="0,9,0,-3" Thumb.DragStarted = "PlayBar_DragStarted"  Thumb.DragCompleted ="PlayBar_DragCompleted"  ValueChanged="PlayBar_ValueChanged" />
                         <Label x:Name="EndTimeLabel" Content="0:00" HorizontalAlignment="Right"
                                VerticalAlignment="Center" Margin="10,-2,0,2" FontSize="20" Foreground="White"
-                               RenderTransformOrigin="0.846,0.484" Padding="5,5,25,5" />
+                               RenderTransformOrigin="0.846,0.484" Padding="5,5,40,5" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="1225,14,0,14" Orientation="Horizontal" HorizontalAlignment="Left"
                             VerticalAlignment="Center">
                     <Button x:Name="Volume_Button" Content="Button" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Width="28" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}"
-                            BorderThickness="0,1,1,1" Margin="0,0,20,0"  Style="{DynamicResource MetroCircleButtonStyle}" Click="Volume_Button_Click" >
+                            BorderThickness="0,1,1,1" Margin="0,0,5,0"  Style="{DynamicResource MetroCircleButtonStyle}" Click="Volume_Button_Click" >
                         <Button.Background>
                             <ImageBrush ImageSource="Icons/16 volume.png" />
                         </Button.Background>
                     </Button>
                     <Button x:Name="Replay_Button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"
-                            Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="10,0,0,0" Click="Replay_Button_Click"  Style="{DynamicResource MetroCircleButtonStyle}" HorizontalContentAlignment="Left">
+                            Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" Click="Replay_Button_Click"  Style="{DynamicResource MetroCircleButtonStyle}" HorizontalContentAlignment="Left">
                         <Button.Background>
                             <ImageBrush ImageSource="Icons/16 replay.png" />
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="Shuffle_Button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0,10,0" Click="Shuffle_Button_OnClick" Style="{DynamicResource MetroCircleButtonStyle}" HorizontalContentAlignment="Left">
+                        <Button.Background>
+                            <ImageBrush ImageSource="Icons/32 shuffle.png" />
                         </Button.Background>
                     </Button>
                 </StackPanel>
