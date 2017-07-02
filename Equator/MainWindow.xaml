@@ -7,21 +7,21 @@
     x:Name="Login" x:Class="Equator.MainWindow"
     mc:Ignorable="d"
     Title="Login" Height="600" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid HorizontalAlignment="Left" Height="600" VerticalAlignment="Top" Width="600" Margin="0,1,0,-1"
-          Background="White">
+    <Grid HorizontalAlignment="Left" Height="601" Width="600" Margin="0,0,-6,-30"
+          Background="Black">
         <Label x:Name="Label" Content="Welcome!" HorizontalAlignment="Left" Height="45" Margin="232,315,0,0"
-               VerticalAlignment="Top" Width="130" FontSize="26.667" Foreground="#FF838383" />
+               VerticalAlignment="Top" Width="130" FontSize="26.667" Foreground="White" />
         <Image x:Name="Image" HorizontalAlignment="Center" Height="260" Margin="155,40,165,0" VerticalAlignment="Top"
-               Width="280" Source="Icons/Equator logo purple no background.png" />
+               Width="280" Source="Eqautor Logo.ico" />
         <Button x:Name="Login1" Content="Login" HorizontalAlignment="Left" Height="40" Margin="218,395,0,0"
                 VerticalAlignment="Top" Width="152" Background="Red" BorderBrush="Red" Foreground="White"
                 Click="Login1_Click" FontSize="13.333" />
         <Label x:Name="Label1" Content="© 2016 Eric Zhu" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Margin="232,505,0,0" Width="125" FontSize="16" />
+               Margin="232,505,0,0" Width="125" FontSize="16" Foreground="White" />
         <Label x:Name="Label1Copy"
                Content="Disclaimer: Eric Zhu is not in any way, shape or form associated with Google"
                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="95,536,0,0" Width="445"
-               RenderTransformOrigin="0.466,2.115" />
+               RenderTransformOrigin="0.466,2.115" Foreground="White" />
     </Grid>
 
 </controls:MetroWindow>

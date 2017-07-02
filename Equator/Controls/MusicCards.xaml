@@ -15,7 +15,7 @@
                    StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0" VerticalAlignment="Top" Width="209"
                    Canvas.Left="18" Canvas.Top="4" d:IsHidden="True" />
         <Image x:Name="Play" HorizontalAlignment="Left" Height="112" VerticalAlignment="Center" Width="115"
-               Source="/Equator;component/Icons/playstop.png" Canvas.Left="69" Canvas.Top="33">
+               Source="/Equator;component/Icons/Play.png" Canvas.Left="69" Canvas.Top="33">
             <Image.Effect>
                 <DropShadowEffect BlurRadius="5" Color="#CC404040" ShadowDepth="6" />
             </Image.Effect>

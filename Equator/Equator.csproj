@@ -343,9 +343,7 @@
     <Resource Include="Icons\16 Volume.png" />
     <Resource Include="Icons\32 shuffle.png" />
     <Resource Include="Icons\Equator logo purple no background.png" />
-    <Resource Include="Icons\Equator logo.png" />
     <Resource Include="Images\Onerepublic.png" />
-    <Resource Include="Icons\playstop.png" />
     <Resource Include="Icons\Search.png" />
   </ItemGroup>
   <ItemGroup>
@@ -415,6 +413,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Eqautor Logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Cog.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\Eqautor Logo.ico" />
+    <Resource Include="Icons\Play.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\Stop.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

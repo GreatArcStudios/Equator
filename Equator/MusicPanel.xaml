@@ -19,7 +19,7 @@
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfo Description="Back" Click ="GoLeftButtonClick" ImageSource="Icons/16 back.png"></ThumbButtonInfo>
-                <ThumbButtonInfo Description="Play" Click ="Play_Pause_Button_Click" ImageSource="Icons/playstop.png"></ThumbButtonInfo>
+                <ThumbButtonInfo Description="Play" Click ="Play_Pause_Button_Click" ImageSource="Icons/Play.png"></ThumbButtonInfo>
                 <ThumbButtonInfo Description="Next" Click ="Next_Song_Button_OnClick" ImageSource="Icons/16 forwards copy.png"></ThumbButtonInfo>
                 <ThumbButtonInfo Description="Replay" Click ="Replay_Button_Click" ImageSource="Icons/16 replay.png"></ThumbButtonInfo>
             </TaskbarItemInfo.ThumbButtonInfos>
@@ -72,7 +72,7 @@
                         Style="{DynamicResource MetroCircleButtonStyle}" Height="44" BorderBrush="{x:Null}"
                         Margin="0,-4,0,0" RenderTransformOrigin="0.902,0.148" Click="Userbutton_Click">
                     <Button.Background>
-                        <ImageBrush x:Name="___No_Name_" ImageSource="Icons/playstop.png" />
+                        <ImageBrush x:Name="___No_Name_" ImageSource="Icons/Stop.png" />
                     </Button.Background>
                 </Button>
                 <TextBox x:Name="SearchBox" TextWrapping="NoWrap" HorizontalAlignment="Center" Height="38"
@@ -100,7 +100,12 @@
                     <Button.Background>
                         <SolidColorBrush Color="#FF7E7E7E" Opacity="0.5"/>
                     </Button.Background>
-              
+                    <Button.Style>
+                    <Style TargetType="{x:Type Button}"
+                           BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="Background" Value="Crimson" />
+                    </Style>
+                    </Button.Style>
                 </Button>
 
             </StackPanel>
@@ -166,7 +171,7 @@
                                 BorderBrush="{x:Null}" Margin="0,0,0,-2" Foreground="#7F787878" OpacityMask="White"
                                 Click="Play_Pause_Button_Click">
                             <Button.Background>
-                                <ImageBrush ImageSource="Icons/playstop.png" />
+                                <ImageBrush ImageSource="Icons/Stop.png" />
                             </Button.Background>
                         </Button>
                         <Button x:Name="Next_Song_Button" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"

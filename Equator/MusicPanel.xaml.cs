@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -226,6 +227,7 @@ namespace Equator
 
         private void Play_Pause_Button_Click(object sender, EventArgs e)
         {
+   
             if (IsPlaying)
             {
                 //mediaElement.Pause();
@@ -235,8 +237,11 @@ namespace Equator
                     "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
                 media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                 IsPlaying = false;
+                Uri playUri = new Uri("Icons/Play.png", UriKind.Relative);
+                Play_Pause_Button.Background = new ImageBrush(new BitmapImage(playUri));
+               
             }
-            else
+            else if(_songLoaded)
             {
                 var script =
                     "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
@@ -244,6 +249,8 @@ namespace Equator
                 //mediaElement.Play();
                 ///mediaElement.Opacity = 100;
                 IsPlaying = true;
+                Uri pauseUri = new Uri("Icons/Stop.png", UriKind.Relative);
+                Play_Pause_Button.Background = new ImageBrush(new BitmapImage(pauseUri));
             }
         }
 
