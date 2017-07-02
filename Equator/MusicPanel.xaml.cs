@@ -7,6 +7,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 using System.Windows.Threading;
 using CefSharp;
 using Equator.Controls;
@@ -237,9 +238,10 @@ namespace Equator
                     "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
                 media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                 IsPlaying = false;
-                Uri playUri = new Uri("Icons/Play.png", UriKind.Relative);
-                Play_Pause_Button.Background = new ImageBrush(new BitmapImage(playUri));
-               
+                Uri playUri = new Uri("Icons/Play.png", UriKind.Relative);  
+                StreamResourceInfo streamInfo = Application.GetResourceStream(playUri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                Play_Pause_Button.Background = new ImageBrush(temp);
             }
             else if(_songLoaded)
             {
@@ -250,7 +252,9 @@ namespace Equator
                 ///mediaElement.Opacity = 100;
                 IsPlaying = true;
                 Uri pauseUri = new Uri("Icons/Stop.png", UriKind.Relative);
-                Play_Pause_Button.Background = new ImageBrush(new BitmapImage(pauseUri));
+                StreamResourceInfo streamInfo = Application.GetResourceStream(pauseUri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                Play_Pause_Button.Background = new ImageBrush(temp);
             }
         }
 

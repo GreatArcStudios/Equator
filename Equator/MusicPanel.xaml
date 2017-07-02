@@ -25,6 +25,14 @@
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
+    <controls:MetroWindow.Resources>
+        <ControlTemplate x:Key="ButtonTemplate" TargetType="Button">
+            <Border Background="#2FA9E2" TextBlock.Foreground="{DynamicResource WhiteBrush}">
+                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center">
+                </ContentPresenter>
+            </Border>
+        </ControlTemplate>
+    </controls:MetroWindow.Resources>
     <Grid x:Name="FullGrid">
         <Grid.Background>
             <ImageBrush />
