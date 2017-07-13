@@ -25,14 +25,6 @@
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
-    <controls:MetroWindow.Resources>
-        <ControlTemplate x:Key="ButtonTemplate" TargetType="Button">
-            <Border Background="#2FA9E2" TextBlock.Foreground="{DynamicResource WhiteBrush}">
-                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center">
-                </ContentPresenter>
-            </Border>
-        </ControlTemplate>
-    </controls:MetroWindow.Resources>
     <Grid x:Name="FullGrid">
         <Grid.Background>
             <ImageBrush />
@@ -101,20 +93,45 @@
                     </Label.Effect>
                     <TextBlock Name ="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="500">Now Playing: nothing!</TextBlock>
                 </Label>
-                <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Height="36" Margin="12,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="5">
-                    <Button.BorderBrush>
-                        <SolidColorBrush Color="{DynamicResource Gray6}" Opacity="0"/>
-                    </Button.BorderBrush>
-                    <Button.Background>
-                        <SolidColorBrush Color="#FF7E7E7E" Opacity="0.5"/>
-                    </Button.Background>
-                    <Button.Style>
-                    <Style TargetType="{x:Type Button}"
-                           BasedOn="{StaticResource {x:Type Button}}">
-                        <Setter Property="Background" Value="Crimson" />
-                    </Style>
-                    </Button.Style>
-                </Button>
+                <ToggleButton Content="Songs" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="38" Margin="12,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0">
+                    <ToggleButton.Style>
+                        <Style TargetType="{x:Type ToggleButton}"
+                           BasedOn="{StaticResource {x:Type ToggleButton}}">
+                            <Setter Property="Background" Value="#7F7E7E7E" />
+                            <Setter Property="BorderThickness" Value="0"/>
+                                <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#7FAAAAAA"></Setter>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                </Trigger>
+                               
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#993C3C3C"></Setter>
+                                </Trigger>
+                                
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+                <ToggleButton Content="Playlists" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="38" Margin="2,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0">
+                    <ToggleButton.Style>
+                        <Style TargetType="{x:Type ToggleButton}"
+                            BasedOn="{StaticResource {x:Type ToggleButton}}">
+                            <Setter Property="Background" Value="#7F7E7E7E" />
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#7FAAAAAA"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#993C3C3C"/>
+                                </Trigger>
+                                
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
 
             </StackPanel>
         </Grid>
@@ -175,8 +192,8 @@
                             </Button.Background>
                         </Button>
                         <Button x:Name="Play_Pause_Button" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                Width="56" Style="{DynamicResource MetroCircleButtonStyle}" Height="57"
-                                BorderBrush="{x:Null}" Margin="0,0,0,-2" Foreground="#7F787878" OpacityMask="White"
+                                Width="64" Style="{DynamicResource MetroCircleButtonStyle}" Height="64"
+                                BorderBrush="{x:Null}" Margin="0,-4,0,0" Foreground="#7F787878" OpacityMask="White"
                                 Click="Play_Pause_Button_Click">
                             <Button.Background>
                                 <ImageBrush ImageSource="Icons/Stop.png" />

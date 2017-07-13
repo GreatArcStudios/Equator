@@ -92,7 +92,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Eqautor Logo.ico</ApplicationIcon>
+    <ApplicationIcon>Icons\Equator Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
@@ -307,7 +307,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Equator_TemporaryKey.pfx" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -332,9 +331,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Equator logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Equator Concept 12-31-16.png" />
   </ItemGroup>
   <ItemGroup>
@@ -342,7 +338,6 @@
     <Resource Include="Icons\16 forwards copy.png" />
     <Resource Include="Icons\16 Volume.png" />
     <Resource Include="Icons\32 shuffle.png" />
-    <Resource Include="Icons\Equator logo purple no background.png" />
     <Resource Include="Images\Onerepublic.png" />
     <Resource Include="Icons\Search.png" />
   </ItemGroup>
@@ -412,19 +407,21 @@
     </PublishFile>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Eqautor Logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\Cog.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Icons\Eqautor Logo.ico" />
     <Resource Include="Icons\Play.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Icons\Stop.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Equator Logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Equator logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
