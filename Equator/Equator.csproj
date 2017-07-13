@@ -95,7 +95,7 @@
     <ApplicationIcon>Icons\Equator Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>2DA349BBD1EAE1965ED6DC429E4178052A29F17C</ManifestCertificateThumbprint>
