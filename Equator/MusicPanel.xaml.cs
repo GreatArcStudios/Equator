@@ -478,7 +478,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             }
         }
 
-        private void Shuffle_Button_OnClick(object sender, RoutedEventArgs e)
+        private void Shuffle_Button_OnClick(object sender, EventArgs e)
         {
             if (_isShuffle)
             { 

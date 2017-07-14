@@ -18,6 +18,7 @@
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfo Description="Shuffle" Click ="Shuffle_Button_OnClick" ImageSource="Icons/32 shuffle.png"></ThumbButtonInfo>
                 <ThumbButtonInfo Description="Back" Click ="GoLeftButtonClick" ImageSource="Icons/16 back.png"></ThumbButtonInfo>
                 <ThumbButtonInfo Description="Play" Click ="Play_Pause_Button_Click" ImageSource="Icons/Play.png"></ThumbButtonInfo>
                 <ThumbButtonInfo Description="Next" Click ="Next_Song_Button_OnClick" ImageSource="Icons/16 forwards copy.png"></ThumbButtonInfo>
@@ -150,7 +151,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Rectangle x:FieldModifier="public" x:Name="PlayBar" Fill="#FF282828" Margin="-10,0,2,5" Grid.RowSpan="2"
-                       Grid.ColumnSpan="5">
+                       Grid.ColumnSpan="5" MaxHeight="65">
                 <!--<interactivity:Interaction.Behaviors>
                     <global1:BackgroundEffectBehavior x:Name ="bars"  Visual="{Binding ElementName=Background, Mode=OneWay}">
                         <global1:BackgroundEffectBehavior.Effect>
