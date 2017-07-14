@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
    
     xmlns:Controls="clr-namespace:Equator.Controls"
-   
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     x:Name="MusicPlayer"
     x:Class="Equator.MusicPanel"
     mc:Ignorable="d"
@@ -75,10 +75,16 @@
                         <ImageBrush x:Name="___No_Name_" ImageSource="Icons/Stop.png" />
                     </Button.Background>
                 </Button>
-                <TextBox x:Name="SearchBox" TextWrapping="NoWrap" HorizontalAlignment="Center" Height="38"
-                         Text="Search..." VerticalAlignment="Center" Width="180" Margin="20,0,0,2" FontSize="21.333"
-                         Background="{x:Null}" Foreground="White" SelectionBrush="White" BorderThickness="2"
-                         BorderBrush="White" CaretBrush="#FFC7C7C7" KeyDown="SearchBox_KeyDown" />
+                <xctk:WatermarkTextBox x:Name="SearchBox" TextWrapping="NoWrap" HorizontalAlignment="Center" Height="38"
+                          VerticalAlignment="Center" Width="180" Margin="20,0,0,2" FontSize="21.333"
+                          Background="{x:Null}" Foreground="White" SelectionBrush="White" BorderThickness="2"
+                          Watermark="Search..." BorderBrush="White" CaretBrush="#FFC7C7C7" KeyDown="SearchBox_KeyDown" MouseDoubleClick="SearchBox_MouseDoubleClick" TextChanged="SearchBox_TextChanged" >
+                    <xctk:WatermarkTextBox.WatermarkTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" Foreground="White" FontWeight="Light" Focusable="False" />
+                        </DataTemplate>
+                    </xctk:WatermarkTextBox.WatermarkTemplate>
+                </xctk:WatermarkTextBox>
                 <Button x:Name="SearchButton" HorizontalAlignment="Left" VerticalAlignment="Center" Width="43"
                         Margin="15,-2,0,0" Height="42" BorderBrush="#FF363636" Foreground="#FF212121"
                         BorderThickness="0" Click="SearchButton_Click" Style="{DynamicResource MetroCircleButtonStyle}" OpacityMask="Black">
@@ -91,32 +97,29 @@
                     <Label.Effect>
                         <DropShadowEffect Color="#3FD3D3D3" BlurRadius="9" ShadowDepth="1" />
                     </Label.Effect>
-                    <TextBlock Name ="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="500">Now Playing: nothing!</TextBlock>
+                    <TextBlock Name ="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="450">Now Playing: nothing!</TextBlock>
                 </Label>
-                <ToggleButton Content="Songs" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="38" Margin="12,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0">
-                    <ToggleButton.Style>
-                        <Style TargetType="{x:Type ToggleButton}"
-                           BasedOn="{StaticResource {x:Type ToggleButton}}">
-                            <Setter Property="Background" Value="#7F7E7E7E" />
+                <Button x:Name="SongSelector" Content="Songs" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="38" Margin="12,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0" FontWeight="Bold">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="#7F7E7E7E" x:Name="SongSelectorBackgroundSetter" />
                             <Setter Property="BorderThickness" Value="0"/>
-                                <Style.Triggers>
+                            <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Background" Value="#7FAAAAAA"></Setter>
                                     <Setter Property="BorderThickness" Value="0"/>
                                 </Trigger>
-                               
-                                <Trigger Property="IsPressed" Value="True">
+
+                                <Trigger Property="IsPressed" Value="True" >
                                     <Setter Property="Background" Value="#993C3C3C"></Setter>
                                 </Trigger>
-                                
                             </Style.Triggers>
                         </Style>
-                    </ToggleButton.Style>
-                </ToggleButton>
-                <ToggleButton Content="Playlists" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="38" Margin="2,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0">
-                    <ToggleButton.Style>
-                        <Style TargetType="{x:Type ToggleButton}"
-                            BasedOn="{StaticResource {x:Type ToggleButton}}">
+                    </Button.Style>
+                </Button>
+                <Button x:Name="PlaylistSelector" Content="Playlists" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="38" Margin="2,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0" FontWeight="Bold">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#7F7E7E7E" />
                             <Setter Property="BorderThickness" Value="0"/>
                             <Style.Triggers>
@@ -124,15 +127,14 @@
                                     <Setter Property="Background" Value="#7FAAAAAA"/>
                                     <Setter Property="BorderThickness" Value="0"/>
                                 </Trigger>
+
                                 <Trigger Property="IsPressed" Value="True">
                                     <Setter Property="Background" Value="#993C3C3C"/>
                                 </Trigger>
-                                
                             </Style.Triggers>
                         </Style>
-                    </ToggleButton.Style>
-                </ToggleButton>
-
+                    </Button.Style>
+                </Button>
             </StackPanel>
         </Grid>
         <Grid x:Name="BottomContainer" Grid.Row="3" Margin="0,0,-3,-10">
@@ -248,7 +250,7 @@
         <!--->
         <mediaElement x:Name="mediaElement" HorizontalAlignment="Right" Height="212" VerticalAlignment="Bottom"
                       Width="372" Grid.Row="2" LoadedBehavior="Manual" UnloadedBehavior="Manual" mediaOpened="mediaElement_mediaOpened" Margin="0,0,21,0"  d:IsHidden="True" /> -->
-        <Label x:Name="BoredLabel" Content="Play Some Music! Have Some Fun!" HorizontalContentAlignment="Center"
+        <Label x:Name="BoredLabel" Content="Bored? Find some music!" HorizontalContentAlignment="Center"
                HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Margin="130,265,137,337"
                Height="125" Width="1100" FontSize="66.667" Foreground="White" FontWeight="Bold">
             <Label.Effect>
@@ -258,7 +260,7 @@
 
 
         <Controls:YoutubePlayer  x:Name="media" x:FieldModifier ="public"  HorizontalAlignment="Right" Height="270" VerticalAlignment="Bottom" Width="480" Margin="0,0,16,0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
-        <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="57" VerticalAlignment="Bottom" Width="245" Grid.Row="2" Thumb.DragCompleted ="VolumeControl_OnDragCompleted" Loaded="VolumeControl_OnLoaded" MouseLeave="VolumeControl_OnMouseLeave"  MinWidth="250" MinHeight="55" MaxWidth="300" MaxHeight="75" Margin="0,0,18,0"/>
+        <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="57" VerticalAlignment="Bottom" Width="245" Grid.Row="2" Thumb.DragCompleted ="VolumeControl_OnDragCompleted" Loaded="VolumeControl_OnLoaded" MouseLeave="VolumeControl_OnMouseLeave"  MinWidth="250" MinHeight="55" MaxWidth="300" MaxHeight="75" Margin="0,0,18,0" LostFocus="VolumeControl_LostFocus"/>
 
 
     </Grid>

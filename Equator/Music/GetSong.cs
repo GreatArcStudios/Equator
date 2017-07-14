@@ -87,7 +87,8 @@ namespace Equator.Music
             }
            
         }
-            public static async Task<string> GetMusicVideo(string videoId, ChromiumWebBrowser youtubePlayer)
+
+        public static async Task<string> GetMusicVideo(string videoId, ChromiumWebBrowser youtubePlayer)
         {
             //use video id to get the song
             VideoId = videoId;
@@ -111,7 +112,7 @@ namespace Equator.Music
 
             return savePath;
 #endif
-            return await GetMusic.DownloadVideo(youtubePlayer); 
+            return await GetMusic.DownloadVideo(youtubePlayer);
         }
 
         /// <summary>
@@ -193,12 +194,10 @@ namespace Equator.Music
         {
             songLabel.Text = "Loading...";
             MusicPanel.SetIndex(index);
-            Console.WriteLine("Music links: " + musicLink + " " + VideoId);
-            //TODO: test for possible issue
             var songName = await GetMusicVideo(musicLink, youtubePlayer);
             MusicPanel.IsPlaying = true;
             songLabel.Text = "Now Playing: " + songTitle;
-            ///<summary>Set the background</summary>
+            //Set the background
             var fileName = SongThumb.GetSongThumb(
                 QueryYoutube.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
                          FilePaths.RemoveIllegalPathCharacters(songName));

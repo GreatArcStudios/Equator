@@ -81,7 +81,7 @@ namespace Equator.Helpers
                 webClient.DownloadFile(userPerson.Image.Url,
                     FilePaths.SaveUserImage() + "\\" + "Userimage.png");
             }
-            catch (Exception e)
+            catch 
             {
                 Console.WriteLine("Picture in use");
             }

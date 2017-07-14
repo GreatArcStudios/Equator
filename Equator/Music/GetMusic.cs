@@ -83,6 +83,7 @@ namespace Equator.Music
                 .OrderBy(s => s.VideoEncoding == YoutubeExplode.Models.MediaStreams.VideoEncoding.Vp8)
                 .Last();
             youtubePlayer.LoadHtml("<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" height = \"270\" width = \"480\" autoplay>" + "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
+            Console.WriteLine("Player loaded? " + youtubePlayer.IsLoaded);
             //Console.WriteLine("Can execute JS: "+ youtubePlayer.CanExecuteJavascriptInMainFrame);
 #if OFFLINE_IMPLEMENTED
             streamInfo = videoInfo.MixedStreams

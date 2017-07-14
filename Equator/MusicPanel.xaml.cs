@@ -338,9 +338,10 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             {
                                 EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"hh\:mm\:ss");
                             }
+                            _songLoaded = true;
                         });
                         // Console.WriteLine("Song duration: " + songDuration);
-                        _songLoaded = true;
+                        
                        
                     }
                 });
@@ -518,7 +519,17 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void VolumeControl_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Panel.SetZIndex(VolumeControl, -99999);
+        }
+
+        private void SearchBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            SearchBox.Text = "";
+        }
+        //#TODO Create method to show dropdown options for videos when typing 
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }

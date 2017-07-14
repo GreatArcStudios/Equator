@@ -15,7 +15,7 @@ namespace Equator.Helpers
                 webClient.DownloadFile(url,
                     filepath);
             }
-            catch (Exception e)
+            catch
             {
                 return FilePaths.SaveThumb() + "\\" + songName + ".png";
             }

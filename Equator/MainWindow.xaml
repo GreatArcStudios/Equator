@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Title="Login" Height="600" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid HorizontalAlignment="Left" Height="601" Width="600" Margin="0,0,-6,-30"
-          Background="Black">
+          Background="#FF171717">
         <Label x:Name="Label" Content="Welcome!" HorizontalAlignment="Left" Height="45" Margin="232,315,0,0"
                VerticalAlignment="Top" Width="130" FontSize="26.667" Foreground="White" />
         <Image x:Name="Image" HorizontalAlignment="Center" Height="260" Margin="146,40,174,0" VerticalAlignment="Top"
