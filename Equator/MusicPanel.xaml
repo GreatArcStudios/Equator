@@ -209,7 +209,7 @@
                     </Label.Effect>
                     <TextBlock Name ="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="450">Now Playing: nothing!</TextBlock>
                 </Label>
-                <Button x:Name="SongSelector" Content="Songs" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="38" Margin="12,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0" FontWeight="Bold" Click="SongSelector_Click">
+                <Button x:Name="SongSelector" Content="Songs" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="38" Margin="12,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0" FontWeight="Bold" Click="SongSelector_Click" Background="#7FB4B4B4" MouseEnter="SongSelector_MouseEnter" MouseLeave="SongSelector_MouseLeave">
                     <Button.Style>
                         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#7F7E7E7E" x:Name="SongSelectorBackgroundSetter" />
@@ -219,7 +219,6 @@
                                     <Setter Property="Background" Value="#7FAAAAAA"></Setter>
                                     <Setter Property="BorderThickness" Value="0"/>
                                 </Trigger>
-
                                 <Trigger Property="IsPressed" Value="True" >
                                     <Setter Property="Background" Value="#993C3C3C"></Setter>
                                 </Trigger>
@@ -227,7 +226,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button x:Name="PlaylistSelector" Content="Playlists" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="38" Margin="2,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0" FontWeight="Bold" Click="PlaylistSelector_Click">
+                <Button x:Name="PlaylistSelector" Content="Playlists" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Height="38" Margin="2,2,0,0" Foreground="White" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0" FontWeight="Bold" Click="PlaylistSelector_Click" MouseEnter="PlaylistSelector_MouseEnter" MouseLeave="PlaylistSelector_MouseLeave">
                     <Button.Style>
                         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#7F7E7E7E" />
@@ -317,17 +316,17 @@
                             </Button.Background>
                         </Button>
                     </StackPanel>
-                    <StackPanel Margin="0,15,0,16" Orientation="Horizontal" Width="1171">
+                    <StackPanel Margin="0,15,0,17" Orientation="Horizontal" Width="1171">
                         <Label x:Name="CurrentTimeLabel" HorizontalAlignment="Left" Margin="0,-3,10,-2"
                                FontSize="20" Background="{x:Null}" Foreground="White" VerticalAlignment="Center" Content="0:00" />
                         <Slider x:Name="PlayBarSlider" VerticalAlignment="Center" Width="895" Background="#00000000"
-                                Foreground="White" Height="26" BorderBrush="White" Margin="0,9,0,-3" Thumb.DragStarted = "PlayBar_DragStarted"  Thumb.DragCompleted ="PlayBar_DragCompleted"  ValueChanged="PlayBar_ValueChanged" />
+                                Foreground="White" Height="26" BorderBrush="White" Margin="0,9,0,-2.8" Thumb.DragStarted = "PlayBar_DragStarted"  Thumb.DragCompleted ="PlayBar_DragCompleted"  ValueChanged="PlayBar_ValueChanged" />
                         <Label x:Name="EndTimeLabel" Content="0:00" HorizontalAlignment="Right"
-                               VerticalAlignment="Center" Margin="10,-2,0,2" FontSize="20" Foreground="White"
+                               VerticalAlignment="Center" Margin="10,-3,0,2" FontSize="20" Foreground="White"
                                RenderTransformOrigin="0.846,0.484" Padding="5,5,40,5" Height="32" />
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Margin="1225,14,0,14" Orientation="Horizontal" HorizontalAlignment="Left"
+                <StackPanel Margin="1225,14,0,13" Orientation="Horizontal" HorizontalAlignment="Left"
                             VerticalAlignment="Center">
                     <Button x:Name="Volume_Button" Content="Button" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Width="28" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}"

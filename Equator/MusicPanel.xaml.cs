@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -24,7 +26,7 @@ namespace Equator
     /// <summary>
     ///     Interaction logic for MusicPanel.xaml
     /// </summary>
-    
+
     public partial class MusicPanel : MetroWindow
     {
         [DllImport("gdi32.dll")] static extern bool DeleteObject(IntPtr hObject);
@@ -36,8 +38,12 @@ namespace Equator
         private bool _sliderDragging;
         private bool _isReplay;
         private bool _isShuffle;
+        private bool _playingSongs = true;
         private System.Windows.Media.Color _selectedColor = System.Windows.Media.Color.FromArgb(127, 180, 180, 180);
         private System.Windows.Media.Color _deselectedColor = System.Windows.Media.Color.FromArgb(127, 126, 126, 126);
+        private System.Windows.Media.Color _hoverColor = System.Windows.Media.Color.FromArgb(127, 170, 170, 170);
+        private System.Windows.Media.Color _pressedColor = System.Windows.Media.Color.FromArgb(153, 60, 60, 60);
+
         //private string songURI;
         private const string CurrentTimeScript =
                 "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.currentTime;})();"
@@ -57,20 +63,35 @@ namespace Equator
             playTimer.Tick += timer_Tick;
             playTimer.Start();
 
-            var image = System.Drawing.Image.FromFile(new Uri(@"Images\Img_0535.jpg", UriKind.Relative).ToString());
-            var blur = new GaussianBlur(image as Bitmap);
-            var blurredThumb = blur.Process(70);
-            image.Dispose();
-            var hBitmap = blurredThumb.GetHbitmap();
-            var backgroundImageBrush = new ImageBrush();
-            backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()
-            );
-            DeleteObject(hBitmap);
-            backgroundImageBrush.Stretch = Stretch.UniformToFill;
-            Background.Fill = backgroundImageBrush;
+            if (File.Exists(FilePaths.DefaultImageLocation))
+            {
+                var backgroundImageBrush = new ImageBrush(new BitmapImage(new Uri(FilePaths.DefaultImageLocation)));
+                backgroundImageBrush.Stretch = Stretch.UniformToFill;
+                Background.Fill = backgroundImageBrush;
+            }
+            else
+            {
+                #region First run 
+                var image = System.Drawing.Image.FromFile(new Uri(@"Images\Img_0535.jpg", UriKind.Relative).ToString());
+                var blur = new GaussianBlur(image as Bitmap);
+                var blurredThumb = blur.Process(70);
+                image.Dispose();
+                var hBitmap = blurredThumb.GetHbitmap();
+                blurredThumb.Save(FilePaths.DefaultImageLocation, ImageFormat.Png);
+                var backgroundImageBrush = new ImageBrush();
+                backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
+                    IntPtr.Zero,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions()
+                );
+                DeleteObject(hBitmap);
+                backgroundImageBrush.Stretch = Stretch.UniformToFill;
+                Background.Fill = backgroundImageBrush;
+                #endregion
+            }
+
+
+
             media.CefPlayer.LoadingStateChanged += CefPlayer_LoadingStateChanged;
         }
 
@@ -99,7 +120,7 @@ namespace Equator
                             Console.WriteLine(response.Result.ToString());
                             try
                             {
-                                PlayBarSlider.Value = (double) response.Result;
+                                PlayBarSlider.Value = (double)response.Result;
                                 if (Math.Abs(PlayBarSlider.Value - PlayBarSlider.Maximum) < 0.001)
                                     PlayBackEnded();
                             }
@@ -226,7 +247,7 @@ namespace Equator
         {
             if (e.Key == Key.Enter)
                 SearchButton_Click(this, new RoutedEventArgs());
-           
+
         }
 
         private void Userbutton_Click(object sender, RoutedEventArgs e)
@@ -244,7 +265,7 @@ namespace Equator
 
         private void Play_Pause_Button_Click(object sender, EventArgs e)
         {
-   
+
             if (IsPlaying)
             {
                 //mediaElement.Pause();
@@ -254,12 +275,12 @@ namespace Equator
                     "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
                 media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                 IsPlaying = false;
-                Uri playUri = new Uri("Icons/Play.png", UriKind.Relative);  
+                Uri playUri = new Uri("Icons/Play.png", UriKind.Relative);
                 StreamResourceInfo streamInfo = Application.GetResourceStream(playUri);
                 BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
                 Play_Pause_Button.Background = new ImageBrush(temp);
             }
-            else if(_songLoaded)
+            else if (_songLoaded)
             {
                 var script =
                     "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
@@ -295,18 +316,18 @@ namespace Equator
                     IsPlaying = true;
                 }
             }
-           
+
         }
 
         private void PlayBar_DragStarted(object sender, DragStartedEventArgs e)
         {
-            PlayBarSlider = (Slider) sender;
+            PlayBarSlider = (Slider)sender;
             _sliderDragging = true;
         }
 
         private void PlayBar_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            PlayBarSlider = (Slider) sender;
+            PlayBarSlider = (Slider)sender;
             _sliderDragging = false;
             var script =
                 string.Format(
@@ -317,11 +338,11 @@ namespace Equator
 
         private void PlayBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            PlayBarSlider = (Slider) sender;
+            PlayBarSlider = (Slider)sender;
             Dispatcher.Invoke(() =>
             {
-                if(PlayBarSlider.Value <= 60*60)
-                CurrentTimeLabel.Content = TimeSpan.FromSeconds(PlayBarSlider.Value).ToString(@"mm\:ss");
+                if (PlayBarSlider.Value <= 60 * 60)
+                    CurrentTimeLabel.Content = TimeSpan.FromSeconds(PlayBarSlider.Value).ToString(@"mm\:ss");
                 else
                     CurrentTimeLabel.Content = TimeSpan.FromSeconds(PlayBarSlider.Value).ToString(@"hh\:mm\:ss");
             });
@@ -345,11 +366,11 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 
                     if (response.Success && response.Result != null)
                     {
-                        _songDuration = (double) response.Result;
+                        _songDuration = (double)response.Result;
                         Dispatcher.Invoke(() =>
                         {
-                            if (_songDuration <= 60*60) 
-                            EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss");
+                            if (_songDuration <= 60 * 60)
+                                EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss");
                             else
                             {
                                 EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"hh\:mm\:ss");
@@ -357,8 +378,8 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             _songLoaded = true;
                         });
                         // Console.WriteLine("Song duration: " + songDuration);
-                        
-                       
+
+
                     }
                 });
             media.CefPlayer.GetMainFrame()
@@ -374,7 +395,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             Dispatcher.Invoke(() =>
                             {
                                 //Console.WriteLine("Music Volume " + response.Result);
-                                VolumeControl.slider.Value = (int) response.Result;
+                                VolumeControl.slider.Value = (int)response.Result;
                                 VolumeControl.label.Content = (int)(VolumeControl.slider.Value * 100) + "%";
                             });
                         }
@@ -456,7 +477,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         private void VolumeControl_OnDragCompleted(object sender, DragCompletedEventArgs e)
         {
             VolumeControl.Volume = VolumeControl.slider.Value;
-            int labelContent = (int) (VolumeControl.Volume * 100);
+            int labelContent = (int)(VolumeControl.Volume * 100);
             VolumeControl.label.Content = labelContent + "%";
             //_mediaElement.Volume = Volume;
             media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(String.Format("(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.volume = {0}}})();", VolumeControl.Volume));
@@ -464,13 +485,13 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 
         private void VolumeControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Panel.SetZIndex(VolumeControl, -99999);    
+            Panel.SetZIndex(VolumeControl, -99999);
         }
 
         private void Volume_Button_Click(object sender, RoutedEventArgs e)
         {
-            if(_songLoaded || IsPlaying)
-            Panel.SetZIndex(VolumeControl, 3);
+            if (_songLoaded || IsPlaying)
+                Panel.SetZIndex(VolumeControl, 3);
         }
 
         private void VolumeControl_OnMouseLeave(object sender, MouseEventArgs e)
@@ -497,7 +518,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         private void Shuffle_Button_OnClick(object sender, EventArgs e)
         {
             if (_isShuffle)
-            { 
+            {
                 _isShuffle = false;
             }
             else
@@ -554,12 +575,38 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         {
             SongSelector.Background = new SolidColorBrush(_selectedColor);
             PlaylistSelector.Background = new SolidColorBrush(_deselectedColor);
+            _playingSongs = true;
         }
 
         private void PlaylistSelector_Click(object sender, RoutedEventArgs e)
         {
             PlaylistSelector.Background = new SolidColorBrush(_selectedColor);
             SongSelector.Background = new SolidColorBrush(_deselectedColor);
+            _playingSongs = false;
+        }
+
+        private void SongSelector_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (!_playingSongs)
+                SongSelector.Background = new SolidColorBrush(_hoverColor);
+        }
+
+        private void SongSelector_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (!_playingSongs)
+                SongSelector.Background = new SolidColorBrush(_deselectedColor);
+        }
+
+        private void PlaylistSelector_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (_playingSongs)
+                PlaylistSelector.Background = new SolidColorBrush(_hoverColor);
+        }
+
+        private void PlaylistSelector_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (_playingSongs)
+                PlaylistSelector.Background = new SolidColorBrush(_deselectedColor);
         }
     }
 }

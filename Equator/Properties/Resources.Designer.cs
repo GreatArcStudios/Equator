@@ -59,8 +59,5 @@ namespace Equator.Properties {
                 resourceCulture = value;
             }
         }
-        
-      
-        }
     }
-
+}
