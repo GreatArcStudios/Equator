@@ -24,6 +24,7 @@ namespace Equator
         {
             if (Directory.GetFiles(FilePaths.SaveUserCreds()).Length == 0)
             {
+                File.Delete(FilePaths.SaveUserImage() + "\\Userimage.png");
                 await GoogleServices.AuthUserCredential();
             }
             var window = new MusicPanel();

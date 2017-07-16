@@ -92,7 +92,6 @@ namespace Equator.Helpers
         public static async void LogOut()
         {
             await Credential.RevokeTokenAsync(CancellationToken.None);
-            File.Delete(FilePaths.SaveUserImage());
         }
     }
 }

@@ -55,7 +55,13 @@ namespace Equator
         public MusicPanel()
         {
             InitializeComponent();
-            var userImageBrush = new ImageBrush(new BitmapImage(new Uri(GoogleServices.GetUserPicture())));
+            ImageBrush userImageBrush;
+            if (!File.Exists(FilePaths.SaveUserImage() + "\\Userimage.png"))
+                userImageBrush = new ImageBrush(new BitmapImage(new Uri(GoogleServices.GetUserPicture())));
+            else
+            {
+                userImageBrush = new ImageBrush(new BitmapImage(new Uri(FilePaths.SaveUserImage() + "\\Userimage.png")));
+            }
             userImageBrush.TileMode = TileMode.None;
             Userbutton.Background = userImageBrush;
             var playTimer = new DispatcherTimer();
@@ -257,7 +263,6 @@ namespace Equator
             if (msgBoxResult == MessageBoxResult.Yes)
             {
                 GoogleServices.LogOut();
-
                 Process.Start(Application.ResourceAssembly.Location);
                 Application.Current.Shutdown();
             }
