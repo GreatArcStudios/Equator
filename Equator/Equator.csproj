@@ -265,6 +265,12 @@
     <Compile Include="Controls\MusicCards.xaml.cs">
       <DependentUpon>MusicCards.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PlaylistContainer.xaml.cs">
+      <DependentUpon>PlaylistContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PlaylistItem.xaml.cs">
+      <DependentUpon>PlaylistItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\YoutubePlayer.xaml.cs">
       <DependentUpon>YoutubePlayer.xaml</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -272,9 +278,22 @@
     <Compile Include="Controls\VolumePanel.xaml.cs">
       <DependentUpon>VolumePanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Page Include="Controls\MusicCards.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PlaylistContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PlaylistItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\YoutubePlayer.xaml">
       <SubType>Designer</SubType>
@@ -316,13 +335,9 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config">
@@ -352,20 +367,37 @@
     <Resource Include="Equator Concept 12-31-16.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\16 back.png" />
-    <Resource Include="Icons\16 forwards copy.png" />
-    <Resource Include="Icons\16 Volume.png" />
-    <Resource Include="Icons\32 shuffle.png" />
-    <Resource Include="Images\Onerepublic.png" />
-    <Resource Include="Icons\Search.png" />
+    <Resource Include="Icons\16 back.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\16 forwards copy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\16 Volume.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\32 shuffle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\Search.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\16 replay.png" />
+    <Resource Include="Icons\16 replay.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Dandelion no crop.jpg" />
-    <Resource Include="Images\IMG_0535.JPG" />
-    <Resource Include="Images\IMG_0547.JPG" />
+    <Content Include="Images\Dandelion no crop.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IMG_0535.JPG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IMG_0547.JPG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -436,10 +468,14 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\Equator Logo.ico" />
+    <Resource Include="Icons\Equator Logo.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\Equator logo.png" />
+    <Content Include="Icons\EquatorLogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

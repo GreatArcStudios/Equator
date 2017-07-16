@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Resources;
@@ -14,23 +17,27 @@ using Equator.Controls;
 using Equator.Helpers;
 using Equator.Music;
 using MahApps.Metro.Controls;
+using SuperfastBlur;
 
 namespace Equator
 {
     /// <summary>
     ///     Interaction logic for MusicPanel.xaml
     /// </summary>
+    
     public partial class MusicPanel : MetroWindow
     {
+        [DllImport("gdi32.dll")] static extern bool DeleteObject(IntPtr hObject);
+
         public static bool IsPlaying;
 
         private static int _index;
         private MusicCards _musicCards;
         private bool _sliderDragging;
-
         private bool _isReplay;
         private bool _isShuffle;
-
+        private System.Windows.Media.Color _selectedColor = System.Windows.Media.Color.FromArgb(127, 180, 180, 180);
+        private System.Windows.Media.Color _deselectedColor = System.Windows.Media.Color.FromArgb(127, 126, 126, 126);
         //private string songURI;
         private const string CurrentTimeScript =
                 "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.currentTime;})();"
@@ -50,9 +57,18 @@ namespace Equator
             playTimer.Tick += timer_Tick;
             playTimer.Start();
 
-            var backgroundImageBrush = new ImageBrush(
-                new BitmapImage(
-                    new Uri(FilePaths.DefaultImageLocation)));
+            var image = System.Drawing.Image.FromFile(new Uri(@"Images\Img_0535.jpg", UriKind.Relative).ToString());
+            var blur = new GaussianBlur(image as Bitmap);
+            var blurredThumb = blur.Process(70);
+            image.Dispose();
+            var hBitmap = blurredThumb.GetHbitmap();
+            var backgroundImageBrush = new ImageBrush();
+            backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions()
+            );
+            DeleteObject(hBitmap);
             backgroundImageBrush.Stretch = Stretch.UniformToFill;
             Background.Fill = backgroundImageBrush;
             media.CefPlayer.LoadingStateChanged += CefPlayer_LoadingStateChanged;
@@ -532,6 +548,18 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+        //TODO: create UI for playlist and implement the UI switching (songs and playlists) here
+        private void SongSelector_Click(object sender, RoutedEventArgs e)
+        {
+            SongSelector.Background = new SolidColorBrush(_selectedColor);
+            PlaylistSelector.Background = new SolidColorBrush(_deselectedColor);
+        }
+
+        private void PlaylistSelector_Click(object sender, RoutedEventArgs e)
+        {
+            PlaylistSelector.Background = new SolidColorBrush(_selectedColor);
+            SongSelector.Background = new SolidColorBrush(_deselectedColor);
         }
     }
 }

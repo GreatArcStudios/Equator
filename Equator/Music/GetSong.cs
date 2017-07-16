@@ -234,5 +234,33 @@ namespace Equator.Music
             }*/
 
         }
+        public static async Task PlaySpecifiedSong(System.Windows.Shapes.Rectangle backgroundRect,
+            string musicLink, string songTitle, TextBlock songLabel, ChromiumWebBrowser youtubePlayer)
+        {
+            songLabel.Text = "Loading...";
+            var songName = await GetMusicVideo(musicLink, youtubePlayer);
+            MusicPanel.IsPlaying = true;
+            songLabel.Text = "Now Playing: " + songTitle;
+            //Set the background
+            var fileName = SongThumb.GetSongThumb(
+                QueryYoutube.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
+                FilePaths.RemoveIllegalPathCharacters(songName));
+            var image = System.Drawing.Image.FromFile(fileName);
+            var blur = new GaussianBlur(image as Bitmap);
+            var blurredThumb = blur.Process(50);
+            image.Dispose();
+            var hBitmap = blurredThumb.GetHbitmap();
+            var backgroundImageBrush = new ImageBrush();
+            backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions()
+            );
+            DeleteObject(hBitmap);
+            blurredThumb.Dispose();
+            backgroundImageBrush.Stretch = Stretch.UniformToFill;
+            backgroundRect.Fill = backgroundImageBrush;
+            backgroundRect.Effect = null;
+        }
     }
 }
