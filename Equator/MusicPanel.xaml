@@ -320,13 +320,13 @@
                         <Label x:Name="CurrentTimeLabel" HorizontalAlignment="Left" Margin="0,-3,10,-2"
                                FontSize="20" Background="{x:Null}" Foreground="White" VerticalAlignment="Center" Content="0:00" />
                         <Slider x:Name="PlayBarSlider" VerticalAlignment="Center" Width="895" Background="#00000000"
-                                Foreground="White" Height="26" BorderBrush="White" Margin="0,9,0,-2.8" Thumb.DragStarted = "PlayBar_DragStarted"  Thumb.DragCompleted ="PlayBar_DragCompleted"  ValueChanged="PlayBar_ValueChanged" />
+                                Foreground="White" Height="26" BorderBrush="White" Margin="0,9,0,-4" Thumb.DragStarted = "PlayBar_DragStarted"  Thumb.DragCompleted ="PlayBar_DragCompleted"  ValueChanged="PlayBar_ValueChanged" />
                         <Label x:Name="EndTimeLabel" Content="0:00" HorizontalAlignment="Right"
                                VerticalAlignment="Center" Margin="10,-3,0,2" FontSize="20" Foreground="White"
                                RenderTransformOrigin="0.846,0.484" Padding="5,5,40,5" Height="32" />
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Margin="1225,14,0,13" Orientation="Horizontal" HorizontalAlignment="Left"
+                <StackPanel Margin="1225,14,0,13.5" Orientation="Horizontal" HorizontalAlignment="Left"
                             VerticalAlignment="Center">
                     <Button x:Name="Volume_Button" Content="Button" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Width="28" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}"

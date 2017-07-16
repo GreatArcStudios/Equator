@@ -6,6 +6,7 @@ using SuperfastBlur;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Drawing;
+using System.IO;
 
 namespace Equator
 {
@@ -21,7 +22,10 @@ namespace Equator
 
         private async void Login1_Click(object sender, RoutedEventArgs e)
         {
-            await GoogleServices.AuthUserCredential();
+            if (Directory.GetFiles(FilePaths.SaveUserCreds()).Length == 0)
+            {
+                await GoogleServices.AuthUserCredential();
+            }
             var window = new MusicPanel();
             window.Show();
             Close();

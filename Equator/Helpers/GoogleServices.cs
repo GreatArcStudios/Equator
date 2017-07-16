@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -81,7 +82,7 @@ namespace Equator.Helpers
                 webClient.DownloadFile(userPerson.Image.Url,
                     FilePaths.SaveUserImage() + "\\" + "Userimage.png");
             }
-            catch 
+            catch
             {
                 Console.WriteLine("Picture in use");
             }
@@ -91,6 +92,7 @@ namespace Equator.Helpers
         public static async void LogOut()
         {
             await Credential.RevokeTokenAsync(CancellationToken.None);
+            File.Delete(FilePaths.SaveUserImage());
         }
     }
 }
