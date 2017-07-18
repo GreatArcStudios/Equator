@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Equator.Controls"
-             mc:Ignorable="d" d:DesignWidth="300" Height="60" MinHeight="58" MinWidth="500">
-    <Grid MinWidth="500">
+             mc:Ignorable="d" d:DesignWidth="300" Height="60" MinHeight="58" MinWidth="500" Margin="5">
+    <Grid MinWidth="500" Background="#7F404040">
         <Label x:Name="SongTitleHolder" VerticalContentAlignment="Center" VerticalAlignment="Center" Background="#00000000" Foreground="White"
-               Height="56" Width="177" FontWeight="Bold" FontSize="16" Canvas.Top="189" Padding="0" HorizontalAlignment="Left" Margin="72,2,0,2" HorizontalContentAlignment="Center">
-            <TextBlock TextWrapping="Wrap" TextTrimming ="WordEllipsis" x:Name="SongTitle" TextAlignment="Left" Text="sdfsdfsafasf"  Padding="5,0,0,0" Height="25" Width="177" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20">
+               Height="56" Width="274" FontWeight="Bold" FontSize="16" Canvas.Top="189" Padding="0" HorizontalAlignment="Left" Margin="72,2,0,2" HorizontalContentAlignment="Center">
+            <TextBlock TextWrapping="Wrap" TextTrimming ="WordEllipsis" x:Name="SongTitle" TextAlignment="Left" Text="sdfsdfsafasf"  Padding="5,0,0,0" Height="25" Width="211" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="16" ShadowDepth="2" />
                 </TextBlock.Effect>
@@ -16,8 +16,8 @@
 
         </Label>
         <Label x:Name="ArtistNameHolder" VerticalContentAlignment="Center" VerticalAlignment="Center" Background="#00000000" Foreground="White"
-               Height="51" Width="142" FontWeight="Bold" FontSize="16" Canvas.Top="189" Padding="0" HorizontalAlignment="Left" Margin="264,10,0,-1" HorizontalContentAlignment="Center">
-            <TextBlock TextWrapping="Wrap" TextTrimming ="WordEllipsis" x:Name="ArtistName" TextAlignment="Left" Text="sdfsdfsafasf"  Padding="5,0,0,0" Height="25" Width="142" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Normal">
+               Height="51" Width="139" FontWeight="Bold" FontSize="16" Canvas.Top="189" Padding="0" HorizontalAlignment="Left" Margin="351,10,0,-1" HorizontalContentAlignment="Center">
+            <TextBlock TextWrapping="Wrap" TextTrimming ="WordEllipsis" x:Name="ArtistName" TextAlignment="Left" Text="sdfsdfsafasf"  Padding="5,0,0,0" Height="25" Width="224" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Normal" Margin="0,5,0,10">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="16" ShadowDepth="2" />
                 </TextBlock.Effect>

@@ -22,7 +22,7 @@ namespace Equator.Music
         [DllImport("gdi32.dll")] static extern bool DeleteObject(IntPtr hObject);
         public static string VideoId;
 
-
+      
 #if OFFLINE_IMPLEMENTED
 /// <summary>
 ///     Downloads the first song in the Searchlist response list
@@ -198,6 +198,7 @@ namespace Equator.Music
             MusicPanel.IsPlaying = true;
             songLabel.Text = "Now Playing: " + songTitle;
             //Set the background
+            
             var fileName = SongThumb.GetSongThumb(
                 QueryYoutube.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
                          FilePaths.RemoveIllegalPathCharacters(songName));
@@ -235,7 +236,7 @@ namespace Equator.Music
 
         }
         public static async Task PlaySpecifiedSong(System.Windows.Shapes.Rectangle backgroundRect,
-            string musicLink, string songTitle, TextBlock songLabel, ChromiumWebBrowser youtubePlayer)
+            string musicLink, string songTitle, TextBlock songLabel, ChromiumWebBrowser youtubePlayer, string backgroundImageUrl)
         {
             songLabel.Text = "Loading...";
             var songName = await GetMusicVideo(musicLink, youtubePlayer);
@@ -243,7 +244,7 @@ namespace Equator.Music
             songLabel.Text = "Now Playing: " + songTitle;
             //Set the background
             var fileName = SongThumb.GetSongThumb(
-                QueryYoutube.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
+                backgroundImageUrl,
                 FilePaths.RemoveIllegalPathCharacters(songName));
             var image = System.Drawing.Image.FromFile(fileName);
             var blur = new GaussianBlur(image as Bitmap);

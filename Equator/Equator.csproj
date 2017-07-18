@@ -276,6 +276,7 @@
     <Compile Include="Controls\VolumePanel.xaml.cs">
       <DependentUpon>VolumePanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\SmoothTransition.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -6,6 +6,21 @@
              xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
              xmlns:local="clr-namespace:Equator.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="270" d:DesignWidth="480" Width="480" Height="270" MinWidth="480" MinHeight="270">
-    <cefSharp:ChromiumWebBrowser x:Name="CefPlayer" Address="" Width="470" Height="270" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" MinWidth="480" MinHeight="270" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+             d:DesignHeight="270" d:DesignWidth="480" Width="480" Height="270" MinWidth="32" MinHeight="32">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32*"/>
+            <RowDefinition Height="103*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="13*"/>
+        </Grid.ColumnDefinitions>
+        <cefSharp:ChromiumWebBrowser x:Name="CefPlayer" Address="" Width="480" Height="270" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+        <Button x:Name="Minimize" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="64" Style="{DynamicResource MetroCircleButtonStyle}" Height="64" Click="Minimize_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/Equator;component/Icons/Play.png"/>
+            </Button.Background>
+        </Button>
+    </Grid>
 </UserControl>

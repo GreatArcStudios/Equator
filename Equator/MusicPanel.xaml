@@ -145,16 +145,17 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="73*" />
-            <RowDefinition Height="734*" />
-            <RowDefinition Height="61*" />
+            <RowDefinition Height="292*" />
+            <RowDefinition Height="444*"/>
+            <RowDefinition Height="60*" />
         </Grid.RowDefinitions>
-        <Rectangle x:Name="Background" Margin="-130,0,-93,-40" Stroke="White" Grid.RowSpan="3"
+        <Rectangle x:Name="Background" Margin="-130,0,-93,-40" Stroke="White" Grid.RowSpan="4"
                    RenderTransformOrigin="0.5,0.5" StrokeThickness="0" StrokeStartLineCap="Square">
             <Rectangle.Fill>
                 <ImageBrush ImageSource="Images/IMG_0535.JPG" Stretch="UniformToFill" />
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="Darken_Overlay" Margin="-110,0,-33,-10" Stroke="White" Grid.RowSpan="3"
+        <Rectangle x:Name="Darken_Overlay" Margin="-110,0,-33,-10" Stroke="White" Grid.RowSpan="4"
                    RenderTransformOrigin="0.5,0.5" StrokeThickness="0" StrokeStartLineCap="Square">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -246,7 +247,7 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <Grid x:Name="BottomContainer" Grid.Row="2" Margin="0,0,-3,-10">
+        <Grid x:Name="BottomContainer" Grid.Row="3" Margin="0,0,-3,-10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="209*" />
                 <ColumnDefinition Width="963*" />
@@ -350,25 +351,31 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        <ScrollViewer x:Name="Scrollviewer" VerticalScrollBarVisibility="Auto" Grid.Row="1" Foreground="Black" VerticalContentAlignment="Stretch" CanContentScroll="True" Style="{StaticResource FlatScrollViewer}" HorizontalScrollBarVisibility="Disabled">
-
-
-            <WrapPanel x:Name="MusicContainer" Grid.Row="2"  ItemHeight="279.5" ItemWidth="250" Margin="50,0,0,0" />
-        </ScrollViewer>
         <!--->
         <mediaElement x:Name="mediaElement" HorizontalAlignment="Right" Height="212" VerticalAlignment="Bottom"
                       Width="372" Grid.Row="2" LoadedBehavior="Manual" UnloadedBehavior="Manual" mediaOpened="mediaElement_mediaOpened" Margin="0,0,21,0"  d:IsHidden="True" /> -->
         <Label x:Name="BoredLabel" Content="Bored? Find some music!" HorizontalContentAlignment="Center"
-               HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Margin="129,291,136,317"
-               Height="126" Width="1100" FontSize="66.667" Foreground="White" FontWeight="Bold">
+               HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Margin="129,291,136,318"
+               Height="126" Width="1100" FontSize="66.667" Foreground="White" FontWeight="Bold" Grid.RowSpan="2">
             <Label.Effect>
                 <DropShadowEffect Direction="320" BlurRadius="20" />
             </Label.Effect>
         </Label>
+        <ScrollViewer x:Name="SongSearchContainer" VerticalScrollBarVisibility="Auto" Foreground="Black" VerticalContentAlignment="Stretch" CanContentScroll="True" Style="{StaticResource FlatScrollViewer}" HorizontalScrollBarVisibility="Disabled" Grid.RowSpan="2" Grid.Row="1">
+            <WrapPanel x:Name="MusicContainer" Grid.Row="2"  ItemHeight="279.5" ItemWidth="250" Margin="50,0,0,0" />
+        </ScrollViewer>
+        <Expander x:Name="UserPlaylists" Header="Your Playlists" Background="#00647687" BorderBrush="#00667583" FontSize="20" VerticalContentAlignment="Stretch" VerticalAlignment="Top" Grid.RowSpan="2" Grid.Row="1" controls:ControlsHelper.HeaderFontStretch="SemiExpanded" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ControlsHelper.HeaderFontSize="20" controls:ControlsHelper.HeaderFontWeight="SemiBold" Margin="10" Padding="5,0,0,0" HorizontalContentAlignment="Stretch">
+            <Grid Background="#66AAAAAA">
+                <ScrollViewer HorizontalContentAlignment="Stretch" Style="{StaticResource FlatScrollViewer}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                    <StackPanel x:Name="UserPlaylist_Content" Height="270" Width="1338" HorizontalAlignment="Left"/>
+                </ScrollViewer>
+            </Grid>
+        </Expander>
+        <controls:TransitioningContentControl x:Name="TransitioningContentControl" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2"/>
 
 
-        <Controls:YoutubePlayer  x:Name="media" x:FieldModifier ="public"  HorizontalAlignment="Right" Height="270" VerticalAlignment="Bottom" Width="480" Margin="0,0,16,0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
-        <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="57" VerticalAlignment="Bottom" Width="250" Grid.Row="1" Thumb.DragCompleted ="VolumeControl_OnDragCompleted" Loaded="VolumeControl_OnLoaded" MouseLeave="VolumeControl_OnMouseLeave"  MinWidth="250" MinHeight="55" MaxWidth="300" MaxHeight="75" Margin="0,0,18,0" LostFocus="VolumeControl_LostFocus"/>
+        <Controls:YoutubePlayer  x:Name="media" x:FieldModifier ="public"  HorizontalAlignment="Right" Height="270" VerticalAlignment="Bottom" Width="480" Margin="0,0,16,0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
+        <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="57" VerticalAlignment="Bottom" Width="250" Grid.Row="2" Thumb.DragCompleted ="VolumeControl_OnDragCompleted" Loaded="VolumeControl_OnLoaded" MouseLeave="VolumeControl_OnMouseLeave"  MinWidth="250" MinHeight="55" MaxWidth="300" MaxHeight="75" Margin="0,0,18,0" LostFocus="VolumeControl_LostFocus"/>
 
 
     </Grid>

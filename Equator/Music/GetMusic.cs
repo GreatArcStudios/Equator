@@ -5,6 +5,8 @@ using CefSharp;
 using System.Linq;
 using YoutubeExplode;
 using CefSharp.Wpf;
+using Equator.Helpers;
+using Google.Apis.YouTube.v3.Data;
 
 namespace Equator.Music
 {
@@ -144,6 +146,14 @@ namespace Equator.Music
             isConverting = false;
         }
 #endif
-
+            
+        public static async Task<PlaylistItemListResponse> PlaylistToPlaylistItems(string playlistId)
+        {
+            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, true, GoogleServices.Credential);
+            var playlistItemRequest = service.PlaylistItems.List("snippet");
+            playlistItemRequest.PlaylistId = playlistId;
+            var response = await playlistItemRequest.ExecuteAsync();
+            return response;
+        }
     }
 }

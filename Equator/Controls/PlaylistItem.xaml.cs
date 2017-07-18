@@ -26,6 +26,7 @@ namespace Equator.Controls
         private ChromiumWebBrowser _youtubePlayer;
         private Rectangle _backgroundRect;
         private TextBlock _songLabel;
+        private string _backgroundImageUrl;
         public PlaylistItem(Uri backgroundImageUri, TextBlock songLabel, string musicLink, string songTitle, string artistName, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer)
         {
             InitializeComponent();
@@ -40,6 +41,7 @@ namespace Equator.Controls
             _youtubePlayer = youtubePlayer;
             _backgroundRect = backgroundRectangle;
             _songLabel = songLabel;
+            _backgroundImageUrl = backgroundImageUri.ToString();
         }
 
         private void MusicImage_MouseEnter(object sender, MouseEventArgs e)
@@ -57,7 +59,7 @@ namespace Equator.Controls
         private async void MusicImage_MouseLeftButtonDownAsync(object sender, MouseButtonEventArgs e)
         {
             Play.Opacity = 100;
-            await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, SongTitle.Text, _songLabel, _youtubePlayer);
+            await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, SongTitle.Text, _songLabel, _youtubePlayer, _backgroundImageUrl);
         }
     }
 }

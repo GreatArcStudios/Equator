@@ -5,10 +5,119 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Equator.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Width="600">
-    <Expander Header="Expander" Background="#00647687" BorderBrush="#00647687" Margin="0,0,0,-10" FontSize="20">
+             d:DesignHeight="300" d:DesignWidth="300" Width="600" MinWidth="600" Padding="0" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <UserControl.Resources>
+        <Style x:Key ="ScrollerThumb" TargetType="{x:Type Thumb}" >
+            <Setter Property="SnapsToDevicePixels"
+                    Value="True" />
+            <Setter Property="OverridesDefaultStyle"
+                    Value="true" />
+            <Setter Property="IsTabStop"
+                        Value="false" />
+            <Setter Property="Focusable"
+                    Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Name ="ThumbBorder" CornerRadius="2" Background="White"></Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="GhostWhite" TargetName="ThumbBorder"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsDragging" Value="True">
+                                <Setter Property="Background" Value="#FF5F5F63" TargetName="ThumbBorder"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+            <Setter Property="SnapsToDevicePixels"
+                    Value="True" />
+            <Setter Property="OverridesDefaultStyle"
+                    Value="true" />
+            <Setter Property="IsTabStop"
+                    Value="false" />
+            <Setter Property="Focusable"
+                    Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Background="#4CFFFFFF" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ScrollBar" x:Key="FlatScrollBar">
+            <Setter Property="SnapsToDevicePixels"
+                    Value="True" />
+            <Setter Property="OverridesDefaultStyle"
+                    Value="true" />
+            <Setter Property="IsTabStop"
+                    Value="false" />
+            <Setter Property="Focusable"
+                    Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid x:Name="Root">
+
+                            <Track IsDirectionReversed="True" Name="PART_Track">
+
+                                <Track.IncreaseRepeatButton >
+                                    <RepeatButton Command="ScrollPageDown" Style="{StaticResource ScrollBarPageButton}"></RepeatButton>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource ScrollerThumb}">
+
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.DecreaseRepeatButton >
+                                    <RepeatButton Command="ScrollPageUp" Style="{StaticResource ScrollBarPageButton}"></RepeatButton>
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ScrollViewer" x:Key ="FlatScrollViewer" BasedOn="{StaticResource {x:Type ScrollViewer}}">
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"></Setter>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="Width" Value="Auto"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+            <Setter Property="Template" >
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Grid Width="{TemplateBinding Width}" Background="{TemplateBinding Background}" Margin="0">
+                            <Grid.HorizontalAlignment>Stretch</Grid.HorizontalAlignment>
+                            <Grid.VerticalAlignment>Stretch</Grid.VerticalAlignment>
+
+                            <ScrollContentPresenter x:Name="ScrollContentPresenter" />
+
+                            <ScrollBar Name="PART_VerticalScrollBar" Style="{StaticResource FlatScrollBar}" IsTabStop="False"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                       Orientation="Vertical"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       Minimum="0"
+                                       Value="{TemplateBinding VerticalOffset}" HorizontalContentAlignment="Right" VerticalContentAlignment="Stretch" HorizontalAlignment="Right" Width="13" ScrollViewer.CanContentScroll="True" >
+                            </ScrollBar>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+    <Expander Header="Expander"  Name ="Content_Holder" Background="#00647687" BorderBrush="#00647687" Margin="10" FontSize="20">
         <Grid Background="#66AAAAAA">
-            <ScrollViewer HorizontalContentAlignment="Stretch">
+            <ScrollViewer HorizontalContentAlignment="Stretch" Style="{StaticResource FlatScrollViewer}">
                 <StackPanel x:Name="Playlist_Content" Height="270" Width="588"/>
             </ScrollViewer>
         </Grid>

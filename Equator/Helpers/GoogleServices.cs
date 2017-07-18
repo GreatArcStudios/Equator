@@ -75,6 +75,7 @@ namespace Equator.Helpers
 
         public static string GetUserPicture()
         {
+           
             var userPerson = CreatePlusService(ApiKey, true, Credential).People.Get("me").Execute();
             try
             {

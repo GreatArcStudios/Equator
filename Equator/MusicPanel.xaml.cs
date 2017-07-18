@@ -18,6 +18,7 @@ using CefSharp;
 using Equator.Controls;
 using Equator.Helpers;
 using Equator.Music;
+using Google.Apis.YouTube.v3.Data;
 using MahApps.Metro.Controls;
 using SuperfastBlur;
 
@@ -51,10 +52,12 @@ namespace Equator
 
         private double _songDuration;
         private bool _songLoaded;
+        private bool _firstSwitch = true;
 
         public MusicPanel()
         {
             InitializeComponent();
+            //create user image
             ImageBrush userImageBrush;
             if (!File.Exists(FilePaths.SaveUserImage() + "\\Userimage.png"))
                 userImageBrush = new ImageBrush(new BitmapImage(new Uri(GoogleServices.GetUserPicture())));
@@ -64,11 +67,13 @@ namespace Equator
             }
             userImageBrush.TileMode = TileMode.None;
             Userbutton.Background = userImageBrush;
+            //timer init 
             var playTimer = new DispatcherTimer();
             playTimer.Interval = TimeSpan.FromSeconds(1);
             playTimer.Tick += timer_Tick;
             playTimer.Start();
 
+            //check and set default image to background
             if (File.Exists(FilePaths.DefaultImageLocation))
             {
                 var backgroundImageBrush = new ImageBrush(new BitmapImage(new Uri(FilePaths.DefaultImageLocation)));
@@ -95,10 +100,13 @@ namespace Equator
                 Background.Fill = backgroundImageBrush;
                 #endregion
             }
-
-
-
+            //init media player
             media.CefPlayer.LoadingStateChanged += CefPlayer_LoadingStateChanged;
+            media.Minimize.Visibility = Visibility.Hidden;
+            //init trans content control
+            //FullGrid.Children.Remove(SongSearchContainer);
+            //TransitioningContentControl.Content = SongSearchContainer;
+            Panel.SetZIndex(UserPlaylists, -9999);
         }
 
         //Change this for JS
@@ -381,6 +389,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                                 EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"hh\:mm\:ss");
                             }
                             _songLoaded = true;
+                            media.Minimize.Visibility = Visibility.Visible;
                         });
                         // Console.WriteLine("Song duration: " + songDuration);
 
@@ -581,15 +590,39 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             SongSelector.Background = new SolidColorBrush(_selectedColor);
             PlaylistSelector.Background = new SolidColorBrush(_deselectedColor);
             _playingSongs = true;
+            Panel.SetZIndex(SongSearchContainer, 3);
+            FullGrid.Children.Remove(SongSearchContainer);
+            TransitioningContentControl.Content = SongSearchContainer;
+            Panel.SetZIndex(UserPlaylists, -9999);
         }
 
-        private void PlaylistSelector_Click(object sender, RoutedEventArgs e)
+        private async void PlaylistSelector_Click(object sender, RoutedEventArgs e)
         {
             PlaylistSelector.Background = new SolidColorBrush(_selectedColor);
             SongSelector.Background = new SolidColorBrush(_deselectedColor);
             _playingSongs = false;
+            if (_firstSwitch)
+            {
+                Panel.SetZIndex(BoredLabel, -9999);
+                _firstSwitch = false;
+                CurrentSong.Text = "Loading Your Playlists...";
+                //init user playlist
+                var userPlaylists = await PredefinedPlaylists.GetUserPlaylist();
+                foreach (Playlist userPlaylistResponse in userPlaylists.Items)
+                {
+                    Console.WriteLine(userPlaylistResponse.Id);
+                    var playlistItems = await GetMusic.PlaylistToPlaylistItems(userPlaylistResponse.Id);
+                    UserPlaylist_Content.Children.Add(
+                        new PlaylistContainer(playlistItems, userPlaylistResponse.Snippet.Title, CurrentSong, Background, media.CefPlayer));
+                }
+                CurrentSong.Text = "Now Playing: nothing!";
+                Console.WriteLine("Created User Playlists");
+            }
+            Panel.SetZIndex(UserPlaylists, 3);
+            FullGrid.Children.Remove(UserPlaylists);
+            TransitioningContentControl.Content = UserPlaylists;
+             Panel.SetZIndex(SongSearchContainer, -9999);
         }
-
         private void SongSelector_MouseEnter(object sender, MouseEventArgs e)
         {
             if (!_playingSongs)
