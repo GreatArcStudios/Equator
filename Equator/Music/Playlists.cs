@@ -9,14 +9,24 @@ namespace Equator.Music
     Gets various playlists off of youtube
     */
 
-    internal class PredefinedPlaylists
+    internal class Playlists
     {
+        public static PlaylistItemListResponse CurrentPlaylistItemListResponse;
         /**  NOT DONE TOPIC PLAYIST ISSUES 
         public static void GetTopicPlayist()
         {
             string channelId = QueryYoutube.searchListResponse.Items[0].Id.ChannelId;
 
         }  **/
+        public static async Task<PlaylistItemListResponse> PlaylistToPlaylistItems(string playlistId)
+        {
+            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, true, GoogleServices.Credential);
+            var playlistItemRequest = service.PlaylistItems.List("snippet");
+            playlistItemRequest.PlaylistId = playlistId;
+            playlistItemRequest.MaxResults = 50;
+            var response = await playlistItemRequest.ExecuteAsync();
+            return response;
+        }
         public static async Task<PlaylistListResponse> GetUserPlaylist()
         {
             await GoogleServices.AuthUserCredential();  

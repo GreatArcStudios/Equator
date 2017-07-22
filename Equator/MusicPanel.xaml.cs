@@ -33,11 +33,15 @@ namespace Equator
         [DllImport("gdi32.dll")] static extern bool DeleteObject(IntPtr hObject);
 
         public static bool IsPlaying;
-
+        public static int PlayListIndex; 
+        public static bool IsReplay {
+            get => _isReplay;
+            set => _isReplay = IsReplay;
+        }
         private static int _index;
         private MusicCards _musicCards;
         private bool _sliderDragging;
-        private bool _isReplay;
+        private static bool _isReplay;
         private bool _isShuffle;
         private bool _playingSongs = true;
         private System.Windows.Media.Color _selectedColor = System.Windows.Media.Color.FromArgb(127, 180, 180, 180);
@@ -319,6 +323,10 @@ namespace Equator
                         "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
                     media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                     IsPlaying = false;
+                    Uri playUri = new Uri("Icons/Play.png", UriKind.Relative);
+                    StreamResourceInfo streamInfo = Application.GetResourceStream(playUri);
+                    BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                    Play_Pause_Button.Background = new ImageBrush(temp);
                 }
                 else
                 {
@@ -327,6 +335,10 @@ namespace Equator
                         "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
                     media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                     IsPlaying = true;
+                    Uri playUri = new Uri("Icons/Stop.png", UriKind.Relative);
+                    StreamResourceInfo streamInfo = Application.GetResourceStream(playUri);
+                    BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                    Play_Pause_Button.Background = new ImageBrush(temp);
                 }
             }
 
@@ -456,16 +468,42 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             }
             else if (_isShuffle)
             {
-                var random = new Random();
-                await GetSong.AutoPlaySong(random.Next(0, 50), CurrentSong, MusicContainer, Background, media.CefPlayer);
-                IsPlaying = true;
-                _songLoaded = true;
+                //TODO: add condition for other playlist panels
+                if (Panel.GetZIndex(UserPlaylists).Equals(-9999))
+                {
+                    var random = new Random();
+                    await GetSong.AutoPlaySong(random.Next(0, 50), CurrentSong, MusicContainer, Background,
+                        media.CefPlayer, false);
+                    IsPlaying = true;
+                    _songLoaded = true;
+                }
+                else
+                {
+                    var random = new Random();
+                    await GetSong.AutoPlaySong(random.Next(0, 50), CurrentSong, UserPlaylist_Content, Background,
+                        media.CefPlayer, true);
+                    IsPlaying = true;
+                    _songLoaded = true;
+                }
+               
             }
             else
             {
-                await GetSong.AutoPlaySong(_index + 1, CurrentSong, MusicContainer, Background, media.CefPlayer);
-                IsPlaying = true;
-                _songLoaded = true;
+                //TODO: add condition for other playlist panels
+                if (Panel.GetZIndex(UserPlaylists).Equals(-9999))
+                {
+                    await GetSong.AutoPlaySong(_index + 1, CurrentSong, MusicContainer, Background, media.CefPlayer,
+                        false);
+                    IsPlaying = true;
+                    _songLoaded = true;
+                }
+                else
+                {
+                    await GetSong.AutoPlaySong(_index + 1, CurrentSong, UserPlaylist_Content, Background, media.CefPlayer,
+                        true);
+                    IsPlaying = true;
+                    _songLoaded = true;
+                }
             }
         }
         /*
@@ -605,23 +643,29 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             {
                 Panel.SetZIndex(BoredLabel, -9999);
                 _firstSwitch = false;
+                string oldText = CurrentSong.Text;
                 CurrentSong.Text = "Loading Your Playlists...";
                 //init user playlist
-                var userPlaylists = await PredefinedPlaylists.GetUserPlaylist();
+                var userPlaylists = await Playlists.GetUserPlaylist();
                 foreach (Playlist userPlaylistResponse in userPlaylists.Items)
                 {
                     Console.WriteLine(userPlaylistResponse.Id);
-                    var playlistItems = await GetMusic.PlaylistToPlaylistItems(userPlaylistResponse.Id);
+                    var playlistItems = await Playlists.PlaylistToPlaylistItems(userPlaylistResponse.Id);
                     UserPlaylist_Content.Children.Add(
                         new PlaylistContainer(playlistItems, userPlaylistResponse.Snippet.Title, CurrentSong, Background, media.CefPlayer));
                 }
-                CurrentSong.Text = "Now Playing: nothing!";
+                if (oldText.Equals("Now Playing: nothing!"))
+                    CurrentSong.Text = "Now Playing: nothing!";
+                else
+                {
+                    CurrentSong.Text = oldText;
+                }
                 Console.WriteLine("Created User Playlists");
             }
             Panel.SetZIndex(UserPlaylists, 3);
             FullGrid.Children.Remove(UserPlaylists);
             TransitioningContentControl.Content = UserPlaylists;
-             Panel.SetZIndex(SongSearchContainer, -9999);
+            Panel.SetZIndex(SongSearchContainer, -9999);
         }
         private void SongSelector_MouseEnter(object sender, MouseEventArgs e)
         {

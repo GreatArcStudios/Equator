@@ -329,7 +329,7 @@
       <DependentUpon>MusicPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Music\GetMusic.cs" />
-    <Compile Include="Music\PredefinedPlaylists.cs" />
+    <Compile Include="Music\Playlists.cs" />
     <Compile Include="Music\GetSong.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

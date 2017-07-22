@@ -147,13 +147,6 @@ namespace Equator.Music
         }
 #endif
             
-        public static async Task<PlaylistItemListResponse> PlaylistToPlaylistItems(string playlistId)
-        {
-            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, true, GoogleServices.Credential);
-            var playlistItemRequest = service.PlaylistItems.List("snippet");
-            playlistItemRequest.PlaylistId = playlistId;
-            var response = await playlistItemRequest.ExecuteAsync();
-            return response;
-        }
+      
     }
 }

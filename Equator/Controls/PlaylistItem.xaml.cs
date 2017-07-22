@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CefSharp.Wpf;
 using Equator.Music;
+using Google.Apis.YouTube.v3;
+using Google.Apis.YouTube.v3.Data;
 
 namespace Equator.Controls
 {
@@ -27,7 +29,9 @@ namespace Equator.Controls
         private Rectangle _backgroundRect;
         private TextBlock _songLabel;
         private string _backgroundImageUrl;
-        public PlaylistItem(Uri backgroundImageUri, TextBlock songLabel, string musicLink, string songTitle, string artistName, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer)
+        private int _index;
+        private PlaylistItemListResponse _parentPlaylist;
+        public PlaylistItem(Uri backgroundImageUri, TextBlock songLabel, string musicLink, string songTitle, string artistName, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer, int index, PlaylistItemListResponse playlistItemListResponse)
         {
             InitializeComponent();
             var backgroundBrush = new ImageBrush(new BitmapImage(backgroundImageUri));
@@ -42,6 +46,8 @@ namespace Equator.Controls
             _backgroundRect = backgroundRectangle;
             _songLabel = songLabel;
             _backgroundImageUrl = backgroundImageUri.ToString();
+            _index = index;
+            _parentPlaylist = playlistItemListResponse;
         }
 
         private void MusicImage_MouseEnter(object sender, MouseEventArgs e)
@@ -59,6 +65,8 @@ namespace Equator.Controls
         private async void MusicImage_MouseLeftButtonDownAsync(object sender, MouseButtonEventArgs e)
         {
             Play.Opacity = 100;
+            MusicPanel.PlayListIndex = _index;
+            Playlists.CurrentPlaylistItemListResponse = _parentPlaylist;
             await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, SongTitle.Text, _songLabel, _youtubePlayer, _backgroundImageUrl);
         }
     }

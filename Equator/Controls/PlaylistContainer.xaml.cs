@@ -23,6 +23,7 @@ namespace Equator.Controls
     /// </summary>
     public partial class PlaylistContainer : UserControl
     {
+        internal PlaylistItemListResponse _playlistItemListResponse;
         /// <summary>
         /// Set the expander label when creating the container
         /// Use PlaylistToPlaylistItems to get the playlistitemresponse
@@ -33,10 +34,12 @@ namespace Equator.Controls
         /// <param name="youtubePlayer"></param>
         public PlaylistContainer(PlaylistItemListResponse playlistItemListResponse, string playlistName, TextBlock songLabel, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer)
         {
+            _playlistItemListResponse = playlistItemListResponse;
             InitializeComponent();
             Console.WriteLine(playlistName + " has " + playlistItemListResponse.Items.Count);
-            foreach (Google.Apis.YouTube.v3.Data.PlaylistItem playlistItem in playlistItemListResponse.Items)
+            for (int i = 0; i < playlistItemListResponse.Items.Count; i++)
             {
+                Google.Apis.YouTube.v3.Data.PlaylistItem playlistItem = playlistItemListResponse.Items[i];
                 Uri backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.Medium.Url);
                 try
                 {
@@ -46,7 +49,7 @@ namespace Equator.Controls
                 {
                     Playlist_Content.Children.Add(new PlaylistItem(backgroundUri,
                         songLabel, playlistItem.Snippet.ResourceId.VideoId, playlistItem.Snippet.Title, playlistItem.Snippet.ChannelTitle,
-                        backgroundRectangle, youtubePlayer));
+                        backgroundRectangle, youtubePlayer, i, _playlistItemListResponse));
                     Console.WriteLine("Added item from " + playlistName + " " + playlistItem.Snippet.Title);
                 } 
             }

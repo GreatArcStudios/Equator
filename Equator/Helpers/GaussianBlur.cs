@@ -22,6 +22,7 @@ namespace SuperfastBlur
         {
             var rct = new Rectangle(0, 0, image.Width, image.Height);
             var source = new int[rct.Width * rct.Height];
+            Console.Write("Source size: " + rct.Width * rct.Height);
             var bits = image.LockBits(rct, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
             Marshal.Copy(bits.Scan0, source, 0, source.Length);
             image.UnlockBits(bits);
@@ -47,11 +48,11 @@ namespace SuperfastBlur
             var newGreen = new int[_width * _height];
             var newBlue = new int[_width * _height];
             var dest = new int[_width * _height];
-            
+            var radius = radial;
             Parallel.Invoke(
-                () => gaussBlur_4(_red, newRed, radial),
-                () => gaussBlur_4(_green, newGreen, radial),
-                () => gaussBlur_4(_blue, newBlue, radial));
+                () => gaussBlur_4(_red, newRed, radius),
+                () => gaussBlur_4(_green, newGreen, radius),
+                () => gaussBlur_4(_blue, newBlue, radius));
 
             Parallel.For(0, dest.Length, _pOptions, i =>
             {
