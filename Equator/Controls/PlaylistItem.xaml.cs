@@ -69,5 +69,10 @@ namespace Equator.Controls
             Playlists.CurrentPlaylistItemListResponse = _parentPlaylist;
             await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, SongTitle.Text, _songLabel, _youtubePlayer, _backgroundImageUrl);
         }
+
+        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }

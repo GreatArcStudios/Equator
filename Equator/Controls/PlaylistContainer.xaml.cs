@@ -13,8 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CefSharp.Wpf;
+using Equator.Helpers;
 using Equator.Music;
 using Google.Apis.YouTube.v3.Data;
+using YoutubeExplode;
 
 namespace Equator.Controls
 {
@@ -47,8 +49,12 @@ namespace Equator.Controls
                 }
                 finally
                 {
+                    var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
+                    var request = service.Videos.List("snippet");
+                    request.Id = playlistItem.Snippet.ResourceId.VideoId;
+                    var response = request.Execute();
                     Playlist_Content.Children.Add(new PlaylistItem(backgroundUri,
-                        songLabel, playlistItem.Snippet.ResourceId.VideoId, playlistItem.Snippet.Title, playlistItem.Snippet.ChannelTitle,
+                        songLabel, playlistItem.Snippet.ResourceId.VideoId, playlistItem.Snippet.Title, response.Items[0].Snippet.ChannelTitle ,
                         backgroundRectangle, youtubePlayer, i, _playlistItemListResponse));
                     Console.WriteLine("Added item from " + playlistName + " " + playlistItem.Snippet.Title);
                 } 

@@ -6,20 +6,45 @@
              xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
              xmlns:local="clr-namespace:Equator.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="270" d:DesignWidth="480" Width="480" Height="270" MinWidth="32" MinHeight="32">
-    <Grid>
+             d:DesignHeight="270" d:DesignWidth="480" Width="480" Height="270" MinWidth="32" MinHeight="32" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave">
+    <UserControl.Resources>
+        <Storyboard x:Key="fadein">
+            <DoubleAnimation  Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" BeginTime="0:0:0" >
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="fadeout">
+            <DoubleAnimation  Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2" BeginTime="0:0:0" >
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="minimize">
+            <DoubleAnimation  Storyboard.TargetProperty="Height" From="270" To="64" Duration="0:0:1" BeginTime="0:0:0" >
+            </DoubleAnimation>
+            <DoubleAnimation  Storyboard.TargetProperty="Width" From="480" To="64" Duration="0:0:1" BeginTime="0:0:0" >
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="maximize">
+            <DoubleAnimation  Storyboard.TargetProperty="Height" From="64" To="270" Duration="0:0:1" BeginTime="0:0:0" >
+            </DoubleAnimation>
+            <DoubleAnimation  Storyboard.TargetProperty="Width" From="64" To="480" Duration="0:0:1" BeginTime="0:0:0" >
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    <Grid x:Name="Container" Background="#8C808080">
         <Grid.RowDefinitions>
-            <RowDefinition Height="32*"/>
-            <RowDefinition Height="103*"/>
+            <RowDefinition Height="66*"/>
+            <RowDefinition Height="139*"/>
+            <RowDefinition Height="65"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="13*"/>
+            <ColumnDefinition Width="64*"/>
+            <ColumnDefinition Width="351*"/>
+            <ColumnDefinition Width="65*"/>
         </Grid.ColumnDefinitions>
-        <cefSharp:ChromiumWebBrowser x:Name="CefPlayer" Address="" Width="480" Height="270" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.ColumnSpan="2" Grid.RowSpan="2" />
-        <Button x:Name="Minimize" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="64" Style="{DynamicResource MetroCircleButtonStyle}" Height="64" Click="Minimize_Click">
+        <cefSharp:ChromiumWebBrowser x:Name="CefPlayer" Address="" Width="480" Height="270" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.ColumnSpan="3" Grid.RowSpan="3" Background="#7F808080" />
+        <Button x:Name="Minimize" Content="" Width="64" Style="{DynamicResource MetroCircleButtonStyle}" Height="64" Click="Minimize_Click" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Opacity="0">
             <Button.Background>
-                <ImageBrush ImageSource="/Equator;component/Icons/Play.png"/>
+                <ImageBrush ImageSource="/Equator;component/Icons/Fullscreen icon.png"/>
+
             </Button.Background>
         </Button>
     </Grid>

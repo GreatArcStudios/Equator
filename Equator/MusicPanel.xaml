@@ -361,12 +361,12 @@
                 <DropShadowEffect Direction="320" BlurRadius="20" />
             </Label.Effect>
         </Label>
-        <ScrollViewer x:Name="SongSearchContainer" VerticalScrollBarVisibility="Auto" Foreground="Black" VerticalContentAlignment="Stretch" CanContentScroll="True" Style="{StaticResource FlatScrollViewer}" HorizontalScrollBarVisibility="Disabled" Grid.RowSpan="2" Grid.Row="1">
-            <WrapPanel x:Name="MusicContainer" Grid.Row="2"  ItemHeight="279.5" ItemWidth="250" Width="1364" />
+        <ScrollViewer x:Name="SongSearchContainer" VerticalScrollBarVisibility="Auto" Grid.Row="1" Foreground="Black" VerticalContentAlignment="Stretch" CanContentScroll="True" Style="{StaticResource FlatScrollViewer}" HorizontalScrollBarVisibility="Disabled" Grid.RowSpan="2">
+            <WrapPanel x:Name="MusicContainer" Grid.Row="2"  ItemHeight="279.5" ItemWidth="250" Margin="50,0,0,0" />
         </ScrollViewer>
-        <Expander x:Name="UserPlaylists" Header="Your Playlists" Background="#00647687" BorderBrush="#00667583" FontSize="20" VerticalContentAlignment="Stretch" VerticalAlignment="Top" Grid.Row="1" controls:ControlsHelper.HeaderFontStretch="SemiExpanded" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ControlsHelper.HeaderFontSize="20" controls:ControlsHelper.HeaderFontWeight="SemiBold" Margin="10,10,10,0" Padding="5,0,0,0" HorizontalContentAlignment="Stretch" Height="320">
-            <Grid Background="#66AAAAAA" Height="272">
-                <ScrollViewer Style="{StaticResource FlatScrollViewer}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Stretch" VerticalAlignment="Top" Height="272" Padding="10">
+        <Expander x:Name="UserPlaylists" Header="Your Playlists" Background="#00647687" BorderBrush="#00667583" FontSize="20" VerticalContentAlignment="Stretch" VerticalAlignment="Top" Grid.Row="1" controls:ControlsHelper.HeaderFontStretch="SemiExpanded" controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ControlsHelper.HeaderFontSize="20" controls:ControlsHelper.HeaderFontWeight="SemiBold" Margin="10,10,10,0" Padding="5,0,0,0" HorizontalContentAlignment="Stretch" Grid.RowSpan="2">
+            <Grid Background="#66AAAAAA">
+                <ScrollViewer Style="{StaticResource FlatScrollViewer}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Stretch" Padding="10" VerticalAlignment="Top">
                     <StackPanel x:Name="UserPlaylist_Content"/>
                 </ScrollViewer>
             </Grid>

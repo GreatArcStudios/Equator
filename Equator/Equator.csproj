@@ -388,6 +388,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\Fullscreen icon.png" />
     <Content Include="Images\Dandelion no crop.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

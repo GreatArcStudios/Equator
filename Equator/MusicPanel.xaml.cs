@@ -33,8 +33,9 @@ namespace Equator
         [DllImport("gdi32.dll")] static extern bool DeleteObject(IntPtr hObject);
 
         public static bool IsPlaying;
-        public static int PlayListIndex; 
-        public static bool IsReplay {
+        public static int PlayListIndex;
+        public static bool IsReplay
+        {
             get => _isReplay;
             set => _isReplay = IsReplay;
         }
@@ -111,6 +112,7 @@ namespace Equator
             //FullGrid.Children.Remove(SongSearchContainer);
             //TransitioningContentControl.Content = SongSearchContainer;
             Panel.SetZIndex(UserPlaylists, -9999);
+            Panel.SetZIndex(media, -9999);
         }
 
         //Change this for JS
@@ -402,6 +404,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             }
                             _songLoaded = true;
                             media.Minimize.Visibility = Visibility.Visible;
+                            Panel.SetZIndex(media, 3);
                         });
                         // Console.WriteLine("Song duration: " + songDuration);
 
@@ -430,28 +433,52 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 
         private async void GoLeftButtonClick(object sender, EventArgs e)
         {
-            SetIndex(_index - 1);
-            //make it play the last song
-            if (GetIndex() < 0)
+            if (Panel.GetZIndex(UserPlaylists).Equals(-9999))
             {
-                SetIndex(QueryYoutube.SearchListResponse.Items.Count - 1);
-                await
-                    GetSong.PlaySpecifiedSong(Background,
-                        QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1].Id.VideoId,
+                SetIndex(_index - 1);
+                //make it play the last song
+                if (GetIndex() < 0)
+                {
+                    SetIndex(QueryYoutube.SearchListResponse.Items.Count - 1);
+                    await
+                        GetSong.PlaySpecifiedSong(Background,
+                            QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1].Id
+                                .VideoId,
+                            _index,
+                            QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1]
+                                .Snippet
+                                .Title,
+                            CurrentSong, media.CefPlayer);
+                }
+                else
+                {
+                    //otherwise play the next song
+                    await GetSong.PlaySpecifiedSong(Background,
+                        QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
                         _index,
-                        QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1].Snippet
-                            .Title,
+                        QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
                         CurrentSong, media.CefPlayer);
+                }
             }
             else
             {
-                //otherwise play the next song
-                await GetSong.PlaySpecifiedSong(Background,
-                    QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
-                    _index,
-                    QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
-                    CurrentSong, media.CefPlayer);
+                PlayListIndex--;
+                if (PlayListIndex < 0)
+                {
+                    PlayListIndex = Playlists.CurrentPlaylistItemListResponse.Items.Count - 1;
+                    await GetSong.PlaySpecifiedSong(Background,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong, media.CefPlayer, Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                }
+                else
+                {
+                    //otherwise play the next song
+                    await GetSong.PlaySpecifiedSong(Background,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong, media.CefPlayer, Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                }
             }
+
         }
 
         private async void PlayBackEnded()
@@ -485,7 +512,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     IsPlaying = true;
                     _songLoaded = true;
                 }
-               
+
             }
             else
             {
