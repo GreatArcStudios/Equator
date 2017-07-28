@@ -4,7 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" Width="250" Height="279.5" Foreground="{x:Null}" BorderThickness="5,5,0,0" Margin="5">
-    <Canvas x:Name="MusicCardContent" Margin="-5,0,0,0" MouseLeftButtonDown="LeftMouseDown">
+    <UserControl.Resources>
+        <Storyboard x:Key="fadeinplay">
+            <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0">
+
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="fadeoutplay">
+            <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0">
+
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="fadeinoverlay">
+            <DoubleAnimation From="0" To="0.4" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0">
+
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="fadeoutoverlay">
+            <DoubleAnimation From="0.4" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0">
+
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    <Canvas x:Name="MusicCardContent" Margin="-5,0,0,0" MouseLeftButtonDown="LeftMouseDown" MouseEnter="MusicCardContent_MouseEnter" MouseLeave="MusicCardContent_MouseLeave">
+
         <Rectangle x:Name="MusicImage" Height="183" StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0"
                    Width="209" Canvas.Left="18" Canvas.Top="4">
             <Rectangle.Fill>

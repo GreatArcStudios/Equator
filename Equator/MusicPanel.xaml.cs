@@ -21,6 +21,7 @@ using Equator.Music;
 using Google.Apis.YouTube.v3.Data;
 using MahApps.Metro.Controls;
 using SuperfastBlur;
+using System.Windows.Media.Animation;
 
 namespace Equator
 {
@@ -107,7 +108,6 @@ namespace Equator
             }
             //init media player
             media.CefPlayer.LoadingStateChanged += CefPlayer_LoadingStateChanged;
-            media.Minimize.Visibility = Visibility.Hidden;
             //init trans content control
             //FullGrid.Children.Remove(SongSearchContainer);
             //TransitioningContentControl.Content = SongSearchContainer;
@@ -397,13 +397,18 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                         Dispatcher.Invoke(() =>
                         {
                             if (_songDuration <= 60 * 60)
+                            {
                                 EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss");
+                               // CurrentTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss");
+                                PlayBarSlider.Width = 906;
+                            }
                             else
                             {
                                 EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"hh\:mm\:ss");
+                               // CurrentTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"hh\:mm\:ss");
+                               PlayBarSlider.Width = 880;
                             }
                             _songLoaded = true;
-                            media.Minimize.Visibility = Visibility.Visible;
                             Panel.SetZIndex(media, 3);
                         });
                         // Console.WriteLine("Song duration: " + songDuration);
@@ -611,28 +616,50 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         private async void Next_Song_Button_OnClick(object sender, EventArgs e)
         {
             BoredLabel.IsEnabled = false;
-            SetIndex(_index + 1);
-            //make it play the first song
-            if (GetIndex() == MusicContainer.Children.Count)
+            if (Panel.GetZIndex(UserPlaylists).Equals(-9999))
             {
-                // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
-                SetIndex(0);
-                await
-                    GetSong.PlaySpecifiedSong(Background,
-                        QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
+                SetIndex(_index + 1);
+                //make it play the first song
+                if (GetIndex() == MusicContainer.Children.Count)
+                {
+                    // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
+                    SetIndex(0);
+                    await
+                        GetSong.PlaySpecifiedSong(Background,
+                            QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
+                            _index,
+                            QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
+                            CurrentSong, media.CefPlayer);
+                }
+                else
+                {
+                    //otherwise play the next song
+                    await GetSong.PlaySpecifiedSong(Background,
+                        QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
                         _index,
-                        QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
+                        QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
                         CurrentSong, media.CefPlayer);
+                }
             }
             else
             {
-                //otherwise play the next song
-                await GetSong.PlaySpecifiedSong(Background,
-                    QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
-                    _index,
-                    QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
-                    CurrentSong, media.CefPlayer);
+                PlayListIndex++;
+                if (PlayListIndex == Playlists.CurrentPlaylistItemListResponse.Items.Count)
+                {
+                    PlayListIndex = 0;
+                    await GetSong.PlaySpecifiedSong(Background,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong, media.CefPlayer, Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                }
+                else
+                {
+                    //otherwise play the next song
+                    await GetSong.PlaySpecifiedSong(Background,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong, media.CefPlayer, Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                }
             }
+            
         }
 
         private void VolumeControl_LostFocus(object sender, RoutedEventArgs e)
@@ -716,6 +743,20 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         {
             if (_playingSongs)
                 PlaylistSelector.Background = new SolidColorBrush(_deselectedColor);
+        }
+
+        private void Minimize_Button_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!media.Minimized)
+            {
+                ((Storyboard)FindResource("minimize")).Begin(media.Container);
+                media.Minimized = true;
+            }
+            else
+            {
+                ((Storyboard)FindResource("maximize")).Begin(media.Container);
+                media.Minimized = false;
+            }
         }
     }
 }

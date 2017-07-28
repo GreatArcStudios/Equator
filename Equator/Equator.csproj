@@ -263,8 +263,14 @@
     <Compile Include="Controls\MusicCards.xaml.cs">
       <DependentUpon>MusicCards.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PlaylistCards.xaml.cs">
+      <DependentUpon>PlaylistCards.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PlaylistContainer.xaml.cs">
       <DependentUpon>PlaylistContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PlaylistContainerCards.xaml.cs">
+      <DependentUpon>PlaylistContainerCards.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PlaylistItem.xaml.cs">
       <DependentUpon>PlaylistItem.xaml</DependentUpon>
@@ -286,7 +292,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\PlaylistCards.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\PlaylistContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PlaylistContainerCards.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

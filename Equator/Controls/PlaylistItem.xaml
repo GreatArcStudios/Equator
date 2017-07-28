@@ -35,8 +35,8 @@
 
         </Label>
         <Label x:Name="ArtistNameHolder" VerticalContentAlignment="Center" VerticalAlignment="Center" Background="#00000000" Foreground="White"
-               Height="51" Width="139" FontWeight="Bold" FontSize="16" Canvas.Top="189" Padding="0" HorizontalAlignment="Left" Margin="351,10,0,-1" HorizontalContentAlignment="Center">
-            <TextBlock TextWrapping="Wrap" TextTrimming ="WordEllipsis" x:Name="ArtistName" TextAlignment="Left" Text="sdfsdfsafasf"  Padding="5,0,0,0" Height="25" Width="224" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Normal" Margin="0,3,0,10">
+               Height="51" Width="300" FontWeight="Bold" FontSize="16" Canvas.Top="189" Padding="0" HorizontalAlignment="Left" Margin="351,10,0,-1" HorizontalContentAlignment="Center">
+            <TextBlock TextTrimming ="CharacterEllipsis" x:Name="ArtistName" TextAlignment="Left" Text="sdfsdfsafasf"  Padding="5,0,0,0" Height="25" Width="300" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Normal" Margin="0,3,0,10">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="16" ShadowDepth="2" />
                 </TextBlock.Effect>

@@ -12,9 +12,9 @@
     mc:Ignorable="d"
     SizeChanged="MusicPanel_SizeChanged"
     Loaded="MusicPanel_OnLoaded"
-    Title="Equator Music" Height="899.4" Width="1373" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen"
+    Title="Equator Music" Height="900" Width="1373" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen"
     d:IsEffectDisabled="True" Background="#FF494949" Foreground="Black" OverlayBrush="Black"
-    KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown" MinWidth="1341" MinHeight="500">
+    KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown" MinWidth="1341" MinHeight="900">
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
@@ -27,7 +27,26 @@
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
     <Window.Resources>
-
+        <Storyboard x:Key="fadein">
+            <DoubleAnimation  Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" BeginTime="0:0:0" >
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="fadeout">
+            <DoubleAnimation  Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2" BeginTime="0:0:0" >
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="minimize">
+            <DoubleAnimation  Storyboard.TargetProperty="Height" From="270" To="64" Duration="0:0:1" BeginTime="0:0:0" >
+            </DoubleAnimation>
+            <DoubleAnimation  Storyboard.TargetProperty="Width" From="480" To="64" Duration="0:0:1" BeginTime="0:0:0" >
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="maximize">
+            <DoubleAnimation  Storyboard.TargetProperty="Height" From="64" To="270" Duration="0:0:1" BeginTime="0:0:0" >
+            </DoubleAnimation>
+            <DoubleAnimation  Storyboard.TargetProperty="Width" From="64" To="480" Duration="0:0:1" BeginTime="0:0:0" >
+            </DoubleAnimation>
+        </Storyboard>
         <Style x:Key ="ScrollerThumb" TargetType="{x:Type Thumb}" >
             <Setter Property="SnapsToDevicePixels"
                     Value="True" />
@@ -187,7 +206,7 @@
                     </Button.Background>
                 </Button>
                 <xctk:WatermarkTextBox x:Name="SearchBox" TextWrapping="NoWrap" HorizontalAlignment="Center" Height="38"
-                          VerticalAlignment="Center" Width="180" Margin="20,0,0,2" FontSize="21.333"
+                          VerticalAlignment="Center" Width="205" Margin="20,0,0,2" FontSize="21.333"
                           Background="{x:Null}" Foreground="White" SelectionBrush="White" BorderThickness="2"
                           Watermark="Search..." BorderBrush="White" CaretBrush="#FFC7C7C7" KeyDown="SearchBox_KeyDown" MouseDoubleClick="SearchBox_MouseDoubleClick" TextChanged="SearchBox_TextChanged" >
                     <xctk:WatermarkTextBox.WatermarkTemplate>
@@ -204,7 +223,7 @@
                     </Button.Background>
                 </Button>
                 <Label x:Name="CurrentSongContainer"  HorizontalAlignment="Right"
-                       VerticalAlignment="Center" FontSize="24" Margin="40,-2,0,-4" Foreground="White" Height="46" >
+                       VerticalAlignment="Center" FontSize="24" Margin="30,-2,10,-4" Foreground="White" Height="46" >
                     <Label.Effect>
                         <DropShadowEffect Color="#3FD3D3D3" BlurRadius="9" ShadowDepth="1" />
                     </Label.Effect>
@@ -249,15 +268,14 @@
         </Grid>
         <Grid x:Name="BottomContainer" Grid.Row="3" Margin="0,0,-3,-10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="209*" />
-                <ColumnDefinition Width="963*" />
-                <ColumnDefinition Width="196*" />
+                <ColumnDefinition Width="11*" />
+                <ColumnDefinition Width="61*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Rectangle x:FieldModifier="public" x:Name="PlayBar" Fill="#FF282828" Margin="-10,-1,2,5"
-                       Grid.ColumnSpan="3" MaxHeight="65">
+                       Grid.ColumnSpan="2" MaxHeight="65">
                 <!--<interactivity:Interaction.Behaviors>
                     <global1:BackgroundEffectBehavior x:Name ="bars"  Visual="{Binding ElementName=Background, Mode=OneWay}">
                         <global1:BackgroundEffectBehavior.Effect>
@@ -288,8 +306,8 @@
 
 
             </Rectangle>
-            <Grid Grid.ColumnSpan="3" Margin="20,2,6,8" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid Grid.ColumnSpan="2" Margin="24,2,10,8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-2,0,0,0" Width="1336">
                     <StackPanel Orientation="Horizontal" Width="170" VerticalAlignment="Center" Height="55"
                                 Margin="0,3,0,5">
 
@@ -317,37 +335,43 @@
                             </Button.Background>
                         </Button>
                     </StackPanel>
-                    <StackPanel Margin="0,15,0,17" Orientation="Horizontal" Width="1171">
+                    <StackPanel Margin="0,15,0,17" Orientation="Horizontal" Width="1040">
                         <Label x:Name="CurrentTimeLabel" HorizontalAlignment="Left" Margin="0,-3,10,-2"
                                FontSize="20" Background="{x:Null}" Foreground="White" VerticalAlignment="Center" Content="0:00" />
-                        <Slider x:Name="PlayBarSlider" VerticalAlignment="Center" Width="895" Background="#00000000"
-                                Foreground="White" Height="26" BorderBrush="White" Margin="0,9,0,-4" Thumb.DragStarted = "PlayBar_DragStarted"  Thumb.DragCompleted ="PlayBar_DragCompleted"  ValueChanged="PlayBar_ValueChanged" />
-                        <Label x:Name="EndTimeLabel" Content="0:00" HorizontalAlignment="Right"
-                               VerticalAlignment="Center" Margin="10,-3,0,2" FontSize="20" Foreground="White"
-                               RenderTransformOrigin="0.846,0.484" Padding="5,5,40,5" Height="32" />
+                        <Slider x:Name="PlayBarSlider" VerticalAlignment="Center" Width="910" Background="#00000000"
+                                Foreground="White" Height="24" BorderBrush="White" Margin="0,8,3,-5" Thumb.DragStarted = "PlayBar_DragStarted"  Thumb.DragCompleted ="PlayBar_DragCompleted"  ValueChanged="PlayBar_ValueChanged" Padding="0" HorizontalContentAlignment="Stretch" />
+                        <Label x:Name="EndTimeLabel" Content="0:00" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" Margin="10,-3,5,2" FontSize="20" Foreground="White"
+                               RenderTransformOrigin="0.846,0.484" Padding="2,5,0,5" Height="32" Width="77" />
                     </StackPanel>
-                </StackPanel>
-                <StackPanel Margin="1225,14,0,13.5" Orientation="Horizontal" HorizontalAlignment="Left"
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                             VerticalAlignment="Center">
-                    <Button x:Name="Volume_Button" Content="Button" HorizontalAlignment="Right" VerticalAlignment="Top"
+                        <Button x:Name="Volume_Button" Content="Button" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Width="28" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}"
-                            BorderThickness="0,1,1,1" Margin="0,0,5,0"  Style="{DynamicResource MetroCircleButtonStyle}" Click="Volume_Button_Click" >
-                        <Button.Background>
-                            <ImageBrush ImageSource="Icons/16 volume.png" />
-                        </Button.Background>
-                    </Button>
-                    <Button x:Name="Replay_Button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"
-                            Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0" Click="Replay_Button_Click"  Style="{DynamicResource MetroCircleButtonStyle}" HorizontalContentAlignment="Left">
-                        <Button.Background>
-                            <ImageBrush ImageSource="Icons/16 replay.png" />
-                        </Button.Background>
-                    </Button>
-                    <Button x:Name="Shuffle_Button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"
-                        Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5,0,10,0" Click="Shuffle_Button_OnClick" Style="{DynamicResource MetroCircleButtonStyle}" HorizontalContentAlignment="Left">
-                        <Button.Background>
-                            <ImageBrush ImageSource="Icons/32 shuffle.png" />
-                        </Button.Background>
-                    </Button>
+                            BorderThickness="0,1,1,1" Margin="0,0,3,0"  Style="{DynamicResource MetroCircleButtonStyle}" Click="Volume_Button_Click" ToolTip="Volume" >
+                            <Button.Background>
+                                <ImageBrush ImageSource="Icons/16 volume.png" />
+                            </Button.Background>
+                        </Button>
+                        <Button x:Name="Replay_Button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"
+                            Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="3,0" Click="Replay_Button_Click"  Style="{DynamicResource MetroCircleButtonStyle}" HorizontalContentAlignment="Left" ToolTip="Replay">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Icons/16 replay.png" />
+                            </Button.Background>
+                        </Button>
+                        <Button x:Name="Shuffle_Button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="3,0" Click="Shuffle_Button_OnClick" Style="{DynamicResource MetroCircleButtonStyle}" HorizontalContentAlignment="Left" ToolTip="Shuffle">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Icons/32 shuffle.png" />
+                            </Button.Background>
+                        </Button>
+                        <Button x:Name="Minimize_Button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="0" Click="Minimize_Button_OnClick" Style="{DynamicResource MetroCircleButtonStyle}" HorizontalContentAlignment="Left" controls:ButtonHelper.CornerRadius="0" ToolTip="Maximize/Minimize">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Icons/Fullscreen icon.png" />
+                            </Button.Background>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </Grid>
@@ -374,7 +398,7 @@
         <controls:TransitioningContentControl x:Name="TransitioningContentControl" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2"/>
 
 
-        <Controls:YoutubePlayer  x:Name="media" x:FieldModifier ="public"  HorizontalAlignment="Right" Height="270" VerticalAlignment="Bottom" Width="480" Margin="0,0,16,0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
+        <Controls:YoutubePlayer  x:Name="media" x:FieldModifier ="public"  HorizontalAlignment="Right" Height="270" VerticalAlignment="Bottom" Width="480" Margin="0,0,14,0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom"/>
         <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="57" VerticalAlignment="Bottom" Width="250" Grid.Row="2" Thumb.DragCompleted ="VolumeControl_OnDragCompleted" Loaded="VolumeControl_OnLoaded" MouseLeave="VolumeControl_OnMouseLeave"  MinWidth="250" MinHeight="55" MaxWidth="300" MaxHeight="75" Margin="0,0,18,0" LostFocus="VolumeControl_LostFocus"/>
 
 

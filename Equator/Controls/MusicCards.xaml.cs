@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Equator.Helpers;
@@ -40,8 +41,6 @@ namespace Equator.Controls
             backgroundBrush.Stretch = Stretch.UniformToFill;
             MusicImage.Fill = backgroundBrush;
 
-            MusicCardContent.MouseEnter += MusicCard_Content_MouseEnter;
-            MusicCardContent.MouseLeave += MusicCard_Content_MouseLeave;
             Overlay.Opacity = 0;
             Play.Opacity = 0;
             _mediaElement = mediaElement;
@@ -66,8 +65,6 @@ namespace Equator.Controls
             backgroundBrush.Stretch = Stretch.UniformToFill;
             MusicImage.Fill = backgroundBrush;
 
-            MusicCardContent.MouseEnter += MusicCard_Content_MouseEnter;
-            MusicCardContent.MouseLeave += MusicCard_Content_MouseLeave;
             Overlay.Opacity = 0;
             Play.Opacity = 0;
             _songLabel = songLabel;
@@ -78,19 +75,6 @@ namespace Equator.Controls
             this._youtubePlayer = youtubePlayer;
         }
 
-        private void MusicCard_Content_MouseLeave(object sender, MouseEventArgs e)
-        {
-            MusicCardContent = (Canvas) sender;
-            Play.Opacity = 0;
-            Overlay.Opacity = 0;
-        }
-
-        public void MusicCard_Content_MouseEnter(object sender, MouseEventArgs e)
-        {
-            MusicCardContent = (Canvas) sender;
-            Play.Opacity = 100;
-            Overlay.Opacity = 0.4;
-        }
 
         /// <summary>
         ///     Returns a string split into the format "link to the music/video" + "song name"
@@ -100,9 +84,22 @@ namespace Equator.Controls
         /// <returns></returns>
         private async void LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
-            MusicCardContent = (Canvas) sender;
+            MusicCardContent = (Canvas)sender;
             Play.Opacity = 100;
             await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, Index, SongTitle.Text, _songLabel, _youtubePlayer);
 
         }
-}}
+
+        private void MusicCardContent_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ((Storyboard)FindResource("fadeinplay")).Begin(Play);
+            ((Storyboard)FindResource("fadeinoverlay")).Begin(Overlay);
+        }
+
+        private void MusicCardContent_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ((Storyboard)FindResource("fadeoutplay")).Begin(Play);
+            ((Storyboard)FindResource("fadeoutoverlay")).Begin(Overlay);
+        }
+    }
+}
