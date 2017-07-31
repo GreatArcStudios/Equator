@@ -1,16 +1,22 @@
 ﻿<UserControl x:Class="Equator.Controls.VolumePanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Equator.Controls"
-             mc:Ignorable="d" d:DesignWidth="300" Width="250" Height="59" Foreground="Black" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" MaxWidth="250" MaxHeight="57">
+             mc:Ignorable="d" d:DesignWidth="300" Width="250" Height="59" Foreground="Black"
+             HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Right"
+             VerticalContentAlignment="Bottom" MaxWidth="250" MaxHeight="57">
     <Grid Width="250" Height="58" Background="#FF282828">
-        <StackPanel HorizontalAlignment="Left" Height="61" VerticalAlignment="Top" Width="250" Margin="0"/>
-        <Slider x:Name="slider" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="51,34,0,0" Height="20" Width="179" ValueChanged="Slider_OnValueChanged" />
-        <Label x:Name="label" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,29,0,0" Foreground="White" FontWeight="ExtraLight"/>
-        <Label x:Name="Title_Label" Content="Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Width="123" Foreground="White" FontSize="20" Height="34" FontWeight="Medium" Margin="5,0,0,0"/>
-        <Image x:Name="image" HorizontalAlignment="Left" Height="16" VerticalAlignment="Top" Width="16" Margin="51,7,0,0" Source="/Equator;component/Icons/volume.png" Stretch="Fill"/>
+        <StackPanel HorizontalAlignment="Left" Height="61" VerticalAlignment="Top" Width="250" Margin="0" />
+        <Slider x:Name="slider" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="51,34,0,0" Height="20"
+                Width="179" ValueChanged="Slider_OnValueChanged" />
+        <Label x:Name="label" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,29,0,0"
+               Foreground="White" FontWeight="ExtraLight" />
+        <Label x:Name="Title_Label" Content="Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Width="123"
+               Foreground="White" FontSize="20" Height="34" FontWeight="Medium" Margin="5,0,0,0" />
+        <Image x:Name="image" HorizontalAlignment="Left" Height="16" VerticalAlignment="Top" Width="16"
+               Margin="51,7,0,0" Source="/Equator;component/Icons/volume.png" Stretch="Fill" />
 
     </Grid>
 </UserControl>

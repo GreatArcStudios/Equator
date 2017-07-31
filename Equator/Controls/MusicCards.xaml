@@ -6,27 +6,20 @@
              mc:Ignorable="d" Width="250" Height="279.5" Foreground="{x:Null}" BorderThickness="5,5,0,0" Margin="5">
     <UserControl.Resources>
         <Storyboard x:Key="fadeinplay">
-            <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0">
-
-            </DoubleAnimation>
+            <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0" />
         </Storyboard>
         <Storyboard x:Key="fadeoutplay">
-            <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0">
-
-            </DoubleAnimation>
+            <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0" />
         </Storyboard>
         <Storyboard x:Key="fadeinoverlay">
-            <DoubleAnimation From="0" To="0.4" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0">
-
-            </DoubleAnimation>
+            <DoubleAnimation From="0" To="0.4" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0" />
         </Storyboard>
         <Storyboard x:Key="fadeoutoverlay">
-            <DoubleAnimation From="0.4" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0">
-
-            </DoubleAnimation>
+            <DoubleAnimation From="0.4" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0" />
         </Storyboard>
     </UserControl.Resources>
-    <Canvas x:Name="MusicCardContent" Margin="-5,0,0,0" MouseLeftButtonDown="LeftMouseDown" MouseEnter="MusicCardContent_MouseEnter" MouseLeave="MusicCardContent_MouseLeave">
+    <Canvas x:Name="MusicCardContent" Margin="-5,0,0,0" MouseLeftButtonDown="LeftMouseDown"
+            MouseEnter="MusicCardContent_MouseEnter" MouseLeave="MusicCardContent_MouseLeave">
 
         <Rectangle x:Name="MusicImage" Height="183" StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0"
                    Width="209" Canvas.Left="18" Canvas.Top="4">
@@ -53,7 +46,8 @@
         <Label x:Name="SongTitleHolder" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="#00000000" Foreground="White"
                Height="55" Width="250" FontWeight="Bold" FontSize="16" Canvas.Top="189">
-            <TextBlock TextWrapping="Wrap" TextTrimming ="WordEllipsis" x:Name="SongTitle" TextAlignment="Center" Text="sdfsdfsafasf"  Padding="0" Height="56" Width="243" Margin="0,-5,0,0">
+            <TextBlock TextWrapping="Wrap" TextTrimming="WordEllipsis" x:Name="SongTitle" TextAlignment="Center"
+                       Text="sdfsdfsafasf" Padding="0" Height="56" Width="243" Margin="0,-5,0,0">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="16" ShadowDepth="2" />
                 </TextBlock.Effect>

@@ -9,14 +9,14 @@ namespace SuperfastBlur
 {
     public class GaussianBlur
     {
-        private readonly int[] _red;
-        private readonly int[] _green;
         private readonly int[] _blue;
-
-        private readonly int _width;
+        private readonly int[] _green;
         private readonly int _height;
 
-        private readonly ParallelOptions _pOptions = new ParallelOptions { MaxDegreeOfParallelism = 16 };
+        private readonly ParallelOptions _pOptions = new ParallelOptions {MaxDegreeOfParallelism = 16};
+        private readonly int[] _red;
+
+        private readonly int _width;
 
         public GaussianBlur(Bitmap image)
         {
@@ -38,7 +38,7 @@ namespace SuperfastBlur
             {
                 _red[i] = (source[i] & 0xff0000) >> 16;
                 _green[i] = (source[i] & 0x00ff00) >> 8;
-                _blue[i] = (source[i] & 0x0000ff);
+                _blue[i] = source[i] & 0x0000ff;
             });
         }
 
@@ -64,7 +64,8 @@ namespace SuperfastBlur
                 if (newGreen[i] < 0) newGreen[i] = 0;
                 if (newBlue[i] < 0) newBlue[i] = 0;
 
-                dest[i] = (int)(0xff000000u | (uint)(newRed[i] << 16) | (uint)(newGreen[i] << 8) | (uint)newBlue[i]);
+                dest[i] = (int) (0xff000000u | (uint) (newRed[i] << 16) | (uint) (newGreen[i] << 8) |
+                                 (uint) newBlue[i]);
             });
 
             var image = new Bitmap(_width, _height);
@@ -85,12 +86,12 @@ namespace SuperfastBlur
 
         private int[] BoxesForGauss(int sigma, int n)
         {
-            var wIdeal = Math.Sqrt((12 * sigma * sigma / n) + 1);
-            var wl = (int)Math.Floor(wIdeal);
+            var wIdeal = Math.Sqrt(12 * sigma * sigma / n + 1);
+            var wl = (int) Math.Floor(wIdeal);
             if (wl % 2 == 0) wl--;
             var wu = wl + 2;
 
-            var mIdeal = (double)(12 * sigma * sigma - n * wl * wl - 4 * n * wl - 3 * n) / (-4 * wl - 4);
+            var mIdeal = (double) (12 * sigma * sigma - n * wl * wl - 4 * n * wl - 3 * n) / (-4 * wl - 4);
             var m = Math.Round(mIdeal);
 
             var sizes = new List<int>();
@@ -107,7 +108,7 @@ namespace SuperfastBlur
 
         private void boxBlurH_4(int[] source, int[] dest, int w, int h, int r)
         {
-            var iar = (double)1 / (r + r + 1);
+            var iar = (double) 1 / (r + r + 1);
             Parallel.For(0, h, _pOptions, i =>
             {
                 var ti = i * w;
@@ -120,24 +121,24 @@ namespace SuperfastBlur
                 for (var j = 0; j <= r; j++)
                 {
                     val += source[ri++] - fv;
-                    dest[ti++] = (int)Math.Round(val * iar);
+                    dest[ti++] = (int) Math.Round(val * iar);
                 }
                 for (var j = r + 1; j < w - r; j++)
                 {
                     val += source[ri++] - dest[li++];
-                    dest[ti++] = (int)Math.Round(val * iar);
+                    dest[ti++] = (int) Math.Round(val * iar);
                 }
                 for (var j = w - r; j < w; j++)
                 {
                     val += lv - source[li++];
-                    dest[ti++] = (int)Math.Round(val * iar);
+                    dest[ti++] = (int) Math.Round(val * iar);
                 }
             });
         }
 
         private void boxBlurT_4(int[] source, int[] dest, int w, int h, int r)
         {
-            var iar = (double)1 / (r + r + 1);
+            var iar = (double) 1 / (r + r + 1);
             Parallel.For(0, w, _pOptions, i =>
             {
                 var ti = i;
@@ -150,14 +151,14 @@ namespace SuperfastBlur
                 for (var j = 0; j <= r; j++)
                 {
                     val += source[ri] - fv;
-                    dest[ti] = (int)Math.Round(val * iar);
+                    dest[ti] = (int) Math.Round(val * iar);
                     ri += w;
                     ti += w;
                 }
                 for (var j = r + 1; j < h - r; j++)
                 {
                     val += source[ri] - source[li];
-                    dest[ti] = (int)Math.Round(val * iar);
+                    dest[ti] = (int) Math.Round(val * iar);
                     li += w;
                     ri += w;
                     ti += w;
@@ -165,7 +166,7 @@ namespace SuperfastBlur
                 for (var j = h - r; j < h; j++)
                 {
                     val += lv - source[li];
-                    dest[ti] = (int)Math.Round(val * iar);
+                    dest[ti] = (int) Math.Round(val * iar);
                     li += w;
                     ti += w;
                 }

@@ -8,11 +8,13 @@ namespace Equator.Helpers
     internal static class QueryYoutube
     {
         public static SearchListResponse SearchListResponse;
+
+        //keep the list of videos separate from the playlists
+        public static List<string> videos = new List<string>();
+
         //public static SearchListResponse TopicSearchListResponse;
         //public static string CurrentSongTitle; 
         public static int SongCount { get; set; } = 50;
-        //keep the list of videos separate from the playlists
-        public static List<string> videos = new List<string>();
 
         /// <summary>
         ///     Gets a list of songs of size <c>int SongCount</c>
@@ -20,8 +22,6 @@ namespace Equator.Helpers
         /// <param name="song"></param>
         public static async Task<int> QueryVideoListAsync(string song)
         {
-
-
             var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
             var musicList = service.Search.List("snippet");
             musicList.Q = song; // Replace with your search term.
@@ -48,10 +48,9 @@ namespace Equator.Helpers
             //TopicSearchListResponse = await musicList.ExecuteAsync();
             return 1;
         }
+
         public static void QueryPlaylistList(string song)
         {
-
-
             var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
             var musicList = service.Search.List("snippet");
             musicList.Q = song; // Replace with your search term.
@@ -71,10 +70,9 @@ namespace Equator.Helpers
                 Console.WriteLine("Query Failed");
             }
         }
+
         public static void QueryChannelList(string song)
         {
-
-
             var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
             var musicList = service.Search.List("snippet");
             musicList.Q = song; // Replace with your search term.

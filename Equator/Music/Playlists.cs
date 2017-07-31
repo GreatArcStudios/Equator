@@ -12,6 +12,7 @@ namespace Equator.Music
     internal class Playlists
     {
         public static PlaylistItemListResponse CurrentPlaylistItemListResponse;
+
         /**  NOT DONE TOPIC PLAYIST ISSUES 
         public static void GetTopicPlayist()
         {
@@ -27,9 +28,10 @@ namespace Equator.Music
             var response = await playlistItemRequest.ExecuteAsync();
             return response;
         }
+
         public static async Task<PlaylistListResponse> GetUserPlaylist()
         {
-            await GoogleServices.AuthUserCredential();  
+            await GoogleServices.AuthUserCredential();
             var credential = GoogleServices.Credential;
             var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, true, credential);
             var userPlaylistRequest = service.Playlists.List("snippet");
@@ -38,7 +40,7 @@ namespace Equator.Music
             Console.WriteLine("First id response from getuserplaylist " + userPlaylistResponse.Items[0].Id);
             return userPlaylistResponse;
         }
-        
+
         /*
            Get top 50 songs from this playlist: https://www.youtube.com/playlist?list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG
         */

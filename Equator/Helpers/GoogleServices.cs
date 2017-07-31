@@ -63,7 +63,7 @@ namespace Equator.Helpers
                 },
                 // This OAuth 2.0 access scope allows for read-only access to the authenticated 
                 // user's account, but not other types of account access.
-                new[] { YouTubeService.Scope.Youtube, PlusService.Scope.PlusMe },
+                new[] {YouTubeService.Scope.Youtube, PlusService.Scope.PlusMe},
                 "user",
                 CancellationToken.None,
                 new FileDataStore(FilePaths.SaveUserCreds(), true)
@@ -74,7 +74,6 @@ namespace Equator.Helpers
 
         public static string GetUserPicture()
         {
-           
             var userPerson = CreatePlusService(ApiKey, true, Credential).People.Get("me").Execute();
             try
             {

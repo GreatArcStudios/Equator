@@ -1,24 +1,27 @@
 ﻿<UserControl x:Class="Equator.Controls.YoutubePlayer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
              xmlns:local="clr-namespace:Equator.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="270" d:DesignWidth="480" Width="480" Height="270" MinWidth="32" MinHeight="32" >
+             mc:Ignorable="d"
+             d:DesignHeight="270" d:DesignWidth="480" Width="480" Height="270" MinWidth="32" MinHeight="32">
     <Grid x:Name="Container">
         <Grid.RowDefinitions>
-            <RowDefinition Height="66*"/>
-            <RowDefinition Height="139*"/>
-            <RowDefinition Height="65"/>
+            <RowDefinition Height="66*" />
+            <RowDefinition Height="139*" />
+            <RowDefinition Height="65" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="64*"/>
-            <ColumnDefinition Width="351*"/>
-            <ColumnDefinition Width="65*"/>
+            <ColumnDefinition Width="64*" />
+            <ColumnDefinition Width="351*" />
+            <ColumnDefinition Width="65*" />
         </Grid.ColumnDefinitions>
-        <Rectangle Grid.ColumnSpan="3" Fill="#8C808080" Grid.RowSpan="3" Width="466" Height="262" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,-2,0"/>
-        <cefSharp:ChromiumWebBrowser x:Name="CefPlayer" Address="" Width="480" Height="270" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.ColumnSpan="3" Grid.RowSpan="3" Padding="0" Margin="0" />
+        <Rectangle Grid.ColumnSpan="3" Fill="#8C808080" Grid.RowSpan="3" Width="466" Height="262"
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,-2,0" />
+        <cefSharp:ChromiumWebBrowser x:Name="CefPlayer" Address="" Width="480" Height="270"
+                                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                     Grid.ColumnSpan="3" Grid.RowSpan="3" Padding="0" Margin="0" />
     </Grid>
 </UserControl>

@@ -18,7 +18,7 @@ namespace Equator.Helpers
             {
                 return FilePaths.SaveThumb() + "\\" + songName + ".png";
             }
-           
+
             //SongThumbUris.Add(FilePaths.SaveThumb() + "\\" + songName + ".png");
             return FilePaths.SaveThumb() + "\\" + songName + ".png";
         }

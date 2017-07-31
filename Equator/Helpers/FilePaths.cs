@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
+
 //using VideoLibrary;
 
 namespace Equator.Helpers
@@ -10,6 +11,7 @@ namespace Equator.Helpers
         public static readonly string DefaultImageLocation =
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Equator Music\\userdata\\images\\DefaultImage.png";
+
         private static readonly string saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
                                                       "\\Equator Music\\cache";
 
@@ -24,7 +26,7 @@ namespace Equator.Helpers
         private static readonly string UserCredLocation =
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Equator Music\\userdata\\credentials";
-        
+
         public static string SaveLocation()
         {
             if (!Directory.Exists(saveLocation))

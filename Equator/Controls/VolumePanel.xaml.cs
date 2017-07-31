@@ -1,26 +1,24 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using CefSharp;
-using CefSharp.Wpf;
 
 namespace Equator.Controls
 {
     /// <summary>
-    /// Interaction logic for VolumePanel.xaml
+    ///     Interaction logic for VolumePanel.xaml
     /// </summary>
     public partial class VolumePanel : UserControl
     {
         public double Volume = 100.00;
+
         //private MediaElement _mediaElement;
         public VolumePanel()
         {
             InitializeComponent();
             slider.Maximum = 1;
-            slider.Minimum = 0; 
+            slider.Minimum = 0;
         }
-       /* private void VolumeBar_DragStarted(object sender, DragStartedEventArgs e)
+
+        /* private void VolumeBar_DragStarted(object sender, DragStartedEventArgs e)
         {
             slider = (Slider)sender;
         }
@@ -41,7 +39,7 @@ namespace Equator.Controls
             Dispatcher.Invoke(() =>
             {
                 Volume = slider.Value;
-                int labelContent = (int)(Volume * 100);
+                var labelContent = (int) (Volume * 100);
                 label.Content = labelContent + "%";
             });
         }

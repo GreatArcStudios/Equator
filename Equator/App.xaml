@@ -14,9 +14,10 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatSlider.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
 
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style x:Key ="ScrollerThumb" TargetType="{x:Type Thumb}" >
+            <Style x:Key="ScrollerThumb" TargetType="{x:Type Thumb}">
                 <Setter Property="SnapsToDevicePixels"
                         Value="True" />
                 <Setter Property="OverridesDefaultStyle"
@@ -28,13 +29,13 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Thumb">
-                            <Border Name ="ThumbBorder" CornerRadius="2" Background="White"></Border>
+                            <Border Name="ThumbBorder" CornerRadius="2" Background="White" />
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="GhostWhite" TargetName="ThumbBorder"></Setter>
+                                    <Setter Property="Background" Value="GhostWhite" TargetName="ThumbBorder" />
                                 </Trigger>
                                 <Trigger Property="IsDragging" Value="True">
-                                    <Setter Property="Background" Value="#FF5F5F63" TargetName="ThumbBorder"></Setter>
+                                    <Setter Property="Background" Value="#FF5F5F63" TargetName="ThumbBorder" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -76,16 +77,16 @@
 
                                 <Track IsDirectionReversed="True" Name="PART_Track">
 
-                                    <Track.IncreaseRepeatButton >
-                                        <RepeatButton Command="ScrollPageDown" Style="{StaticResource ScrollBarPageButton}"></RepeatButton>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton Command="ScrollPageDown"
+                                                      Style="{StaticResource ScrollBarPageButton}" />
                                     </Track.IncreaseRepeatButton>
                                     <Track.Thumb>
-                                        <Thumb Style="{StaticResource ScrollerThumb}">
-
-                                        </Thumb>
+                                        <Thumb Style="{StaticResource ScrollerThumb}" />
                                     </Track.Thumb>
-                                    <Track.DecreaseRepeatButton >
-                                        <RepeatButton Command="ScrollPageUp" Style="{StaticResource ScrollBarPageButton}"></RepeatButton>
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton Command="ScrollPageUp"
+                                                      Style="{StaticResource ScrollBarPageButton}" />
                                     </Track.DecreaseRepeatButton>
                                 </Track>
 
@@ -94,13 +95,13 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <Style TargetType="ScrollViewer" x:Key ="FlatScrollViewer" BasedOn="{StaticResource {x:Type ScrollViewer}}">
-                <Setter Property="BorderThickness" Value="0"></Setter>
-                <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"></Setter>
+            <Style TargetType="ScrollViewer" x:Key="FlatScrollViewer" BasedOn="{StaticResource {x:Type ScrollViewer}}">
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
                 <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
-                <Setter Property="Width" Value="Auto"></Setter>
-                <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
-                <Setter Property="Template" >
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ScrollViewer">
                             <Grid Width="{TemplateBinding Width}" Background="{TemplateBinding Background}" Margin="0">
@@ -109,14 +110,16 @@
 
                                 <ScrollContentPresenter x:Name="ScrollContentPresenter" />
 
-                                <ScrollBar Name="PART_VerticalScrollBar" Style="{StaticResource FlatScrollBar}" IsTabStop="False"
+                                <ScrollBar Name="PART_VerticalScrollBar" Style="{StaticResource FlatScrollBar}"
+                                           IsTabStop="False"
                                            Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                                            Orientation="Vertical"
                                            ViewportSize="{TemplateBinding ViewportHeight}"
                                            Maximum="{TemplateBinding ScrollableHeight}"
                                            Minimum="0"
-                                           Value="{TemplateBinding VerticalOffset}" HorizontalContentAlignment="Right" VerticalContentAlignment="Stretch" HorizontalAlignment="Right" Width="13" ScrollViewer.CanContentScroll="True" >
-                                </ScrollBar>
+                                           Value="{TemplateBinding VerticalOffset}" HorizontalContentAlignment="Right"
+                                           VerticalContentAlignment="Stretch" HorizontalAlignment="Right" Width="13"
+                                           ScrollViewer.CanContentScroll="True" />
                             </Grid>
                         </ControlTemplate>
                     </Setter.Value>

@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,45 +10,47 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Resources;
 using System.Windows.Threading;
 using CefSharp;
 using Equator.Controls;
 using Equator.Helpers;
 using Equator.Music;
-using Google.Apis.YouTube.v3.Data;
 using MahApps.Metro.Controls;
 using SuperfastBlur;
-using System.Windows.Media.Animation;
+using Color = System.Windows.Media.Color;
+using Image = System.Drawing.Image;
 
 namespace Equator
 {
     /// <summary>
     ///     Interaction logic for MusicPanel.xaml
     /// </summary>
-
     public partial class MusicPanel : MetroWindow
     {
-        [DllImport("gdi32.dll")] static extern bool DeleteObject(IntPtr hObject);
+        [DllImport("gdi32.dll")]
+        private static extern bool DeleteObject(IntPtr hObject);
 
         public static bool IsPlaying;
         public static int PlayListIndex;
+
         public static bool IsReplay
         {
             get => _isReplay;
             set => _isReplay = IsReplay;
         }
+
         private static int _index;
         private MusicCards _musicCards;
         private bool _sliderDragging;
         private static bool _isReplay;
         private bool _isShuffle;
         private bool _playingSongs = true;
-        private System.Windows.Media.Color _selectedColor = System.Windows.Media.Color.FromArgb(127, 180, 180, 180);
-        private System.Windows.Media.Color _deselectedColor = System.Windows.Media.Color.FromArgb(127, 126, 126, 126);
-        private System.Windows.Media.Color _hoverColor = System.Windows.Media.Color.FromArgb(127, 170, 170, 170);
-        private System.Windows.Media.Color _pressedColor = System.Windows.Media.Color.FromArgb(153, 60, 60, 60);
+        private readonly Color _selectedColor = Color.FromArgb(127, 180, 180, 180);
+        private readonly Color _deselectedColor = Color.FromArgb(127, 126, 126, 126);
+        private readonly Color _hoverColor = Color.FromArgb(127, 170, 170, 170);
+        private Color _pressedColor = Color.FromArgb(153, 60, 60, 60);
 
         //private string songURI;
         private const string CurrentTimeScript =
@@ -68,9 +69,8 @@ namespace Equator
             if (!File.Exists(FilePaths.SaveUserImage() + "\\Userimage.png"))
                 userImageBrush = new ImageBrush(new BitmapImage(new Uri(GoogleServices.GetUserPicture())));
             else
-            {
-                userImageBrush = new ImageBrush(new BitmapImage(new Uri(FilePaths.SaveUserImage() + "\\Userimage.png")));
-            }
+                userImageBrush =
+                    new ImageBrush(new BitmapImage(new Uri(FilePaths.SaveUserImage() + "\\Userimage.png")));
             userImageBrush.TileMode = TileMode.None;
             Userbutton.Background = userImageBrush;
             //timer init 
@@ -89,7 +89,8 @@ namespace Equator
             else
             {
                 #region First run 
-                var image = System.Drawing.Image.FromFile(new Uri(@"Images\Img_0535.jpg", UriKind.Relative).ToString());
+
+                var image = Image.FromFile(new Uri(@"Images\Img_0535.jpg", UriKind.Relative).ToString());
                 var blur = new GaussianBlur(image as Bitmap);
                 var blurredThumb = blur.Process(70);
                 image.Dispose();
@@ -104,6 +105,7 @@ namespace Equator
                 DeleteObject(hBitmap);
                 backgroundImageBrush.Stretch = Stretch.UniformToFill;
                 Background.Fill = backgroundImageBrush;
+
                 #endregion
             }
             //init media player
@@ -140,7 +142,7 @@ namespace Equator
                             Console.WriteLine(response.Result.ToString());
                             try
                             {
-                                PlayBarSlider.Value = (double)response.Result;
+                                PlayBarSlider.Value = (double) response.Result;
                                 if (Math.Abs(PlayBarSlider.Value - PlayBarSlider.Maximum) < 0.001)
                                     PlayBackEnded();
                             }
@@ -269,7 +271,6 @@ namespace Equator
                         ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i, ref media.CefPlayer);
                     MusicContainer.Children.Add(_musicCards);
                 }
-
             }
         }
 
@@ -277,7 +278,6 @@ namespace Equator
         {
             if (e.Key == Key.Enter)
                 SearchButton_Click(this, new RoutedEventArgs());
-
         }
 
         private void Userbutton_Click(object sender, RoutedEventArgs e)
@@ -294,7 +294,6 @@ namespace Equator
 
         private void Play_Pause_Button_Click(object sender, EventArgs e)
         {
-
             if (IsPlaying)
             {
                 //mediaElement.Pause();
@@ -304,9 +303,9 @@ namespace Equator
                     "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
                 media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                 IsPlaying = false;
-                Uri playUri = new Uri("Icons/Play.png", UriKind.Relative);
-                StreamResourceInfo streamInfo = Application.GetResourceStream(playUri);
-                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                var playUri = new Uri("Icons/Play.png", UriKind.Relative);
+                var streamInfo = Application.GetResourceStream(playUri);
+                var temp = BitmapFrame.Create(streamInfo.Stream);
                 Play_Pause_Button.Background = new ImageBrush(temp);
             }
             else if (_songLoaded)
@@ -317,9 +316,9 @@ namespace Equator
                 //mediaElement.Play();
                 ///mediaElement.Opacity = 100;
                 IsPlaying = true;
-                Uri pauseUri = new Uri("Icons/Stop.png", UriKind.Relative);
-                StreamResourceInfo streamInfo = Application.GetResourceStream(pauseUri);
-                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                var pauseUri = new Uri("Icons/Stop.png", UriKind.Relative);
+                var streamInfo = Application.GetResourceStream(pauseUri);
+                var temp = BitmapFrame.Create(streamInfo.Stream);
                 Play_Pause_Button.Background = new ImageBrush(temp);
             }
         }
@@ -327,7 +326,6 @@ namespace Equator
         private void PanelKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Space)
-            {
                 if (IsPlaying)
                 {
                     //mediaElement.Pause();
@@ -335,9 +333,9 @@ namespace Equator
                         "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
                     media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                     IsPlaying = false;
-                    Uri playUri = new Uri("Icons/Play.png", UriKind.Relative);
-                    StreamResourceInfo streamInfo = Application.GetResourceStream(playUri);
-                    BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                    var playUri = new Uri("Icons/Play.png", UriKind.Relative);
+                    var streamInfo = Application.GetResourceStream(playUri);
+                    var temp = BitmapFrame.Create(streamInfo.Stream);
                     Play_Pause_Button.Background = new ImageBrush(temp);
                 }
                 else
@@ -347,24 +345,22 @@ namespace Equator
                         "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
                     media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                     IsPlaying = true;
-                    Uri playUri = new Uri("Icons/Stop.png", UriKind.Relative);
-                    StreamResourceInfo streamInfo = Application.GetResourceStream(playUri);
-                    BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                    var playUri = new Uri("Icons/Stop.png", UriKind.Relative);
+                    var streamInfo = Application.GetResourceStream(playUri);
+                    var temp = BitmapFrame.Create(streamInfo.Stream);
                     Play_Pause_Button.Background = new ImageBrush(temp);
                 }
-            }
-
         }
 
         private void PlayBar_DragStarted(object sender, DragStartedEventArgs e)
         {
-            PlayBarSlider = (Slider)sender;
+            PlayBarSlider = (Slider) sender;
             _sliderDragging = true;
         }
 
         private void PlayBar_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            PlayBarSlider = (Slider)sender;
+            PlayBarSlider = (Slider) sender;
             _sliderDragging = false;
             var script =
                 string.Format(
@@ -375,7 +371,7 @@ namespace Equator
 
         private void PlayBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            PlayBarSlider = (Slider)sender;
+            PlayBarSlider = (Slider) sender;
             Dispatcher.Invoke(() =>
             {
                 if (PlayBarSlider.Value <= 60 * 60)
@@ -403,7 +399,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 
                     if (response.Success && response.Result != null)
                     {
-                        _songDuration = (double)response.Result;
+                        _songDuration = (double) response.Result;
                         Dispatcher.Invoke(() =>
                         {
                             if (_songDuration <= 60 * 60)
@@ -422,8 +418,6 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             Panel.SetZIndex(media, 3);
                         });
                         // Console.WriteLine("Song duration: " + songDuration);
-
-
                     }
                 });
             media.CefPlayer.GetMainFrame()
@@ -435,14 +429,12 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                         var response = x.Result;
 
                         if (response.Success && response.Result != null)
-                        {
                             Dispatcher.Invoke(() =>
                             {
                                 //Console.WriteLine("Music Volume " + response.Result);
-                                VolumeControl.slider.Value = (int)response.Result;
-                                VolumeControl.label.Content = (int)(VolumeControl.slider.Value * 100) + "%";
+                                VolumeControl.slider.Value = (int) response.Result;
+                                VolumeControl.label.Content = (int) (VolumeControl.slider.Value * 100) + "%";
                             });
-                        }
                     });
         }
 
@@ -483,17 +475,20 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     PlayListIndex = Playlists.CurrentPlaylistItemListResponse.Items.Count - 1;
                     await GetSong.PlaySpecifiedSong(Background,
                         Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong, media.CefPlayer, Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
+                        media.CefPlayer,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
                 else
                 {
                     //otherwise play the next song
                     await GetSong.PlaySpecifiedSong(Background,
                         Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong, media.CefPlayer, Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
+                        media.CefPlayer,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
             }
-
         }
 
         private async void PlayBackEnded()
@@ -527,7 +522,6 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     IsPlaying = true;
                     _songLoaded = true;
                 }
-
             }
             else
             {
@@ -541,7 +535,8 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 }
                 else
                 {
-                    await GetSong.AutoPlaySong(_index + 1, CurrentSong, UserPlaylist_Content, Background, media.CefPlayer,
+                    await GetSong.AutoPlaySong(_index + 1, CurrentSong, UserPlaylist_Content, Background,
+                        media.CefPlayer,
                         true);
                     IsPlaying = true;
                     _songLoaded = true;
@@ -565,29 +560,31 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             if (_isReplay)
             {
                 _isReplay = false;
-                Uri uri = new Uri("Icons/16 replay.png", UriKind.Relative);
-                StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
-                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                var uri = new Uri("Icons/16 replay.png", UriKind.Relative);
+                var streamInfo = Application.GetResourceStream(uri);
+                var temp = BitmapFrame.Create(streamInfo.Stream);
                 Replay_Button.Background = new ImageBrush(temp);
             }
             else
             {
                 _isReplay = true;
-                Uri uri = new Uri("Icons/16 replay selected.png", UriKind.Relative);
-                StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
-                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                var uri = new Uri("Icons/16 replay selected.png", UriKind.Relative);
+                var streamInfo = Application.GetResourceStream(uri);
+                var temp = BitmapFrame.Create(streamInfo.Stream);
                 Replay_Button.Background = new ImageBrush(temp);
             }
-
         }
 
         private void VolumeControl_OnDragCompleted(object sender, DragCompletedEventArgs e)
         {
             VolumeControl.Volume = VolumeControl.slider.Value;
-            int labelContent = (int)(VolumeControl.Volume * 100);
+            var labelContent = (int) (VolumeControl.Volume * 100);
             VolumeControl.label.Content = labelContent + "%";
             //_mediaElement.Volume = Volume;
-            media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(String.Format("(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.volume = {0}}})();", VolumeControl.Volume));
+            media.CefPlayer.GetMainFrame()
+                .ExecuteJavaScriptAsync(string.Format(
+                    "(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.volume = {0}}})();",
+                    VolumeControl.Volume));
         }
 
         private void VolumeControl_OnLoaded(object sender, RoutedEventArgs e)
@@ -600,37 +597,32 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             if (_songLoaded || IsPlaying)
             {
                 Panel.SetZIndex(VolumeControl, 3);
-                Uri uri = new Uri("Icons/16 volume selected.png", UriKind.Relative);
-                StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
-                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                var uri = new Uri("Icons/16 volume selected.png", UriKind.Relative);
+                var streamInfo = Application.GetResourceStream(uri);
+                var temp = BitmapFrame.Create(streamInfo.Stream);
                 Volume_Button.Background = new ImageBrush(temp);
             }
-
         }
 
         private void VolumeControl_OnMouseLeave(object sender, MouseEventArgs e)
         {
             Panel.SetZIndex(VolumeControl, -99999);
-            Uri uri = new Uri("Icons/16 Volume.png", UriKind.Relative);
-            StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
-            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            var uri = new Uri("Icons/16 Volume.png", UriKind.Relative);
+            var streamInfo = Application.GetResourceStream(uri);
+            var temp = BitmapFrame.Create(streamInfo.Stream);
             Volume_Button.Background = new ImageBrush(temp);
         }
 
         private void MusicPanel_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Right)
-            {
                 media.CefPlayer.GetMainFrame()
                     .ExecuteJavaScriptAsync(
                         "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = youtubePlayer.currentTime+10;})();");
-            }
             else if (e.Key == Key.Left)
-            {
                 media.CefPlayer.GetMainFrame()
                     .ExecuteJavaScriptAsync(
                         "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = youtubePlayer.currentTime-10;})();");
-            }
         }
 
         private void Shuffle_Button_OnClick(object sender, EventArgs e)
@@ -638,22 +630,22 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             if (_isShuffle)
             {
                 _isShuffle = false;
-                Uri uri = new Uri("Icons/32 shuffle.png", UriKind.Relative);
-                StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
-                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                var uri = new Uri("Icons/32 shuffle.png", UriKind.Relative);
+                var streamInfo = Application.GetResourceStream(uri);
+                var temp = BitmapFrame.Create(streamInfo.Stream);
                 Shuffle_Button.Background = new ImageBrush(temp);
             }
             else
             {
                 _isShuffle = true;
                 _isReplay = false;
-                Uri uri = new Uri("Icons/32 shuffle selected.png", UriKind.Relative);
-                StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
-                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                var uri = new Uri("Icons/32 shuffle selected.png", UriKind.Relative);
+                var streamInfo = Application.GetResourceStream(uri);
+                var temp = BitmapFrame.Create(streamInfo.Stream);
                 Shuffle_Button.Background = new ImageBrush(temp);
-                 uri = new Uri("Icons/16 replay.png", UriKind.Relative);
+                uri = new Uri("Icons/16 replay.png", UriKind.Relative);
                 streamInfo = Application.GetResourceStream(uri);
-                 temp = BitmapFrame.Create(streamInfo.Stream);
+                temp = BitmapFrame.Create(streamInfo.Stream);
                 Replay_Button.Background = new ImageBrush(temp);
             }
         }
@@ -695,17 +687,20 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     PlayListIndex = 0;
                     await GetSong.PlaySpecifiedSong(Background,
                         Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong, media.CefPlayer, Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
+                        media.CefPlayer,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
                 else
                 {
                     //otherwise play the next song
                     await GetSong.PlaySpecifiedSong(Background,
                         Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong, media.CefPlayer, Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
+                        media.CefPlayer,
+                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
             }
-
         }
 
         private void VolumeControl_LostFocus(object sender, RoutedEventArgs e)
@@ -717,11 +712,12 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         {
             SearchBox.Text = "";
         }
+
         //#TODO Create method to show dropdown options for videos when typing 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
         }
+
         //TODO: create UI for playlist and implement the UI switching (songs and playlists) here
         private void SongSelector_Click(object sender, RoutedEventArgs e)
         {
@@ -745,7 +741,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             {
                 Panel.SetZIndex(BoredLabel, -9999);
                 _firstSwitch = false;
-                string oldText = CurrentSong.Text;
+                var oldText = CurrentSong.Text;
                 CurrentSong.Text = "Loading Your Playlists...";
                 //init user playlist
                 var userPlaylists = await Playlists.GetUserPlaylist();
@@ -762,9 +758,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 if (oldText.Equals("Now Playing: nothing!"))
                     CurrentSong.Text = "Now Playing: nothing!";
                 else
-                {
                     CurrentSong.Text = oldText;
-                }
                 Console.WriteLine("Created User Playlists");
             }
             //Panel.SetZIndex(UserPlaylists, 3);
@@ -774,6 +768,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             Panel.SetZIndex(SongSearchContainer, -9999);
             Panel.SetZIndex(Expanded_Playlist_Holder, 4);
         }
+
         private void SongSelector_MouseEnter(object sender, MouseEventArgs e)
         {
             if (!_playingSongs)
@@ -802,12 +797,12 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         {
             if (!media.Minimized)
             {
-                ((Storyboard)FindResource("minimize")).Begin(media.Container);
+                ((Storyboard) FindResource("minimize")).Begin(media.Container);
                 media.Minimized = true;
             }
             else
             {
-                ((Storyboard)FindResource("maximize")).Begin(media.Container);
+                ((Storyboard) FindResource("maximize")).Begin(media.Container);
                 media.Minimized = false;
             }
         }

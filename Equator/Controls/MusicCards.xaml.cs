@@ -1,15 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Equator.Helpers;
-using Equator.Music;
-using Path = System.IO.Path;
 using CefSharp.Wpf;
+using Equator.Music;
 
 namespace Equator.Controls
 {
@@ -26,6 +23,7 @@ namespace Equator.Controls
         private Label _endTimeLabel;
         private Slider _playBarSlider;
         public int Index;
+
         public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
             ref MediaElement mediaElement, ref TextBlock songLabel, ref Label endTimeLabel,
             ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer)
@@ -53,7 +51,7 @@ namespace Equator.Controls
         }
 
         public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
-             ref TextBlock songLabel, ref Label endTimeLabel,
+            ref TextBlock songLabel, ref Label endTimeLabel,
             ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer)
         {
             InitializeComponent();
@@ -84,22 +82,22 @@ namespace Equator.Controls
         /// <returns></returns>
         private async void LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
-            MusicCardContent = (Canvas)sender;
+            MusicCardContent = (Canvas) sender;
             Play.Opacity = 100;
-            await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, Index, SongTitle.Text, _songLabel, _youtubePlayer);
-
+            await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, Index, SongTitle.Text, _songLabel,
+                _youtubePlayer);
         }
 
         private void MusicCardContent_MouseEnter(object sender, MouseEventArgs e)
         {
-            ((Storyboard)FindResource("fadeinplay")).Begin(Play);
-            ((Storyboard)FindResource("fadeinoverlay")).Begin(Overlay);
+            ((Storyboard) FindResource("fadeinplay")).Begin(Play);
+            ((Storyboard) FindResource("fadeinoverlay")).Begin(Overlay);
         }
 
         private void MusicCardContent_MouseLeave(object sender, MouseEventArgs e)
         {
-            ((Storyboard)FindResource("fadeoutplay")).Begin(Play);
-            ((Storyboard)FindResource("fadeoutoverlay")).Begin(Overlay);
+            ((Storyboard) FindResource("fadeoutplay")).Begin(Play);
+            ((Storyboard) FindResource("fadeoutoverlay")).Begin(Overlay);
         }
     }
 }

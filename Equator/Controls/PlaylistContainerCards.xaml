@@ -1,53 +1,63 @@
 ﻿<UserControl
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             xmlns:local="clr-namespace:Equator.Controls"
-             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Name="Control" x:Class="Equator.Controls.PlaylistContainerCards"
-             mc:Ignorable="d" 
-             d:DesignHeight="736" d:DesignWidth="1365">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:local="clr-namespace:Equator.Controls"
+    xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Name="Control"
+    x:Class="Equator.Controls.PlaylistContainerCards"
+    mc:Ignorable="d"
+    d:DesignHeight="736" d:DesignWidth="1365">
     <Grid x:Name="Container" MinWidth="1365" MinHeight="736">
         <Grid.RowDefinitions>
-            <RowDefinition Height="45*"/>
-            <RowDefinition Height="44*"/>
-            <RowDefinition Height="271*"/>
-            <RowDefinition Height="376*"/>
+            <RowDefinition Height="45*" />
+            <RowDefinition Height="44*" />
+            <RowDefinition Height="271*" />
+            <RowDefinition Height="376*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Image x:Name="BackgroundImage" Grid.RowSpan="4">
             <Image.OpacityMask>
-                <ImageBrush Stretch="Uniform"/>
+                <ImageBrush Stretch="Uniform" />
             </Image.OpacityMask>
         </Image>
-        <Button x:Name="Close" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Width="64" VerticalContentAlignment="Top" Margin="0,15,19,0" Click="Close_Click" Height="64" Grid.RowSpan="2" Style="{DynamicResource MetroCircleButtonStyle}" BorderBrush="White">
+        <Button x:Name="Close" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Width="64"
+                VerticalContentAlignment="Top" Margin="0,15,19,0" Click="Close_Click" Height="64" Grid.RowSpan="2"
+                Style="{DynamicResource MetroCircleButtonStyle}" BorderBrush="White">
             <Button.Background>
-                <ImageBrush ImageSource="/Equator;component/Icons/Exit-01.png"/>
+                <ImageBrush ImageSource="/Equator;component/Icons/Exit-01.png" />
             </Button.Background>
         </Button>
-        <ScrollViewer Grid.RowSpan="2" Grid.Row="2" Style ="{StaticResource FlatScrollViewer}">
+        <ScrollViewer Grid.RowSpan="2" Grid.Row="2" Style="{StaticResource FlatScrollViewer}">
             <StackPanel x:Name="PlaylistItemHolder" Loaded="PlaylistItemHolder_Loaded" />
         </ScrollViewer>
 
-        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,18,0,0" Width="1256" Grid.RowSpan="2" Height="62">
-            <Label x:Name="Playlist_Title" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Height="62" Width="260" Background="{x:Null}" Foreground="White" HorizontalContentAlignment="Center" FontSize="40" FontWeight="SemiBold" FontStretch="SemiExpanded" FontFamily="Roboto"/>
-            <Label x:Name="Channel_Title" Content="Label" VerticalAlignment="Top" Height="62" Background="{x:Null}" Foreground="White" HorizontalContentAlignment="Center" FontSize="40" FontStretch="SemiExpanded" FontFamily="Roboto" FontWeight="Light" Width="165" Padding="5"/>
-            <Button x:Name="Play" Content="play" HorizontalAlignment="Left" VerticalAlignment="Top" Width="225" Height="62" Foreground="White" Custom:ControlsHelper.ContentCharacterCasing="Upper" Custom:ButtonHelper.CornerRadius="0" FontSize="20" FontWeight="Bold" Margin="20,0,0,0">
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,18,0,0"
+                    Width="1256" Grid.RowSpan="2" Height="62">
+            <Label x:Name="Playlist_Title" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Height="62" Width="260" Background="{x:Null}" Foreground="White" HorizontalContentAlignment="Center"
+                   FontSize="40" FontWeight="SemiBold" FontStretch="SemiExpanded" FontFamily="Roboto" />
+            <Label x:Name="Channel_Title" Content="Label" VerticalAlignment="Top" Height="62" Background="{x:Null}"
+                   Foreground="White" HorizontalContentAlignment="Center" FontSize="40" FontStretch="SemiExpanded"
+                   FontFamily="Roboto" FontWeight="Light" Width="165" Padding="5" />
+            <Button x:Name="Play" Content="play" HorizontalAlignment="Left" VerticalAlignment="Top" Width="225"
+                    Height="62" Foreground="White" Custom:ControlsHelper.ContentCharacterCasing="Upper"
+                    Custom:ButtonHelper.CornerRadius="0" FontSize="20" FontWeight="Bold" Margin="20,0,0,0">
                 <Button.Style>
                     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="#7F7E7E7E" />
-                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="BorderThickness" Value="0" />
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#7FAAAAAA"/>
-                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Background" Value="#7FAAAAAA" />
+                                <Setter Property="BorderThickness" Value="0" />
                             </Trigger>
 
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#993C3C3C"/>
+                                <Setter Property="Background" Value="#993C3C3C" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>
