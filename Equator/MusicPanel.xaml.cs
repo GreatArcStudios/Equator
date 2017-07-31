@@ -647,10 +647,14 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             {
                 _isShuffle = true;
                 _isReplay = false;
-                Uri uri = new Uri("Icons/32 shufle selected.png", UriKind.Relative);
+                Uri uri = new Uri("Icons/32 shuffle selected.png", UriKind.Relative);
                 StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
                 BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
                 Shuffle_Button.Background = new ImageBrush(temp);
+                 uri = new Uri("Icons/16 replay.png", UriKind.Relative);
+                streamInfo = Application.GetResourceStream(uri);
+                 temp = BitmapFrame.Create(streamInfo.Stream);
+                Replay_Button.Background = new ImageBrush(temp);
             }
         }
 
@@ -729,6 +733,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             TransitioningContentControl.Content = SongSearchContainer;
             Panel.SetZIndex(UserPlaylists, -9999);
             Panel.SetZIndex(PlaylistsHolder, -9999);
+            Panel.SetZIndex(Expanded_Playlist_Holder, -9999);
         }
 
         private async void PlaylistSelector_Click(object sender, RoutedEventArgs e)
@@ -744,15 +749,16 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 CurrentSong.Text = "Loading Your Playlists...";
                 //init user playlist
                 var userPlaylists = await Playlists.GetUserPlaylist();
-                foreach (Playlist userPlaylistResponse in userPlaylists.Items)
+                /*foreach (Playlist userPlaylistResponse in userPlaylists.Items)
                 {
                     Console.WriteLine(userPlaylistResponse.Id);
                     var playlistItems = await Playlists.PlaylistToPlaylistItems(userPlaylistResponse.Id);
                     UserPlaylist_Content.Children.Add(
                         new PlaylistContainer(playlistItems, userPlaylistResponse.Snippet.Title, CurrentSong, Background, media.CefPlayer));
-                    PlaylistsHolder.Children.Add(new PlaylistCards(true, userPlaylistResponse.Snippet.Title,
-                        playlistItems, CurrentSong, Background, media.CefPlayer, Expanded_Playlist_Holder));
-                }
+                    
+                }*/
+                PlaylistsHolder.Children.Add(new PlaylistCards(true, "null", userPlaylists
+                    , null, CurrentSong, Background, media.CefPlayer, Expanded_Playlist_Holder));
                 if (oldText.Equals("Now Playing: nothing!"))
                     CurrentSong.Text = "Now Playing: nothing!";
                 else
@@ -761,11 +767,12 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 }
                 Console.WriteLine("Created User Playlists");
             }
-            Panel.SetZIndex(UserPlaylists, 3);
+            //Panel.SetZIndex(UserPlaylists, 3);
             Panel.SetZIndex(PlaylistsHolder, 3);
-            FullGrid.Children.Remove(UserPlaylists);
-            TransitioningContentControl.Content = UserPlaylists;
+            FullGrid.Children.Remove(PlaylistsHolder);
+            TransitioningContentControl.Content = PlaylistsHolder;
             Panel.SetZIndex(SongSearchContainer, -9999);
+            Panel.SetZIndex(Expanded_Playlist_Holder, 4);
         }
         private void SongSelector_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -804,7 +811,5 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 media.Minimized = false;
             }
         }
-
-
     }
 }

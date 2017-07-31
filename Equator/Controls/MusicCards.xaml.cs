@@ -47,9 +47,9 @@ namespace Equator.Controls
             _songLabel = songLabel;
             _endTimeLabel = endTimeLabel;
             _playBarSlider = slider;
-            this.Index = index;
+            Index = index;
             _backgroundRect = backgroundRectangle;
-            this._youtubePlayer = youtubePlayer;
+            _youtubePlayer = youtubePlayer;
         }
 
         public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
@@ -70,9 +70,9 @@ namespace Equator.Controls
             _songLabel = songLabel;
             _endTimeLabel = endTimeLabel;
             _playBarSlider = slider;
-            this.Index = index;
+            Index = index;
             _backgroundRect = backgroundRectangle;
-            this._youtubePlayer = youtubePlayer;
+            _youtubePlayer = youtubePlayer;
         }
 
 

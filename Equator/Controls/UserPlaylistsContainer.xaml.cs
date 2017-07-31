@@ -18,6 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Equator.Helpers;
 using SuperfastBlur;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace Equator.Controls
 {
@@ -26,56 +27,20 @@ namespace Equator.Controls
     /// </summary>
     public partial class UserPlaylistsContainer : UserControl
     {
-        [DllImport("gdi32.dll")] static extern bool DeleteObject(IntPtr hObject);
-        public UserPlaylistsContainer()
+        private PlaylistCards _card;
+        public UserPlaylistsContainer(PlaylistCards card)
         {
             InitializeComponent();
-            var image = new BitmapImage(new Uri(FilePaths.SaveUserImage()));
-            var bitmap = convertBitmap(image);
-            var blur = new GaussianBlur(bitmap);
-            Bitmap blurredThumb = null;
-            try
-            {
-                blurredThumb = blur.Process(15);
-
-            }
-            catch
-            {
-                blurredThumb = blur.Process(15);
-
-            }
-            bitmap.Dispose();
-            var hBitmap = blurredThumb.GetHbitmap();
-            var backgroundImageBrush = new ImageBrush();
-            backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()
-            );
-            DeleteObject(hBitmap);
-            blurredThumb.Dispose();
-            backgroundImageBrush.Stretch = Stretch.UniformToFill;
-            BackgroundImage.Source = backgroundImageBrush.ImageSource;
+            _card = card;
         }
-        /// <summary>
-        /// https://social.msdn.microsoft.com/Forums/vstudio/en-US/13147707-a9d3-40b9-82e4-290d1c64ccac/bitmapbitmapimage-conversion?forum=wpf
-        /// </summary>
-        /// <param name="bitImage"></param>
-        /// <returns></returns>
-        private Bitmap convertBitmap(BitmapImage bitImage)
-        {
-            using (MemoryStream outStream = new MemoryStream())
-            {
-                BitmapEncoder enc = new BmpBitmapEncoder();
-                enc.Frames.Add(BitmapFrame.Create(bitImage));
-                enc.Save(outStream);
-                System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
-                return bitmap;
-            }
-        }
+
         private async void Close_Click(object sender, RoutedEventArgs e)
         {
-            await Dispatcher.InvokeAsync(() => { Container.Opacity = 0; });
+            await Dispatcher.InvokeAsync(() =>
+            {
+                Container.Opacity = 0;
+                Panel.SetZIndex(_card, 3);
+            });
         }
     }
 }

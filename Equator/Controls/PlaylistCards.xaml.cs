@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,14 +11,18 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using CefSharp.Wpf;
 using Equator.Helpers;
+using Equator.Music;
 using Google.Apis.YouTube.v3.Data;
+using SuperfastBlur;
+using Image = System.Windows.Controls.Image;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace Equator.Controls
 {
@@ -25,23 +31,28 @@ namespace Equator.Controls
     /// </summary>
     public partial class PlaylistCards : UserControl
     {
-        internal PlaylistItemListResponse _playlistItemListResponse;
-        internal bool _isUserPlaylist; 
+        [DllImport("gdi32.dll")] static extern bool DeleteObject(IntPtr hObject);
+
+        private PlaylistItemListResponse _playlistItemListResponse;
+        private bool _isUserPlaylist;
         private string _playlistName;
-        private TextBlock _songLabel; 
+        private TextBlock _songLabel;
         private bool _firstShow = true;
         private Rectangle _backgroundRectangle;
         private ChromiumWebBrowser _youtubePlayer;
-        private Grid _expandedPlaylistHolder; 
-        public PlaylistCards(bool userPlaylist, string playlistName, PlaylistItemListResponse playlistItemListResponse, TextBlock songLabel, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer, Grid expandedPlaylistHolder)
+        private Grid _expandedPlaylistHolder;
+        private PlaylistListResponse _userPlaylists;
+        private UserPlaylistsContainer _userPlaylistsContainer;
+        public PlaylistCards(bool userPlaylist, string playlistName, PlaylistListResponse userPlaylistResponse, PlaylistItemListResponse playlistItemListResponse, TextBlock songLabel, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer, Grid expandedPlaylistHolder)
         {
             InitializeComponent();
             Overlay.Opacity = 0;
             _playlistItemListResponse = playlistItemListResponse;
             _isUserPlaylist = userPlaylist;
-            Console.WriteLine(playlistName + " has " + playlistItemListResponse.Items.Count);
             if (userPlaylist)
             {
+                _userPlaylists = userPlaylistResponse;
+                Console.WriteLine(_userPlaylists);
                 //create user image
                 ImageBrush userImageBrush;
                 if (!File.Exists(FilePaths.SaveUserImage() + "\\Userimage.png"))
@@ -53,8 +64,10 @@ namespace Equator.Controls
                 }
                 userImageBrush.TileMode = TileMode.None;
                 UserPlaylistCover.Fill = userImageBrush;
-                PlaylistName.Text = playlistName; 
-                Dispatcher.Invoke(() => { SearchedPlaylistImagesCover.IsEnabled = false; });
+                PlaylistName.Text = "Your Playlists";
+                Panel.SetZIndex(SearchedPlaylistImagesCover, -9999);
+                Channel_name.Content = _userPlaylists.Items[0].Snippet.ChannelTitle;
+                _userPlaylistsContainer = new UserPlaylistsContainer(this);
             }
             else
             {
@@ -64,8 +77,11 @@ namespace Equator.Controls
                     ImageSource tempSource = new BitmapImage(backgroundImageUri);
                     ((Image)SearchedPlaylistImagesCover.Children[i]).Source = tempSource;
                 }
+                Panel.SetZIndex(UserPlaylistCover, -9999);
+                Channel_name.Content = playlistItemListResponse.Items[0].Snippet.ChannelTitle;
+                PlaylistName.Text = playlistName;
             }
-            Channel_name.Content = playlistName;
+
             _songLabel = songLabel;
             _playlistName = playlistName;
             _backgroundRectangle = backgroundRectangle;
@@ -75,7 +91,7 @@ namespace Equator.Controls
 
         private void SearchedPlaylistImagesCover_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var playlistContainer = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer );
+            var playlistContainer = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer);
             if (_firstShow)
             {
                 var parent = VisualTreeHelper.GetParent(this);
@@ -83,15 +99,115 @@ namespace Equator.Controls
             }
 
         }
-        private void UserPlaylistCover_MouseDown(object sender, MouseButtonEventArgs e)
+        private async void UserPlaylistCover_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var playlistContainer = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer);
             if (_firstShow)
             {
-                _expandedPlaylistHolder.Children.Add(playlistContainer);
+                _firstShow = false;
+                try
+                {
+                    File.Copy(FilePaths.SaveUserImage() + "\\Userimage.png",
+                        FilePaths.SaveUserImage() + "\\Userimage_temp.png", false);
+
+                }
+                catch
+                {
+
+                }
+                var tempPath = FilePaths.SaveUserImage() + "\\Userimage_temp.png";
+                var image = new BitmapImage(new Uri(tempPath));
+                var bitmap = convertBitmap(image);
+                var blur = new GaussianBlur(bitmap);
+                Bitmap blurredThumb = null;
+                try
+                {
+                    blurredThumb = blur.Process(15);
+
+                }
+                catch
+                {
+                    blurredThumb = blur.Process(15);
+
+                }
+                bitmap.Dispose();
+                var hBitmap = blurredThumb.GetHbitmap();
+                var backgroundImageBrush = new ImageBrush();
+                backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
+                    IntPtr.Zero,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions()
+                );
+                DeleteObject(hBitmap);
+                blurredThumb.Dispose();
+                backgroundImageBrush.Stretch = Stretch.UniformToFill;
+                _backgroundRectangle.Fill = backgroundImageBrush;
+                try
+                {
+                    File.Delete(FilePaths.SaveUserImage() + "\\Userimage_temp.png");
+                }
+                catch
+                {
+                    Console.WriteLine("Deleting temp user image failed");
+                }
+                foreach (Google.Apis.YouTube.v3.Data.Playlist userPlaylistResponse in _userPlaylists.Items)
+                {
+                    var playlistItems = await Playlists.PlaylistToPlaylistItems(userPlaylistResponse.Id);
+                    _userPlaylistsContainer.PlaylistItemHolder.Children.Add(new PlaylistCards(false,
+                        userPlaylistResponse.Snippet.Title, null, playlistItems, _songLabel, _backgroundRectangle,
+                        _youtubePlayer, _expandedPlaylistHolder));
+                }
+                Panel.SetZIndex(this, -9999);
+                await Dispatcher.InvokeAsync(() => { _expandedPlaylistHolder.Children.Add(_userPlaylistsContainer); });
+            }
+            else
+            {
+                Panel.SetZIndex(this, -9999);
+                await Dispatcher.InvokeAsync(() => { _userPlaylistsContainer.Container.Opacity = 100; });
+                var tempPath = FilePaths.SaveUserImage() + "\\Userimage_temp.png";
+                var image = new BitmapImage(new Uri(tempPath));
+                var bitmap = convertBitmap(image);
+                var blur = new GaussianBlur(bitmap);
+                Bitmap blurredThumb = null;
+                try
+                {
+                    blurredThumb = blur.Process(15);
+
+                }
+                catch
+                {
+                    blurredThumb = blur.Process(15);
+
+                }
+                bitmap.Dispose();
+                var hBitmap = blurredThumb.GetHbitmap();
+                var backgroundImageBrush = new ImageBrush();
+                backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
+                    IntPtr.Zero,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions()
+                );
+                DeleteObject(hBitmap);
+                blurredThumb.Dispose();
+                backgroundImageBrush.Stretch = Stretch.UniformToFill;
+                _backgroundRectangle.Fill = backgroundImageBrush;
             }
         }
-
+        /// <summary>
+        /// https://social.msdn.microsoft.com/Forums/vstudio/en-US/13147707-a9d3-40b9-82e4-290d1c64ccac/bitmapbitmapimage-conversion?forum=wpf
+        /// </summary>
+        /// <param name="bitImage"></param>
+        /// <returns></returns>
+        private Bitmap convertBitmap(BitmapImage bitImage)
+        {
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitImage));
+                enc.Save(outStream);
+                System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
+                return bitmap;
+            }
+        }
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
             ((Storyboard)FindResource("FadeIn")).Begin(Overlay);

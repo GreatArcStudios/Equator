@@ -285,7 +285,6 @@
     <Compile Include="Controls\VolumePanel.xaml.cs">
       <DependentUpon>VolumePanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\SmoothTransition.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -349,7 +348,6 @@
     <Compile Include="MusicPanel.xaml.cs">
       <DependentUpon>MusicPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Music\GetMusic.cs" />
     <Compile Include="Music\Playlists.cs" />
     <Compile Include="Music\GetSong.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

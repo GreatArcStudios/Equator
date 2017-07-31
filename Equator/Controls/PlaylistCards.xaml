@@ -47,10 +47,10 @@
                 <RowDefinition Height="100*"/>
                 <RowDefinition Height="101*"/>
             </Grid.RowDefinitions>
-            <Image x:Name="first_image"/>
-            <Image x:Name="second_image" Grid.Column="1"/>
-            <Image x:Name="third_image" Grid.Row="1"/>
-            <Image x:Name="third_image_Copy" Grid.Row="1" Grid.Column="1"/>
+            <Image x:Name="first_image" Stretch="UniformToFill"/>
+            <Image x:Name="second_image" Grid.Column="1" Stretch="UniformToFill"/>
+            <Image x:Name="third_image" Grid.Row="1" Stretch="UniformToFill"/>
+            <Image x:Name="third_image_Copy" Grid.Row="1" Grid.Column="1" Stretch="UniformToFill"/>
         </Grid>
         <Rectangle x:Name="Overlay" StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0"
             Margin="22,4,28,88" MouseDown="UserPlaylistCover_MouseDown" Fill="#99343434" Width="200" Height="183"/>

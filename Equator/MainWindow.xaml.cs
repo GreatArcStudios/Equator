@@ -1,12 +1,7 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using Equator.Helpers;
 using MahApps.Metro.Controls;
-using System;
-using SuperfastBlur;
-using System.Diagnostics;
-using System.Drawing.Imaging;
-using System.Drawing;
-using System.IO;
 
 namespace Equator
 {

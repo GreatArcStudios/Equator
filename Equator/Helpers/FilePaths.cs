@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using Equator.Music;
 //using VideoLibrary;
 
 namespace Equator.Helpers

@@ -13,7 +13,7 @@ namespace Equator.Controls
     public partial class VolumePanel : UserControl
     {
         public double Volume = 100.00;
-        private MediaElement _mediaElement;
+        //private MediaElement _mediaElement;
         public VolumePanel()
         {
             InitializeComponent();
