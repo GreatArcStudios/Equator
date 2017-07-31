@@ -244,22 +244,32 @@ namespace Equator
         }
 #endif
         //TODO: make it so that topic videos don't play
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            Panel.SetZIndex(BoredLabel, -9999999);
+            Panel.SetZIndex(BoredLabel, -9999);
             MusicContainer.Children.RemoveRange(0, MusicContainer.Children.Count);
-            QueryYoutube.QueryVideoList(SearchBox.Text);
+            await QueryYoutube.QueryVideoListAsync(SearchBox.Text);
             //add card add logic here
             for (var i = 0; i < QueryYoutube.SongCount; i++)
             {
                 var artistName = QueryYoutube.SearchListResponse.Items[i].Snippet.ChannelTitle;
-                if (artistName.Contains("VEVO"))
-                    artistName.Replace("VEVO", "");
-                _musicCards = new MusicCards(QueryYoutube.SearchListResponse.Items[i].Id.VideoId,
-                    QueryYoutube.SearchListResponse.Items[i].Snippet.Title, artistName,
-                    new Uri(QueryYoutube.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
-                    ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i, ref media.CefPlayer);
-                MusicContainer.Children.Add(_musicCards);
+                if (!artistName.ToLower().Contains("topic") && i > 0)
+                {
+                    _musicCards = new MusicCards(QueryYoutube.SearchListResponse.Items[i].Id.VideoId,
+                        QueryYoutube.SearchListResponse.Items[i].Snippet.Title, artistName,
+                        new Uri(QueryYoutube.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
+                        ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i, ref media.CefPlayer);
+                    MusicContainer.Children.Add(_musicCards);
+                }
+                else if (i == 0)
+                {
+                    _musicCards = new MusicCards(QueryYoutube.SearchListResponse.Items[i].Id.VideoId,
+                        QueryYoutube.SearchListResponse.Items[i].Snippet.Title, artistName,
+                        new Uri(QueryYoutube.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
+                        ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i, ref media.CefPlayer);
+                    MusicContainer.Children.Add(_musicCards);
+                }
+
             }
         }
 
@@ -399,14 +409,14 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             if (_songDuration <= 60 * 60)
                             {
                                 EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss");
-                               // CurrentTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss");
+                                // CurrentTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss");
                                 PlayBarSlider.Width = 906;
                             }
                             else
                             {
                                 EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"hh\:mm\:ss");
-                               // CurrentTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"hh\:mm\:ss");
-                               PlayBarSlider.Width = 880;
+                                // CurrentTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"hh\:mm\:ss");
+                                PlayBarSlider.Width = 880;
                             }
                             _songLoaded = true;
                             Panel.SetZIndex(media, 3);
@@ -438,7 +448,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 
         private async void GoLeftButtonClick(object sender, EventArgs e)
         {
-            if (Panel.GetZIndex(UserPlaylists).Equals(-9999))
+            if (_playingSongs)
             {
                 SetIndex(_index - 1);
                 //make it play the last song
@@ -501,7 +511,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             else if (_isShuffle)
             {
                 //TODO: add condition for other playlist panels
-                if (Panel.GetZIndex(UserPlaylists).Equals(-9999))
+                if (_playingSongs)
                 {
                     var random = new Random();
                     await GetSong.AutoPlaySong(random.Next(0, 50), CurrentSong, MusicContainer, Background,
@@ -522,7 +532,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             else
             {
                 //TODO: add condition for other playlist panels
-                if (Panel.GetZIndex(UserPlaylists).Equals(-9999))
+                if (_playingSongs)
                 {
                     await GetSong.AutoPlaySong(_index + 1, CurrentSong, MusicContainer, Background, media.CefPlayer,
                         false);
@@ -553,9 +563,22 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         private void Replay_Button_Click(object sender, EventArgs e)
         {
             if (_isReplay)
+            {
                 _isReplay = false;
+                Uri uri = new Uri("Icons/16 replay.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                Replay_Button.Background = new ImageBrush(temp);
+            }
             else
+            {
                 _isReplay = true;
+                Uri uri = new Uri("Icons/16 replay selected.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                Replay_Button.Background = new ImageBrush(temp);
+            }
+
         }
 
         private void VolumeControl_OnDragCompleted(object sender, DragCompletedEventArgs e)
@@ -575,12 +598,23 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         private void Volume_Button_Click(object sender, RoutedEventArgs e)
         {
             if (_songLoaded || IsPlaying)
+            {
                 Panel.SetZIndex(VolumeControl, 3);
+                Uri uri = new Uri("Icons/16 volume selected.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                Volume_Button.Background = new ImageBrush(temp);
+            }
+
         }
 
         private void VolumeControl_OnMouseLeave(object sender, MouseEventArgs e)
         {
             Panel.SetZIndex(VolumeControl, -99999);
+            Uri uri = new Uri("Icons/16 Volume.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            Volume_Button.Background = new ImageBrush(temp);
         }
 
         private void MusicPanel_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -604,11 +638,19 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             if (_isShuffle)
             {
                 _isShuffle = false;
+                Uri uri = new Uri("Icons/32 shuffle.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                Shuffle_Button.Background = new ImageBrush(temp);
             }
             else
             {
                 _isShuffle = true;
                 _isReplay = false;
+                Uri uri = new Uri("Icons/32 shufle selected.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                Shuffle_Button.Background = new ImageBrush(temp);
             }
         }
 
@@ -616,7 +658,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         private async void Next_Song_Button_OnClick(object sender, EventArgs e)
         {
             BoredLabel.IsEnabled = false;
-            if (Panel.GetZIndex(UserPlaylists).Equals(-9999))
+            if (_playingSongs)
             {
                 SetIndex(_index + 1);
                 //make it play the first song
@@ -659,7 +701,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                         Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong, media.CefPlayer, Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
             }
-            
+
         }
 
         private void VolumeControl_LostFocus(object sender, RoutedEventArgs e)
@@ -686,6 +728,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             FullGrid.Children.Remove(SongSearchContainer);
             TransitioningContentControl.Content = SongSearchContainer;
             Panel.SetZIndex(UserPlaylists, -9999);
+            Panel.SetZIndex(PlaylistsHolder, -9999);
         }
 
         private async void PlaylistSelector_Click(object sender, RoutedEventArgs e)
@@ -707,6 +750,8 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     var playlistItems = await Playlists.PlaylistToPlaylistItems(userPlaylistResponse.Id);
                     UserPlaylist_Content.Children.Add(
                         new PlaylistContainer(playlistItems, userPlaylistResponse.Snippet.Title, CurrentSong, Background, media.CefPlayer));
+                    PlaylistsHolder.Children.Add(new PlaylistCards(true, userPlaylistResponse.Snippet.Title,
+                        playlistItems, CurrentSong, Background, media.CefPlayer, Expanded_Playlist_Holder));
                 }
                 if (oldText.Equals("Now Playing: nothing!"))
                     CurrentSong.Text = "Now Playing: nothing!";
@@ -717,6 +762,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 Console.WriteLine("Created User Playlists");
             }
             Panel.SetZIndex(UserPlaylists, 3);
+            Panel.SetZIndex(PlaylistsHolder, 3);
             FullGrid.Children.Remove(UserPlaylists);
             TransitioningContentControl.Content = UserPlaylists;
             Panel.SetZIndex(SongSearchContainer, -9999);
@@ -758,5 +804,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 media.Minimized = false;
             }
         }
+
+
     }
 }

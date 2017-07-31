@@ -79,8 +79,10 @@ namespace Equator.Helpers
             var userPerson = CreatePlusService(ApiKey, true, Credential).People.Get("me").Execute();
             try
             {
+                var userImageUrl = userPerson.Image.Url;
+                userImageUrl = userImageUrl.Replace("sz=50", "sz=1000");
                 var webClient = new WebClient();
-                webClient.DownloadFile(userPerson.Image.Url,
+                webClient.DownloadFile(userImageUrl,
                     FilePaths.SaveUserImage() + "\\" + "Userimage.png");
             }
             catch

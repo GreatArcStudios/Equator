@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -25,10 +26,19 @@ namespace Equator.Controls
     public partial class PlaylistCards : UserControl
     {
         internal PlaylistItemListResponse _playlistItemListResponse;
-        public PlaylistCards(bool userPlaylist, string playlistName, PlaylistItemListResponse playlistItemListResponse, TextBlock songLabel, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer)
+        internal bool _isUserPlaylist; 
+        private string _playlistName;
+        private TextBlock _songLabel; 
+        private bool _firstShow = true;
+        private Rectangle _backgroundRectangle;
+        private ChromiumWebBrowser _youtubePlayer;
+        private Grid _expandedPlaylistHolder; 
+        public PlaylistCards(bool userPlaylist, string playlistName, PlaylistItemListResponse playlistItemListResponse, TextBlock songLabel, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer, Grid expandedPlaylistHolder)
         {
             InitializeComponent();
+            Overlay.Opacity = 0;
             _playlistItemListResponse = playlistItemListResponse;
+            _isUserPlaylist = userPlaylist;
             Console.WriteLine(playlistName + " has " + playlistItemListResponse.Items.Count);
             if (userPlaylist)
             {
@@ -43,6 +53,8 @@ namespace Equator.Controls
                 }
                 userImageBrush.TileMode = TileMode.None;
                 UserPlaylistCover.Fill = userImageBrush;
+                PlaylistName.Text = playlistName; 
+                Dispatcher.Invoke(() => { SearchedPlaylistImagesCover.IsEnabled = false; });
             }
             else
             {
@@ -50,11 +62,44 @@ namespace Equator.Controls
                 {
                     Uri backgroundImageUri = new Uri(_playlistItemListResponse.Items[i].Snippet.Thumbnails.Medium.Url);
                     ImageSource tempSource = new BitmapImage(backgroundImageUri);
-                    ((Image) SearchedPlaylistImagesCover.Children[i]).Source = tempSource;
+                    ((Image)SearchedPlaylistImagesCover.Children[i]).Source = tempSource;
                 }
             }
             Channel_name.Content = playlistName;
+            _songLabel = songLabel;
+            _playlistName = playlistName;
+            _backgroundRectangle = backgroundRectangle;
+            _youtubePlayer = youtubePlayer;
+            _expandedPlaylistHolder = expandedPlaylistHolder;
+        }
 
+        private void SearchedPlaylistImagesCover_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var playlistContainer = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer );
+            if (_firstShow)
+            {
+                var parent = VisualTreeHelper.GetParent(this);
+                ((WrapPanel)parent).Children.Add(playlistContainer);
+            }
+
+        }
+        private void UserPlaylistCover_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var playlistContainer = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer);
+            if (_firstShow)
+            {
+                _expandedPlaylistHolder.Children.Add(playlistContainer);
+            }
+        }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ((Storyboard)FindResource("FadeIn")).Begin(Overlay);
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ((Storyboard)FindResource("FadeOut")).Begin(Overlay);
         }
     }
 }

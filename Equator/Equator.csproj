@@ -275,6 +275,9 @@
     <Compile Include="Controls\PlaylistItem.xaml.cs">
       <DependentUpon>PlaylistItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UserPlaylistsContainer.xaml.cs">
+      <DependentUpon>UserPlaylistsContainer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\YoutubePlayer.xaml.cs">
       <DependentUpon>YoutubePlayer.xaml</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -305,6 +308,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PlaylistItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\UserPlaylistsContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -403,6 +410,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\Fullscreen icon.png" />
+    <Resource Include="Icons\16 replay selected.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\16 volume selected.png" />
+    <Resource Include="Icons\32 shuffle selected.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\Exit-01.png" />
     <Content Include="Images\Dandelion no crop.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

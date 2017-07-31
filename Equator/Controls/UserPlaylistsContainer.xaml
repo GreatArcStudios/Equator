@@ -1,0 +1,29 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Equator.Controls"
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="Equator.Controls.UserPlaylistsContainer"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Width="Auto" Height="Auto" MinWidth="1365" MinHeight="736">
+    <Grid x:Name="Container">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="314*"/>
+            <ColumnDefinition Width="141*"/>
+        </Grid.ColumnDefinitions>
+        <Image x:Name="BackgroundImage" Grid.ColumnSpan="2" Margin="0,0,10,0">
+            <Image.OpacityMask>
+                <ImageBrush Stretch="Uniform"/>
+            </Image.OpacityMask>
+        </Image>
+        <Button x:Name="Close" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Width="63" VerticalContentAlignment="Top" Margin="0,15,29,0" Click="Close_Click" Height="64" Style="{DynamicResource MetroCircleButtonStyle}" BorderBrush="White" Grid.Column="1">
+            <Button.Background>
+                <ImageBrush ImageSource="/Equator;component/Icons/Exit-01.png"/>
+            </Button.Background>
+        </Button>
+        <ScrollViewer Style ="{StaticResource FlatScrollViewer}" Grid.ColumnSpan="2" Margin="0,89,0,0">
+            <StackPanel x:Name="PlaylistItemHolder"  />
+        </ScrollViewer>
+    </Grid>
+</UserControl>

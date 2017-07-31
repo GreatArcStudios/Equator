@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Google.Apis.YouTube.v3.Data;
 
 namespace Equator.Helpers
@@ -7,6 +8,7 @@ namespace Equator.Helpers
     internal static class QueryYoutube
     {
         public static SearchListResponse SearchListResponse;
+        //public static SearchListResponse TopicSearchListResponse;
         //public static string CurrentSongTitle; 
         public static int SongCount { get; set; } = 50;
         //keep the list of videos separate from the playlists
@@ -16,9 +18,9 @@ namespace Equator.Helpers
         ///     Gets a list of songs of size <c>int SongCount</c>
         /// </summary>
         /// <param name="song"></param>
-        public static void QueryVideoList(string song)
+        public static async Task<int> QueryVideoListAsync(string song)
         {
-            
+
 
             var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
             var musicList = service.Search.List("snippet");
@@ -27,7 +29,7 @@ namespace Equator.Helpers
             musicList.Type = "video";
 
             // Call the search.list method to retrieve results matching the specified query term.
-            SearchListResponse = musicList.Execute();
+            SearchListResponse = await musicList.ExecuteAsync();
             try
             {
                 Console.WriteLine("Queryed Youtube for SearchListResponse and SearchListResponse created with " +
@@ -38,6 +40,13 @@ namespace Equator.Helpers
             {
                 Console.WriteLine("Query Failed");
             }
+            musicList.Q = song + " topic"; // Replace with your search term.
+            musicList.MaxResults = 1;
+            musicList.Type = "video";
+            var topicResponse = await musicList.ExecuteAsync();
+            SearchListResponse.Items.Insert(0, topicResponse.Items[0]);
+            //TopicSearchListResponse = await musicList.ExecuteAsync();
+            return 1;
         }
         public static void QueryPlaylistList(string song)
         {

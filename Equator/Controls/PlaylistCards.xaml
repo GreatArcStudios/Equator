@@ -5,10 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Equator.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Width="300" Height="300">
+             d:DesignHeight="300" d:DesignWidth="300" Width="250" Height="275" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave">
+    <UserControl.Resources>
+        <Storyboard TargetProperty="Opacity" x:Key="FadeIn">
+            <DoubleAnimation BeginTime="0:0:0" Duration="0:0:0.2" From="0" To ="0.6"></DoubleAnimation>
+        </Storyboard>
+        <Storyboard TargetProperty="Opacity" x:Key="FadeOut">
+            <DoubleAnimation BeginTime="0:0:0" Duration="0:0:0.2" From="0.6" To ="0"></DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
     <Grid>
         <Rectangle x:Name="UserPlaylistCover" StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0"
-        Margin="22,4,28,95">
+        Margin="23,4,28,88" MouseDown="UserPlaylistCover_MouseDown" Height="183">
             <Rectangle.Fill>
                 <ImageBrush ImageSource="../Images/IMG_0547.JPG" Stretch="UniformToFill" />
             </Rectangle.Fill>
@@ -30,7 +38,7 @@
             </TextBlock>
 
         </Label>
-        <Grid x:Name="SearchedPlaylistImagesCover" HorizontalAlignment="Left" Height="200" VerticalAlignment="Bottom" Width="250" Margin="22,0,0,95">
+        <Grid x:Name="SearchedPlaylistImagesCover" HorizontalAlignment="Left" Height="183" VerticalAlignment="Bottom" Width="200" Margin="23,0,0,88" MouseDown="SearchedPlaylistImagesCover_MouseDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -44,6 +52,8 @@
             <Image x:Name="third_image" Grid.Row="1"/>
             <Image x:Name="third_image_Copy" Grid.Row="1" Grid.Column="1"/>
         </Grid>
+        <Rectangle x:Name="Overlay" StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0"
+            Margin="22,4,28,88" MouseDown="UserPlaylistCover_MouseDown" Fill="#99343434" Width="200" Height="183"/>
 
     </Grid>
 </UserControl>
