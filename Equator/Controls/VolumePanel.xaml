@@ -15,8 +15,6 @@
                Foreground="White" FontWeight="ExtraLight" />
         <Label x:Name="Title_Label" Content="Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Width="123"
                Foreground="White" FontSize="20" Height="34" FontWeight="Medium" Margin="5,0,0,0" />
-        <Image x:Name="image" HorizontalAlignment="Left" Height="16" VerticalAlignment="Top" Width="16"
-               Margin="51,7,0,0" Source="/Equator;component/Icons/volume.png" Stretch="Fill" />
 
     </Grid>
 </UserControl>

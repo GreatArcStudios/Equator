@@ -9,7 +9,7 @@
     x:Class="Equator.Controls.PlaylistContainerCards"
     mc:Ignorable="d"
     d:DesignHeight="736" d:DesignWidth="1365">
-    <Grid x:Name="Container" MinWidth="1365" MinHeight="736">
+    <Grid x:Name="Container" MinWidth="1365" MinHeight="736" Background="#998D8D8D">
         <Grid.RowDefinitions>
             <RowDefinition Height="45*" />
             <RowDefinition Height="44*" />
@@ -19,20 +19,15 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Image x:Name="BackgroundImage" Grid.RowSpan="4">
-            <Image.OpacityMask>
-                <ImageBrush Stretch="Uniform" />
-            </Image.OpacityMask>
-        </Image>
-        <Button x:Name="Close" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Width="64"
-                VerticalContentAlignment="Top" Margin="0,15,19,0" Click="Close_Click" Height="64" Grid.RowSpan="2"
+        <Button x:Name="Close" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Width="48"
+                VerticalContentAlignment="Top" Margin="0,22,19,0" Click="Close_Click" Height="48" Grid.RowSpan="2"
                 Style="{DynamicResource MetroCircleButtonStyle}" BorderBrush="White">
             <Button.Background>
                 <ImageBrush ImageSource="/Equator;component/Icons/Exit-01.png" />
             </Button.Background>
         </Button>
         <ScrollViewer Grid.RowSpan="2" Grid.Row="2" Style="{StaticResource FlatScrollViewer}">
-            <StackPanel x:Name="PlaylistItemHolder" Loaded="PlaylistItemHolder_Loaded" />
+            <StackPanel x:Name="PlaylistItemHolder" Loaded="PlaylistItemHolder_Loaded" Margin="40,0,0,0" />
         </ScrollViewer>
 
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,18,0,0"

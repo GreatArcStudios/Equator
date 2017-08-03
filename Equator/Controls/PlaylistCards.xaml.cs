@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -24,43 +25,49 @@ namespace Equator.Controls
     /// </summary>
     public partial class PlaylistCards : UserControl
     {
+        internal readonly UserPlaylistsContainer UserPlaylistsContainer;
         private readonly Rectangle _backgroundRectangle;
         private readonly Grid _expandedPlaylistHolder;
         private bool _firstShow = true;
         private bool _isUserPlaylist;
+        private PlaylistContainerCards _playlistContainerCards;
 
         private readonly PlaylistItemListResponse _playlistItemListResponse;
         private readonly string _playlistName;
         private readonly TextBlock _songLabel;
         private readonly PlaylistListResponse _userPlaylists;
-        private readonly UserPlaylistsContainer _userPlaylistsContainer;
         private readonly ChromiumWebBrowser _youtubePlayer;
 
-        public PlaylistCards(bool userPlaylist, string playlistName, PlaylistListResponse userPlaylistResponse,
+        public PlaylistCards(bool userPlaylist, bool userPlaylistContainerParent, string playlistName, PlaylistListResponse userPlaylistResponse,
             PlaylistItemListResponse playlistItemListResponse, TextBlock songLabel, Rectangle backgroundRectangle,
-            ChromiumWebBrowser youtubePlayer, Grid expandedPlaylistHolder)
+            ChromiumWebBrowser youtubePlayer, Grid expandedPlaylistHolder, UserPlaylistsContainer userPlaylistsContainer)
         {
             InitializeComponent();
             Overlay.Opacity = 0;
             _playlistItemListResponse = playlistItemListResponse;
             _isUserPlaylist = userPlaylist;
+            if (userPlaylistContainerParent)
+            {
+                UserPlaylistsContainer = userPlaylistsContainer;
+            }
             if (userPlaylist)
             {
                 _userPlaylists = userPlaylistResponse;
                 Console.WriteLine(_userPlaylists);
                 //create user image
                 ImageBrush userImageBrush;
-                if (!File.Exists(FilePaths.SaveUserImage() + "\\Userimage.png"))
+                if (!File.Exists(FilePaths.UserImageLocation + "\\Userimage.png"))
                     userImageBrush = new ImageBrush(new BitmapImage(new Uri(GoogleServices.GetUserPicture())));
                 else
                     userImageBrush =
-                        new ImageBrush(new BitmapImage(new Uri(FilePaths.SaveUserImage() + "\\Userimage.png")));
+                        new ImageBrush(new BitmapImage(new Uri(FilePaths.UserImageLocation + "\\Userimage.png")));
                 userImageBrush.TileMode = TileMode.None;
                 UserPlaylistCover.Fill = userImageBrush;
                 PlaylistName.Text = "Your Playlists";
                 Panel.SetZIndex(SearchedPlaylistImagesCover, -9999);
                 Channel_name.Content = _userPlaylists.Items[0].Snippet.ChannelTitle;
-                _userPlaylistsContainer = new UserPlaylistsContainer(this);
+                UserPlaylistsContainer = new UserPlaylistsContainer(this);
+
             }
             else
             {
@@ -68,40 +75,68 @@ namespace Equator.Controls
                 {
                     var backgroundImageUri = new Uri(_playlistItemListResponse.Items[i].Snippet.Thumbnails.Medium.Url);
                     ImageSource tempSource = new BitmapImage(backgroundImageUri);
-                    ((Image) SearchedPlaylistImagesCover.Children[i]).Source = tempSource;
+                    ((Image)SearchedPlaylistImagesCover.Children[i]).Source = tempSource;
                 }
                 Panel.SetZIndex(UserPlaylistCover, -9999);
                 Channel_name.Content = playlistItemListResponse.Items[0].Snippet.ChannelTitle;
                 PlaylistName.Text = playlistName;
             }
-
+            Panel.SetZIndex(this, 1);
             _songLabel = songLabel;
             _playlistName = playlistName;
             _backgroundRectangle = backgroundRectangle;
             _youtubePlayer = youtubePlayer;
             _expandedPlaylistHolder = expandedPlaylistHolder;
+            _isUserPlaylist = userPlaylist;
         }
 
-        [DllImport("gdi32.dll")]
-        private static extern bool DeleteObject(IntPtr hObject);
+        //[DllImport("gdi32.dll")]
+        //private static extern bool DeleteObject(IntPtr hObject);
 
         private void SearchedPlaylistImagesCover_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var playlistContainer = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel,
-                _backgroundRectangle, _youtubePlayer);
+                _backgroundRectangle, _youtubePlayer, this);
             if (_firstShow)
             {
                 var parent = VisualTreeHelper.GetParent(this);
-                ((WrapPanel) parent).Children.Add(playlistContainer);
+                ((WrapPanel)parent).Children.Add(playlistContainer);
             }
         }
+        /*
+        /// <summary>
+        ///     https://social.msdn.microsoft.com/Forums/vstudio/en-US/13147707-a9d3-40b9-82e4-290d1c64ccac/bitmapbitmapimage-conversion?forum=wpf
+        /// </summary>
+        /// <param name="bitImage"></param>
+        /// <returns></returns>
+        private Bitmap convertBitmap(BitmapImage bitImage)
+        {
+            using (var outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitImage));
+                enc.Save(outStream);
+                var bitmap = new Bitmap(outStream);
+                return bitmap;
+            }
+        }*/
 
-        private async void UserPlaylistCover_MouseDown(object sender, MouseButtonEventArgs e)
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ((Storyboard)FindResource("FadeIn")).Begin(Overlay);
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ((Storyboard)FindResource("FadeOut")).Begin(Overlay);
+        }
+
+        private async void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_firstShow)
             {
                 _firstShow = false;
-                try
+                /*try
                 {
                     File.Copy(FilePaths.SaveUserImage() + "\\Userimage.png",
                         FilePaths.SaveUserImage() + "\\Userimage_temp.png", false);
@@ -141,22 +176,77 @@ namespace Equator.Controls
                 catch
                 {
                     Console.WriteLine("Deleting temp user image failed");
-                }
-                foreach (var userPlaylistResponse in _userPlaylists.Items)
+                }*/
+                if (_isUserPlaylist)
                 {
-                    var playlistItems = await Playlists.PlaylistToPlaylistItems(userPlaylistResponse.Id);
-                    _userPlaylistsContainer.PlaylistItemHolder.Children.Add(new PlaylistCards(false,
-                        userPlaylistResponse.Snippet.Title, null, playlistItems, _songLabel, _backgroundRectangle,
-                        _youtubePlayer, _expandedPlaylistHolder));
+                    foreach (var userPlaylistResponse in _userPlaylists.Items)
+                    {
+                        var playlistItems = await QueryYoutube.PlaylistToPlaylistItems(userPlaylistResponse.Id);
+                        UserPlaylistsContainer.PlaylistItemHolder.Children.Add(new PlaylistCards(false, true,
+                            userPlaylistResponse.Snippet.Title, null, playlistItems, _songLabel, _backgroundRectangle,
+                            _youtubePlayer, _expandedPlaylistHolder, UserPlaylistsContainer));
+                    }
+                    await Dispatcher.InvokeAsync(() =>
+                    {
+                        _expandedPlaylistHolder.Children.Add(UserPlaylistsContainer);
+                        ((WrapPanel)VisualTreeHelper.GetParent(this)).Opacity = 0;
+                        Panel.SetZIndex(UserPlaylistsContainer, 3);
+                    });
                 }
-                Panel.SetZIndex(this, -9999);
-                await Dispatcher.InvokeAsync(() => { _expandedPlaylistHolder.Children.Add(_userPlaylistsContainer); });
+                else if (UserPlaylistsContainer != null)
+                {
+                    _playlistContainerCards = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer, this);
+                    Panel.SetZIndex(_playlistContainerCards, 4);
+                    await Dispatcher.InvokeAsync(() =>
+                    {
+                        _expandedPlaylistHolder.Children.Add(_playlistContainerCards);
+                        UserPlaylistsContainer.Opacity = 0;
+                    });
+                }
+                else
+                {
+                    _playlistContainerCards = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer, this);
+                    Panel.SetZIndex(_playlistContainerCards, 4);
+                    await Dispatcher.InvokeAsync(() =>
+                    {
+                        _expandedPlaylistHolder.Children.Add(_playlistContainerCards);
+                        ((WrapPanel)VisualTreeHelper.GetParent(this)).Opacity = 0;
+                    });
+                }
+
             }
             else
             {
-                Panel.SetZIndex(this, -9999);
-                await Dispatcher.InvokeAsync(() => { _userPlaylistsContainer.Container.Opacity = 100; });
-                var tempPath = FilePaths.SaveUserImage() + "\\Userimage_temp.png";
+
+                if (_isUserPlaylist)
+                    await Dispatcher.InvokeAsync(() =>
+                    {
+                        Panel.SetZIndex(((WrapPanel)VisualTreeHelper.GetParent(this)), -9999);
+                        ((WrapPanel)VisualTreeHelper.GetParent(this)).Opacity = 0;
+                        UserPlaylistsContainer.Opacity = 100;
+                        Panel.SetZIndex(UserPlaylistsContainer, 3);
+                        UserPlaylistsContainer.IsEnabled = true;
+                    });
+                else if (UserPlaylistsContainer != null)
+                    await Dispatcher.InvokeAsync(() =>
+                    {
+                        Panel.SetZIndex(UserPlaylistsContainer, -9999);
+                        UserPlaylistsContainer.Opacity = 0;
+                        Panel.SetZIndex(_playlistContainerCards, 4);
+                        _playlistContainerCards.Opacity = 100;
+                        _playlistContainerCards.IsEnabled = true;
+
+                    });
+                else
+                    await Dispatcher.InvokeAsync(() =>
+                    {
+                        Panel.SetZIndex(((WrapPanel)VisualTreeHelper.GetParent(this)), -9999);
+                        ((WrapPanel)VisualTreeHelper.GetParent(this)).Opacity = 0;
+                        Panel.SetZIndex(_playlistContainerCards, 4);
+                        _playlistContainerCards.Opacity = 100;
+                        _playlistContainerCards.IsEnabled = true;
+                    });
+                /*var tempPath = FilePaths.SaveUserImage() + "\\Userimage_temp.png";
                 var image = new BitmapImage(new Uri(tempPath));
                 var bitmap = convertBitmap(image);
                 var blur = new GaussianBlur(bitmap);
@@ -180,35 +270,8 @@ namespace Equator.Controls
                 DeleteObject(hBitmap);
                 blurredThumb.Dispose();
                 backgroundImageBrush.Stretch = Stretch.UniformToFill;
-                _backgroundRectangle.Fill = backgroundImageBrush;
+                _backgroundRectangle.Fill = backgroundImageBrush;*/
             }
-        }
-
-        /// <summary>
-        ///     https://social.msdn.microsoft.com/Forums/vstudio/en-US/13147707-a9d3-40b9-82e4-290d1c64ccac/bitmapbitmapimage-conversion?forum=wpf
-        /// </summary>
-        /// <param name="bitImage"></param>
-        /// <returns></returns>
-        private Bitmap convertBitmap(BitmapImage bitImage)
-        {
-            using (var outStream = new MemoryStream())
-            {
-                BitmapEncoder enc = new BmpBitmapEncoder();
-                enc.Frames.Add(BitmapFrame.Create(bitImage));
-                enc.Save(outStream);
-                var bitmap = new Bitmap(outStream);
-                return bitmap;
-            }
-        }
-
-        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ((Storyboard) FindResource("FadeIn")).Begin(Overlay);
-        }
-
-        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ((Storyboard) FindResource("FadeOut")).Begin(Overlay);
         }
     }
 }

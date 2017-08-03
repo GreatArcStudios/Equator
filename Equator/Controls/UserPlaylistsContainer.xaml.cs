@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Equator.Controls
 {
@@ -20,8 +21,11 @@ namespace Equator.Controls
         {
             await Dispatcher.InvokeAsync(() =>
             {
-                Container.Opacity = 0;
-                Panel.SetZIndex(_card, 3);
+                this.Opacity = 0;
+                Panel.SetZIndex(((WrapPanel)VisualTreeHelper.GetParent(_card)), 3);
+                ((WrapPanel) VisualTreeHelper.GetParent(_card)).Opacity = 100;
+                Panel.SetZIndex(this, -9999);
+                IsEnabled = false;
             });
         }
     }

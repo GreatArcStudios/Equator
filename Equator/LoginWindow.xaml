@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    x:Name="Login" x:Class="Equator.MainWindow"
+    x:Name="Login" x:Class="Equator.LoginWindow"
     mc:Ignorable="d"
     Title="Login" Height="600" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid HorizontalAlignment="Left" Height="601" Width="600" Margin="0,0,-6,-30"

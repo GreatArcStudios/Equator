@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Equator.Properties;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Plus.v1;
 using Google.Apis.Services;
@@ -66,7 +67,7 @@ namespace Equator.Helpers
                 new[] {YouTubeService.Scope.Youtube, PlusService.Scope.PlusMe},
                 "user",
                 CancellationToken.None,
-                new FileDataStore(FilePaths.SaveUserCreds(), true)
+                new FileDataStore(FilePaths.UserCredLocation, true)
             );
             GetUserPicture();
             Console.WriteLine("Authenticated");
@@ -81,13 +82,13 @@ namespace Equator.Helpers
                 userImageUrl = userImageUrl.Replace("sz=50", "sz=1000");
                 var webClient = new WebClient();
                 webClient.DownloadFile(userImageUrl,
-                    FilePaths.SaveUserImage() + "\\" + "Userimage.png");
+                    FilePaths.UserImageLocation + "\\" + "Userimage.png");
             }
             catch
             {
                 Console.WriteLine("Picture in use");
             }
-            return FilePaths.SaveUserImage() + "\\" + "Userimage.png";
+            return FilePaths.UserImageLocation + "\\" + "Userimage.png";
         }
 
         public static async void LogOut()

@@ -36,12 +36,12 @@
             <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2" BeginTime="0:0:0" />
         </Storyboard>
         <Storyboard x:Key="minimize">
-            <DoubleAnimation Storyboard.TargetProperty="Height" From="270" To="64" Duration="0:0:1" BeginTime="0:0:0" />
-            <DoubleAnimation Storyboard.TargetProperty="Width" From="480" To="64" Duration="0:0:1" BeginTime="0:0:0" />
+            <DoubleAnimation Storyboard.TargetProperty="Height" From="270" To="0" Duration="0:0:1" BeginTime="0:0:0" />
+            <DoubleAnimation Storyboard.TargetProperty="Width" From="480" To="0" Duration="0:0:1" BeginTime="0:0:0" />
         </Storyboard>
         <Storyboard x:Key="maximize">
-            <DoubleAnimation Storyboard.TargetProperty="Height" From="64" To="270" Duration="0:0:1" BeginTime="0:0:0" />
-            <DoubleAnimation Storyboard.TargetProperty="Width" From="64" To="480" Duration="0:0:1" BeginTime="0:0:0" />
+            <DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="270" Duration="0:0:1" BeginTime="0:0:0" />
+            <DoubleAnimation Storyboard.TargetProperty="Width" From="0" To="480" Duration="0:0:1" BeginTime="0:0:0" />
         </Storyboard>
         <Style x:Key="ScrollerThumb" TargetType="{x:Type Thumb}">
             <Setter Property="SnapsToDevicePixels"
@@ -224,11 +224,11 @@
                     </Button.Background>
                 </Button>
                 <Label x:Name="CurrentSongContainer" HorizontalAlignment="Right"
-                       VerticalAlignment="Center" FontSize="24" Margin="30,-2,10,-4" Foreground="White" Height="46">
+                       VerticalAlignment="Center" FontSize="24" Margin="15,-2,10,-4" Foreground="White" Height="46" Width="253">
                     <Label.Effect>
                         <DropShadowEffect Color="#3FD3D3D3" BlurRadius="9" ShadowDepth="1" />
                     </Label.Effect>
-                    <TextBlock Name="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="450">Now Playing: nothing!</TextBlock>
+                    <TextBlock Name="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="450" Width="250">Now Playing: nothing!</TextBlock>
                 </Label>
                 <Button x:Name="SongSelector" Content="Songs" HorizontalAlignment="Left" VerticalAlignment="Top"
                         Width="138" Height="38" Margin="12,2,0,0" Foreground="White"
@@ -419,8 +419,6 @@
                       Grid.RowSpan="2" Margin="0" Padding="0">
             <WrapPanel x:Name="MusicContainer" Grid.Row="2" ItemHeight="279.5" ItemWidth="250" Margin="50,0,0,0" />
         </ScrollViewer>
-        <WrapPanel x:Name="PlaylistsHolder" Grid.Row="1" Grid.RowSpan="2" Margin="50,0,0,0" ItemHeight="279.5"
-                   ItemWidth="250" />
         <Expander x:Name="UserPlaylists" Header="Your Playlists" Background="#00647687" BorderBrush="#00667583"
                   FontSize="20" VerticalContentAlignment="Stretch" VerticalAlignment="Top" Grid.Row="1"
                   controls:ControlsHelper.HeaderFontStretch="SemiExpanded"
@@ -436,19 +434,23 @@
                 </ScrollViewer>
             </Grid>
         </Expander>
+        <Grid x:Name="All_Playlist_Parts" Grid.Row="1" Grid.RowSpan="2">
+            <WrapPanel x:Name="PlaylistsHolder" Margin="50,0,0,0" ItemHeight="279.5"
+                   ItemWidth="250" />
+            <Grid x:Name="Expanded_Playlist_Holder" Margin="0,-2,0,0" />
+        </Grid>
         <controls:TransitioningContentControl x:Name="TransitioningContentControl" HorizontalContentAlignment="Stretch"
                                               VerticalContentAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2" />
 
 
         <Controls:YoutubePlayer x:Name="media" x:FieldModifier="public" HorizontalAlignment="Right" Height="270"
-                                VerticalAlignment="Bottom" Width="480" Margin="0,0,14,0" Grid.Row="2"
+                                VerticalAlignment="Bottom" Width="480" Margin="0,0,13,0" Grid.Row="2"
                                 HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" />
         <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="57" VerticalAlignment="Bottom"
                               Width="250" Grid.Row="2" Thumb.DragCompleted="VolumeControl_OnDragCompleted"
                               Loaded="VolumeControl_OnLoaded" MouseLeave="VolumeControl_OnMouseLeave" MinWidth="250"
                               MinHeight="55" MaxWidth="300" MaxHeight="75" Margin="0,0,18,0"
                               LostFocus="VolumeControl_LostFocus" />
-        <Grid x:Name="Expanded_Playlist_Holder" Margin="0,86,0,68" Grid.RowSpan="4" />
 
 
     </Grid>

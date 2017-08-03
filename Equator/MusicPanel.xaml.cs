@@ -66,11 +66,11 @@ namespace Equator
             InitializeComponent();
             //create user image
             ImageBrush userImageBrush;
-            if (!File.Exists(FilePaths.SaveUserImage() + "\\Userimage.png"))
+            if (!File.Exists(FilePaths.UserImageLocation + "\\Userimage.png"))
                 userImageBrush = new ImageBrush(new BitmapImage(new Uri(GoogleServices.GetUserPicture())));
             else
                 userImageBrush =
-                    new ImageBrush(new BitmapImage(new Uri(FilePaths.SaveUserImage() + "\\Userimage.png")));
+                    new ImageBrush(new BitmapImage(new Uri(FilePaths.UserImageLocation + "\\Userimage.png")));
             userImageBrush.TileMode = TileMode.None;
             Userbutton.Background = userImageBrush;
             //timer init 
@@ -406,13 +406,13 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             {
                                 EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss");
                                 // CurrentTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"mm\:ss");
-                                PlayBarSlider.Width = 906;
+                                PlayBarSlider.Width = 895;
                             }
                             else
                             {
                                 EndTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"hh\:mm\:ss");
                                 // CurrentTimeLabel.Content = TimeSpan.FromSeconds(_songDuration).ToString(@"hh\:mm\:ss");
-                                PlayBarSlider.Width = 880;
+                                PlayBarSlider.Width = 870;
                             }
                             _songLoaded = true;
                             Panel.SetZIndex(media, 3);
@@ -448,7 +448,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 {
                     SetIndex(QueryYoutube.SearchListResponse.Items.Count - 1);
                     await
-                        GetSong.PlaySpecifiedSong(Background,
+                        Music.Music.PlaySpecifiedSong(Background,
                             QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1].Id
                                 .VideoId,
                             _index,
@@ -460,7 +460,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 else
                 {
                     //otherwise play the next song
-                    await GetSong.PlaySpecifiedSong(Background,
+                    await Music.Music.PlaySpecifiedSong(Background,
                         QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
                         _index,
                         QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
@@ -472,21 +472,21 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 PlayListIndex--;
                 if (PlayListIndex < 0)
                 {
-                    PlayListIndex = Playlists.CurrentPlaylistItemListResponse.Items.Count - 1;
-                    await GetSong.PlaySpecifiedSong(Background,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
+                    PlayListIndex = QueryYoutube.CurrentPlaylistItemListResponse.Items.Count - 1;
+                    await Music.Music.PlaySpecifiedSong(Background,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
                         media.CefPlayer,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
                 else
                 {
                     //otherwise play the next song
-                    await GetSong.PlaySpecifiedSong(Background,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
+                    await Music.Music.PlaySpecifiedSong(Background,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
                         media.CefPlayer,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
             }
         }
@@ -509,7 +509,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 if (_playingSongs)
                 {
                     var random = new Random();
-                    await GetSong.AutoPlaySong(random.Next(0, 50), CurrentSong, MusicContainer, Background,
+                    await Music.Music.AutoPlaySong(random.Next(0, 50), CurrentSong, MusicContainer, Background,
                         media.CefPlayer, false);
                     IsPlaying = true;
                     _songLoaded = true;
@@ -517,7 +517,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 else
                 {
                     var random = new Random();
-                    await GetSong.AutoPlaySong(random.Next(0, 50), CurrentSong, UserPlaylist_Content, Background,
+                    await Music.Music.AutoPlaySong(random.Next(0, 50), CurrentSong, UserPlaylist_Content, Background,
                         media.CefPlayer, true);
                     IsPlaying = true;
                     _songLoaded = true;
@@ -528,14 +528,14 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 //TODO: add condition for other playlist panels
                 if (_playingSongs)
                 {
-                    await GetSong.AutoPlaySong(_index + 1, CurrentSong, MusicContainer, Background, media.CefPlayer,
+                    await Music.Music.AutoPlaySong(_index + 1, CurrentSong, MusicContainer, Background, media.CefPlayer,
                         false);
                     IsPlaying = true;
                     _songLoaded = true;
                 }
                 else
                 {
-                    await GetSong.AutoPlaySong(_index + 1, CurrentSong, UserPlaylist_Content, Background,
+                    await Music.Music.AutoPlaySong(_index + 1, CurrentSong, UserPlaylist_Content, Background,
                         media.CefPlayer,
                         true);
                     IsPlaying = true;
@@ -549,7 +549,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             IsPlaying = false;
             mediaElement.Opacity = 0;
             if (!isReplay)
-                await GetSong.AutoPlaySong(_index + 1, CurrentSong, MusicContainer, mediaElement, Background, );
+                await Music.AutoPlaySong(_index + 1, CurrentSong, MusicContainer, mediaElement, Background, );
             else
                 mediaElement.Source = new Uri(songURI);
             mediaElement.Play();
@@ -663,7 +663,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
                     SetIndex(0);
                     await
-                        GetSong.PlaySpecifiedSong(Background,
+                        Music.Music.PlaySpecifiedSong(Background,
                             QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
                             _index,
                             QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
@@ -672,7 +672,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 else
                 {
                     //otherwise play the next song
-                    await GetSong.PlaySpecifiedSong(Background,
+                    await Music.Music.PlaySpecifiedSong(Background,
                         QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
                         _index,
                         QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
@@ -682,23 +682,23 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             else
             {
                 PlayListIndex++;
-                if (PlayListIndex == Playlists.CurrentPlaylistItemListResponse.Items.Count)
+                if (PlayListIndex == QueryYoutube.CurrentPlaylistItemListResponse.Items.Count)
                 {
                     PlayListIndex = 0;
-                    await GetSong.PlaySpecifiedSong(Background,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
+                    await Music.Music.PlaySpecifiedSong(Background,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
                         media.CefPlayer,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
                 else
                 {
                     //otherwise play the next song
-                    await GetSong.PlaySpecifiedSong(Background,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
+                    await Music.Music.PlaySpecifiedSong(Background,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
                         media.CefPlayer,
-                        Playlists.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
             }
         }
@@ -728,8 +728,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             FullGrid.Children.Remove(SongSearchContainer);
             TransitioningContentControl.Content = SongSearchContainer;
             Panel.SetZIndex(UserPlaylists, -9999);
-            Panel.SetZIndex(PlaylistsHolder, -9999);
-            Panel.SetZIndex(Expanded_Playlist_Holder, -9999);
+            Panel.SetZIndex(All_Playlist_Parts, -9999);
         }
 
         private async void PlaylistSelector_Click(object sender, RoutedEventArgs e)
@@ -742,19 +741,19 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 Panel.SetZIndex(BoredLabel, -9999);
                 _firstSwitch = false;
                 var oldText = CurrentSong.Text;
-                CurrentSong.Text = "Loading Your Playlists...";
+                CurrentSong.Text = "Loading Your QueryYoutube...";
                 //init user playlist
-                var userPlaylists = await Playlists.GetUserPlaylist();
-                /*foreach (Playlist userPlaylistResponse in userPlaylists.Items)
+                var userPlaylists = await QueryYoutube.GetUserPlaylist();
+                /*foreach (Playlist userPlaylistResponse in userQueryYoutube.Items)
                 {
                     Console.WriteLine(userPlaylistResponse.Id);
-                    var playlistItems = await Playlists.PlaylistToPlaylistItems(userPlaylistResponse.Id);
+                    var playlistItems = await QueryYoutube.PlaylistToPlaylistItems(userPlaylistResponse.Id);
                     UserPlaylist_Content.Children.Add(
                         new PlaylistContainer(playlistItems, userPlaylistResponse.Snippet.Title, CurrentSong, Background, media.CefPlayer));
                     
                 }*/
-                PlaylistsHolder.Children.Add(new PlaylistCards(true, "null", userPlaylists
-                    , null, CurrentSong, Background, media.CefPlayer, Expanded_Playlist_Holder));
+                PlaylistsHolder.Children.Add(new PlaylistCards(true, false, "null", userPlaylists
+                    , null, CurrentSong, Background, media.CefPlayer, Expanded_Playlist_Holder, null));
                 if (oldText.Equals("Now Playing: nothing!"))
                     CurrentSong.Text = "Now Playing: nothing!";
                 else
@@ -762,11 +761,10 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 Console.WriteLine("Created User Playlists");
             }
             //Panel.SetZIndex(UserPlaylists, 3);
-            Panel.SetZIndex(PlaylistsHolder, 3);
-            FullGrid.Children.Remove(PlaylistsHolder);
-            TransitioningContentControl.Content = PlaylistsHolder;
+            Panel.SetZIndex(All_Playlist_Parts, 3);
+            FullGrid.Children.Remove(All_Playlist_Parts);
+            TransitioningContentControl.Content = All_Playlist_Parts;
             Panel.SetZIndex(SongSearchContainer, -9999);
-            Panel.SetZIndex(Expanded_Playlist_Holder, 4);
         }
 
         private void SongSelector_MouseEnter(object sender, MouseEventArgs e)

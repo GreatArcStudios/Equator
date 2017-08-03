@@ -84,7 +84,7 @@ namespace Equator.Controls
         {
             MusicCardContent = (Canvas) sender;
             Play.Opacity = 100;
-            await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, Index, SongTitle.Text, _songLabel,
+            await Music.Music.PlaySpecifiedSong(_backgroundRect, _musicLink, Index, SongTitle.Text, _songLabel,
                 _youtubePlayer);
         }
 

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Equator.Controls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" Width="250" Height="275" MouseEnter="UserControl_MouseEnter"
-             MouseLeave="UserControl_MouseLeave">
+             MouseLeave="UserControl_MouseLeave" MouseDown="UserControl_MouseDown">
     <UserControl.Resources>
         <Storyboard TargetProperty="Opacity" x:Key="FadeIn">
             <DoubleAnimation BeginTime="0:0:0" Duration="0:0:0.2" From="0" To="0.6" />
@@ -17,7 +17,7 @@
     </UserControl.Resources>
     <Grid>
         <Rectangle x:Name="UserPlaylistCover" StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0"
-                   Margin="23,4,28,88" MouseDown="UserPlaylistCover_MouseDown" Height="183">
+                   Margin="23,4,28,88" Height="183">
             <Rectangle.Fill>
                 <ImageBrush ImageSource="../Images/IMG_0547.JPG" Stretch="UniformToFill" />
             </Rectangle.Fill>
@@ -56,7 +56,7 @@
             <Image x:Name="third_image_Copy" Grid.Row="1" Grid.Column="1" Stretch="UniformToFill" />
         </Grid>
         <Rectangle x:Name="Overlay" StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0"
-                   Margin="22,4,28,88" MouseDown="UserPlaylistCover_MouseDown" Fill="#99343434" Width="200"
+                   Margin="22,4,28,88" Fill="#99343434" Width="200"
                    Height="183" />
 
     </Grid>

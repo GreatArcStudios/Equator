@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CefSharp.Wpf;
+using Equator.Helpers;
 using Equator.Music;
 using Google.Apis.YouTube.v3.Data;
 
@@ -60,8 +61,8 @@ namespace Equator.Controls
         {
             Play.Opacity = 100;
             MusicPanel.PlayListIndex = _index;
-            Playlists.CurrentPlaylistItemListResponse = _parentPlaylist;
-            await GetSong.PlaySpecifiedSong(_backgroundRect, _musicLink, SongTitle.Text, _songLabel, _youtubePlayer,
+            QueryYoutube.CurrentPlaylistItemListResponse = _parentPlaylist;
+            await Music.Music.PlaySpecifiedSong(_backgroundRect, _musicLink, SongTitle.Text, _songLabel, _youtubePlayer,
                 _backgroundImageUrl);
         }
 

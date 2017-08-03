@@ -25,9 +25,10 @@ namespace Equator.Controls
         internal string _playlistName;
         internal TextBlock _songLabel;
         internal ChromiumWebBrowser _youtubePlayer;
+        private PlaylistCards _parentCard;
 
         public PlaylistContainerCards(PlaylistItemListResponse playlistItemListResponse, string playlistName,
-            TextBlock songLabel, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer)
+            TextBlock songLabel, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer, PlaylistCards parentCard)
         {
             InitializeComponent();
             _playlistItemListResponse = playlistItemListResponse;
@@ -37,56 +38,28 @@ namespace Equator.Controls
             _backgroundRectangle = backgroundRectangle;
             Playlist_Title.Content = playlistName;
             Channel_Title.Content = playlistItemListResponse.Items[0].Snippet.ChannelTitle;
-
-            var image = new BitmapImage(new Uri(playlistItemListResponse.Items[0].Snippet.Thumbnails.Medium.Url));
-            var bitmap = convertBitmap(image);
-            var blur = new GaussianBlur(bitmap);
-            Bitmap blurredThumb = null;
-            try
-            {
-                blurredThumb = blur.Process(15);
-            }
-            catch
-            {
-                blurredThumb = blur.Process(15);
-            }
-            bitmap.Dispose();
-            var hBitmap = blurredThumb.GetHbitmap();
-            var backgroundImageBrush = new ImageBrush();
-            backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()
-            );
-            DeleteObject(hBitmap);
-            blurredThumb.Dispose();
-            backgroundImageBrush.Stretch = Stretch.UniformToFill;
-            BackgroundImage.Source = backgroundImageBrush.ImageSource;
-        }
-
-        [DllImport("gdi32.dll")]
-        private static extern bool DeleteObject(IntPtr hObject);
-
-        /// <summary>
-        ///     https://social.msdn.microsoft.com/Forums/vstudio/en-US/13147707-a9d3-40b9-82e4-290d1c64ccac/bitmapbitmapimage-conversion?forum=wpf
-        /// </summary>
-        /// <param name="bitImage"></param>
-        /// <returns></returns>
-        private Bitmap convertBitmap(BitmapImage bitImage)
-        {
-            using (var outStream = new MemoryStream())
-            {
-                BitmapEncoder enc = new BmpBitmapEncoder();
-                enc.Frames.Add(BitmapFrame.Create(bitImage));
-                enc.Save(outStream);
-                var bitmap = new Bitmap(outStream);
-                return bitmap;
-            }
+            _parentCard = parentCard;
         }
 
         private async void Close_Click(object sender, RoutedEventArgs e)
         {
-            await Dispatcher.InvokeAsync(() => { Container.Opacity = 0; });
+            await Dispatcher.InvokeAsync(() =>
+            {
+                this.Opacity = 0;
+                Panel.SetZIndex(this, -9999);
+                IsEnabled = false;
+                if (_parentCard.UserPlaylistsContainer != null)
+                {
+                    _parentCard.Opacity = 100;
+                    _parentCard.UserPlaylistsContainer.Opacity = 100;
+                    Panel.SetZIndex(_parentCard.UserPlaylistsContainer, 3);
+                }
+                else
+                {
+                    ((WrapPanel) VisualTreeHelper.GetParent(_parentCard)).Opacity = 100;
+                    Panel.SetZIndex(((WrapPanel)VisualTreeHelper.GetParent(_parentCard)), 3);
+                }
+            });
         }
 
         private async void PlaylistItemHolder_Loaded(object sender, RoutedEventArgs e)
