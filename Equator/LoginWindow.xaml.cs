@@ -32,9 +32,13 @@ namespace Equator
             if (Directory.GetFiles(FilePaths.UserCredLocation).Length == 0)
             {
                 File.Delete(FilePaths.UserImageLocation + "\\Userimage.png");
-                await GoogleServices.AuthUserCredential();
+                await GoogleServices.AuthUserCredential(true);
             }
+            else
+            await GoogleServices.AuthUserCredential(false);
             var window = new MusicPanel();
+            GoogleServices.YoutubeService =
+                GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, true, GoogleServices.Credential);
             window.Show();
             Close();
         }

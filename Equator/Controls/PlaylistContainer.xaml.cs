@@ -38,7 +38,7 @@ namespace Equator.Controls
                 }
                 finally
                 {
-                    var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
+                    var service = GoogleServices.YoutubeService;
                     var request = service.Videos.List("snippet");
                     request.Id = playlistItem.Snippet.ResourceId.VideoId;
                     var response = request.Execute();

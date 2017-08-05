@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Equator.Helpers;
 using Google.Apis.YouTube.v3.Data;
 
-namespace Equator.Helpers
+namespace Equator.Music
 {
     internal static class QueryYoutube
     {
@@ -22,7 +23,7 @@ namespace Equator.Helpers
         /// <param name="song"></param>
         public static async Task<int> QueryVideoListAsync(string song)
         {
-            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
+            var service = GoogleServices.YoutubeService;
             var musicList = service.Search.List("snippet");
             musicList.Q = song; // Replace with your search term.
             musicList.MaxResults = SongCount;
@@ -51,7 +52,7 @@ namespace Equator.Helpers
 
         public static void QueryPlaylistList(string song)
         {
-            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
+            var service = GoogleServices.YoutubeService;
             var musicList = service.Search.List("snippet");
             musicList.Q = song; // Replace with your search term.
             musicList.MaxResults = SongCount;
@@ -73,7 +74,7 @@ namespace Equator.Helpers
 
         public static void QueryChannelList(string song)
         {
-            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
+            var service = GoogleServices.YoutubeService;
             var musicList = service.Search.List("snippet");
             musicList.Q = song; // Replace with your search term.
             musicList.MaxResults = SongCount;
@@ -102,7 +103,7 @@ namespace Equator.Helpers
         }  **/
         public static async Task<PlaylistItemListResponse> PlaylistToPlaylistItems(string playlistId)
         {
-            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, true, GoogleServices.Credential);
+            var service = GoogleServices.YoutubeService;
             var playlistItemRequest = service.PlaylistItems.List("snippet");
             playlistItemRequest.PlaylistId = playlistId;
             playlistItemRequest.MaxResults = 50;
@@ -110,11 +111,9 @@ namespace Equator.Helpers
             return response;
         }
 
-        public static async Task<PlaylistListResponse> GetUserPlaylist()
+        public static async Task<PlaylistListResponse> QueryUserPlaylists()
         {
-            await GoogleServices.AuthUserCredential();
-            var credential = GoogleServices.Credential;
-            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, true, credential);
+            var service = GoogleServices.YoutubeService;
             var userPlaylistRequest = service.Playlists.List("snippet");
             userPlaylistRequest.Mine = true;
             var userPlaylistResponse = await userPlaylistRequest.ExecuteAsync();
@@ -125,18 +124,18 @@ namespace Equator.Helpers
         /*
            Get top 50 songs from this playlist: https://www.youtube.com/playlist?list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG
         */
-        public static PlaylistItemListResponse GetTopSongs()
+        public static PlaylistItemListResponse QueryTopSongs()
         {
-            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
+            var service = GoogleServices.YoutubeService;
             var topPlaylistItemRequest = service.PlaylistItems.List("snippet");
             topPlaylistItemRequest.PlaylistId = "PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG";
             var playlistItemResponse = topPlaylistItemRequest.Execute();
             return playlistItemResponse;
         }
 
-        public static PlaylistItemListResponse GetNewSongs()
+        public static PlaylistItemListResponse QueryNewSongs()
         {
-            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
+            var service = GoogleServices.YoutubeService;
             var topPlaylistItemRequest = service.PlaylistItems.List("snippet");
             topPlaylistItemRequest.PlaylistId = "PLvFYFNbi-IBFeP5ALr50hoOmKiYRMvzUq";
             var playlistItemResponse = topPlaylistItemRequest.Execute();

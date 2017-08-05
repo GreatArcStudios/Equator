@@ -15,25 +15,26 @@ namespace Equator.Helpers
     {
         public static string ApiKey = "AIzaSyCFb8JKlmaP95MqqwYYBDoqvsy7YwRxztM";
         public static UserCredential Credential;
-        private static YouTubeService _youtubeService;
+        public static YouTubeService YoutubeService;
         private static PlusService _plusService;
 
         public static YouTubeService CreateYoutubeService(string apiKey, bool oAuth2, UserCredential credential)
         {
             if (oAuth2)
-                _youtubeService = new YouTubeService(new BaseClientService.Initializer
+                YoutubeService = new YouTubeService(new BaseClientService.Initializer
                 {
+                    ApiKey = apiKey,
                     HttpClientInitializer = credential,
                     ApplicationName = "EQUATORPLAYER"
                 });
             else
-                _youtubeService = new YouTubeService(new BaseClientService.Initializer
+                YoutubeService = new YouTubeService(new BaseClientService.Initializer
                 {
                     ApiKey = apiKey,
                     ApplicationName = "EQUATORPLAYER"
                 });
 
-            return _youtubeService;
+            return YoutubeService;
         }
 
         public static PlusService CreatePlusService(string apiKey, bool oAuth2, UserCredential credential)
@@ -54,7 +55,7 @@ namespace Equator.Helpers
             return _plusService;
         }
 
-        public static async Task AuthUserCredential()
+        public static async Task AuthUserCredential(bool GetPicture)
         {
             Credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                 new ClientSecrets
@@ -69,6 +70,7 @@ namespace Equator.Helpers
                 CancellationToken.None,
                 new FileDataStore(FilePaths.UserCredLocation, true)
             );
+            if(GetPicture)
             GetUserPicture();
             Console.WriteLine("Authenticated");
         }

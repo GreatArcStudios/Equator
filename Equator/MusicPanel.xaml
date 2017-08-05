@@ -223,12 +223,12 @@
                         <ImageBrush ImageSource="Icons/Search.png" Stretch="Uniform" />
                     </Button.Background>
                 </Button>
-                <Label x:Name="CurrentSongContainer" HorizontalAlignment="Right"
-                       VerticalAlignment="Center" FontSize="24" Margin="15,-2,10,-4" Foreground="White" Height="46" Width="253">
+                <Label x:Name="CurrentSongContainer"
+                       VerticalAlignment="Center" FontSize="24" Margin="15,-2,10,-4" Foreground="White" Height="46" MaxWidth="450">
                     <Label.Effect>
                         <DropShadowEffect Color="#3FD3D3D3" BlurRadius="9" ShadowDepth="1" />
                     </Label.Effect>
-                    <TextBlock Name="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="450" Width="250">Now Playing: nothing!</TextBlock>
+                    <TextBlock Name="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="450">Now Playing: nothing!</TextBlock>
                 </Label>
                 <Button x:Name="SongSelector" Content="Songs" HorizontalAlignment="Left" VerticalAlignment="Top"
                         Width="138" Height="38" Margin="12,2,0,0" Foreground="White"
@@ -444,7 +444,7 @@
 
 
         <Controls:YoutubePlayer x:Name="media" x:FieldModifier="public" HorizontalAlignment="Right" Height="270"
-                                VerticalAlignment="Bottom" Width="480" Margin="0,0,13,0" Grid.Row="2"
+                                VerticalAlignment="Bottom" Width="480" Margin="0,0,14,-0.5" Grid.Row="2"
                                 HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" />
         <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="57" VerticalAlignment="Bottom"
                               Width="250" Grid.Row="2" Thumb.DragCompleted="VolumeControl_OnDragCompleted"

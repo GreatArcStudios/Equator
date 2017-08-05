@@ -743,7 +743,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 var oldText = CurrentSong.Text;
                 CurrentSong.Text = "Loading Your QueryYoutube...";
                 //init user playlist
-                var userPlaylists = await QueryYoutube.GetUserPlaylist();
+                var userPlaylists = await QueryYoutube.QueryUserPlaylists();
                 /*foreach (Playlist userPlaylistResponse in userQueryYoutube.Items)
                 {
                     Console.WriteLine(userPlaylistResponse.Id);
