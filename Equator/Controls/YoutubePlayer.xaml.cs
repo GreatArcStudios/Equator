@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 using CefSharp;
 
 namespace Equator.Controls
@@ -9,7 +10,13 @@ namespace Equator.Controls
     /// </summary>
     public partial class YoutubePlayer : UserControl
     {
-        internal bool Minimized = false;
+        internal int State = 0;
+        internal enum WindowStates 
+        {
+            Normal,
+            Minimized,
+            Maximized
+        }
 
         public YoutubePlayer()
         {
@@ -37,6 +44,16 @@ namespace Equator.Controls
             {
                 return false;
             }
+        }
+
+        private void UserControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            ((Storyboard)FindResource("Fadeinoverlay")).Begin(YoutubePlayerOverlay);
+        }
+
+        private void UserControl_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            ((Storyboard)FindResource("Fadeoutoverlay")).Begin(YoutubePlayerOverlay);
         }
     }
 }

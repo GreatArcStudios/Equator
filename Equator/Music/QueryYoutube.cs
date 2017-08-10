@@ -16,61 +16,57 @@ namespace Equator.Music
         //public static SearchListResponse TopicSearchListResponse;
         //public static string CurrentSongTitle; 
         public static int SongCount { get; set; } = 50;
-
+        public static int PlaylistCount { get; set; } = 20;
         /// <summary>
         ///     Gets a list of songs of size <c>int SongCount</c>
         /// </summary>
         /// <param name="song"></param>
         public static async Task<int> QueryVideoListAsync(string song)
         {
-            var service = GoogleServices.YoutubeService;
-            var musicList = service.Search.List("snippet");
-            musicList.Q = song; // Replace with your search term.
-            musicList.MaxResults = SongCount;
-            musicList.Type = "video";
-
-            // Call the search.list method to retrieve results matching the specified query term.
-            SearchListResponse = await musicList.ExecuteAsync();
+            //Catches timeouts
             try
             {
-                Console.WriteLine("Queryed Youtube for SearchListResponse and SearchListResponse created with " +
-                                  SearchListResponse.Items.Count + " items" + "Fist item is: " +
-                                  SearchListResponse.Items[0].Id.VideoId);
+                var service = GoogleServices.YoutubeService;
+                var musicList = service.Search.List("snippet");
+                musicList.Q = song; // Replace with your search term.
+                musicList.MaxResults = SongCount;
+                musicList.Type = "video";
+
+                // Call the search.list method to retrieve results matching the specified query term.
+                SearchListResponse = await musicList.ExecuteAsync();
+                //Search for topic songs
+                musicList.Q = song + " topic"; // Replace with your search term.
+                musicList.MaxResults = 1;
+                musicList.Type = "video";
+                var topicResponse = await musicList.ExecuteAsync();
+                SearchListResponse.Items.Insert(0, topicResponse.Items[0]);
             }
             catch
             {
-                Console.WriteLine("Query Failed");
+                Console.WriteLine("Timed out");
             }
-            //Search for topic songs
-            musicList.Q = song + " topic"; // Replace with your search term.
-            musicList.MaxResults = 1;
-            musicList.Type = "video";
-            var topicResponse = await musicList.ExecuteAsync();
-            SearchListResponse.Items.Insert(0, topicResponse.Items[0]);
+
             //TopicSearchListResponse = await musicList.ExecuteAsync();
             return 1;
         }
 
         public static async Task QueryPlaylistList(string song)
         {
-            var service = GoogleServices.YoutubeService;
-            var musicList = service.Search.List("snippet");
-            musicList.Q = song; // Replace with your search term.
-            musicList.MaxResults = SongCount;
-            musicList.Type = "playlist";
-
-            // Call the search.list method to retrieve results matching the specified query term.
-            SearchListResponse = await musicList.ExecuteAsync();
             try
             {
-                Console.WriteLine("Queryed Youtube for SearchListResponse and SearchListResponse created with " +
-                                  SearchListResponse.Items.Count + " items" + "Fist item is: " +
-                                  SearchListResponse.Items[0].Id.VideoId);
+                var service = GoogleServices.YoutubeService;
+                var musicList = service.Search.List("snippet");
+                musicList.Q = song; // Replace with your search term.
+                musicList.MaxResults = SongCount;
+                musicList.Type = "playlist";
+                // Call the search.list method to retrieve results matching the specified query term.
+                SearchListResponse = await musicList.ExecuteAsync();
             }
             catch
             {
-                Console.WriteLine("Query Failed");
+                Console.WriteLine("Timed out");
             }
+         
         }
 
         public static void QueryChannelList(string song)
@@ -107,7 +103,7 @@ namespace Equator.Music
             var service = GoogleServices.YoutubeService;
             var playlistItemRequest = service.PlaylistItems.List("snippet");
             playlistItemRequest.PlaylistId = playlistId;
-            playlistItemRequest.MaxResults = 50;
+            playlistItemRequest.MaxResults = PlaylistCount;
             var response = await playlistItemRequest.ExecuteAsync();
             return response;
         }

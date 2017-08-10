@@ -15,6 +15,12 @@
     Title="Equator Music" Height="900" Width="1400" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen"
     d:IsEffectDisabled="True" Background="#FF494949" Foreground="Black" OverlayBrush="Black"
     KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown" MinWidth="1400" MinHeight="900" TitleCharacterCasing="Normal" TitleCaps="False">
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button Content="Settings" />
+
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
@@ -40,9 +46,14 @@
             <DoubleAnimation Storyboard.TargetProperty="Width" From="480" To="0" Duration="0:0:1" BeginTime="0:0:0" />
         </Storyboard>
         <Storyboard x:Key="Maximize">
-            <DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="270" Duration="0:0:1" BeginTime="0:0:0" />
-            <DoubleAnimation Storyboard.TargetProperty="Width" From="0" To="480" Duration="0:0:1" BeginTime="0:0:0" />
+            <DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="{Binding ActualHeight, Mode = OneWay, ElementName=SongSearchContainer}" Duration="0:0:1" BeginTime="0:0:0" />
+            <DoubleAnimation Storyboard.TargetProperty="Width" From="0" To="{Binding ActualWidth, Mode = OneWay, ElementName=SongSearchContainer}" Duration="0:0:1" BeginTime="0:0:0" />
         </Storyboard>
+        <Storyboard x:Key="Normalize">
+            <DoubleAnimation Storyboard.TargetProperty="Height" From="{Binding ActualHeight, Mode = OneWay, ElementName=SongSearchContainer}" To="270" Duration="0:0:1" BeginTime="0:0:0" />
+            <DoubleAnimation Storyboard.TargetProperty="Width" From="{Binding ActualWidth, Mode = OneWay, ElementName=SongSearchContainer}" To="480" Duration="0:0:1" BeginTime="0:0:0" />
+        </Storyboard>
+
     </Window.Resources>
     <Grid x:Name="FullGrid" Margin="0,0,0,-6">
         <Grid.Background>
@@ -309,7 +320,7 @@
         <ScrollViewer x:Name="SongSearchContainer" VerticalScrollBarVisibility="Auto" Grid.Row="1" Foreground="Black"
                       VerticalContentAlignment="Stretch" CanContentScroll="True"
                       Style="{StaticResource FlatScrollViewer}" HorizontalScrollBarVisibility="Disabled"
-                      Grid.RowSpan="2" Margin="0" Padding="0">
+                      Grid.RowSpan="2" Margin="0" Padding="0" Panel.ZIndex="3">
             <WrapPanel x:Name="MusicContainer" Grid.Row="2" ItemHeight="279.5" ItemWidth="250" Margin="50,0,0,0" />
         </ScrollViewer>
         <Expander x:Name="UserPlaylists" Header="Your Playlists" Background="#00647687" BorderBrush="#00667583"
@@ -317,8 +328,8 @@
                   controls:ControlsHelper.HeaderFontStretch="SemiExpanded"
                   controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ControlsHelper.HeaderFontSize="20"
                   controls:ControlsHelper.HeaderFontWeight="SemiBold" Margin="10,10,10,0" Padding="5,0,0,0"
-                  HorizontalContentAlignment="Stretch" IsEnabled="False" d:IsHidden="True" Panel.ZIndex="-9999"
-                  Opacity="0" Height="37">
+                  HorizontalContentAlignment="Stretch" IsEnabled="False" Panel.ZIndex="-9999"
+                  Opacity="0" Height="37" d:IsHidden="True">
             <Grid Background="#66AAAAAA">
                 <ScrollViewer Style="{StaticResource FlatScrollViewer}" HorizontalScrollBarVisibility="Disabled"
                               VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Stretch" Padding="10"
@@ -342,13 +353,13 @@
 
         <Controls:YoutubePlayer x:Name="Media" x:FieldModifier="public" HorizontalAlignment="Right" Height="270"
                                 VerticalAlignment="Bottom" Width="480" Margin="0,0,14,-0.5" Grid.Row="2"
-                                HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" />
+                                HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" MouseDown="Media_MouseDown" >
+            
+        </Controls:YoutubePlayer>
         <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="57" VerticalAlignment="Bottom"
                               Width="250" Grid.Row="2" Thumb.DragCompleted="VolumeControl_OnDragCompleted"
                               Loaded="VolumeControl_OnLoaded" MouseLeave="VolumeControl_OnMouseLeave" MinWidth="250"
                               MinHeight="55" MaxWidth="300" MaxHeight="75" Margin="0,0,18,0"
                               LostFocus="VolumeControl_LostFocus" />
-
-
     </Grid>
 </controls:MetroWindow>

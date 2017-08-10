@@ -6,7 +6,15 @@
              xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
              xmlns:local="clr-namespace:Equator.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="270" d:DesignWidth="480" Width="480" Height="270" MinWidth="32" MinHeight="32">
+             d:DesignHeight="270" d:DesignWidth="480" Width="480" Height="270" MinWidth="32" MinHeight="32" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave">
+    <UserControl.Resources>
+        <Storyboard x:Key="Fadeinoverlay">
+            <DoubleAnimation From="0" To="0.7" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0" />
+        </Storyboard>
+        <Storyboard x:Key="Fadeoutoverlay">
+            <DoubleAnimation From="0.7" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0" />
+        </Storyboard>
+    </UserControl.Resources>
     <Grid x:Name="Container">
         <Grid.RowDefinitions>
             <RowDefinition Height="66*" />
@@ -18,10 +26,11 @@
             <ColumnDefinition Width="351*" />
             <ColumnDefinition Width="65*" />
         </Grid.ColumnDefinitions>
-        <Rectangle Grid.ColumnSpan="3" Fill="#B2808080" Grid.RowSpan="3" Width="466" Height="262"
-                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,-2,0" />
-        <cefSharp:ChromiumWebBrowser x:Name="CefPlayer" Address="" Width="480" Height="270"
+        <Rectangle Grid.ColumnSpan="3" Fill="#B2808080" Grid.RowSpan="3" Width="{Binding ActualWidth, ElementName=Container, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Container, Mode=OneWay}"
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="6,6,0,0" />
+        <cefSharp:ChromiumWebBrowser x:Name="CefPlayer" Address="" Width="{Binding ActualWidth, ElementName=Container, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Container, Mode=OneWay}"
                                      HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                      Grid.ColumnSpan="3" Grid.RowSpan="3" Padding="0" Margin="0" />
+        <Rectangle Name = "YoutubePlayerOverlay" Opacity ="0"  Width="{Binding ActualWidth, ElementName=Container, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=Container, Mode=OneWay}" Fill="#B2707070" Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="6,6,0,0"/>
     </Grid>
 </UserControl>

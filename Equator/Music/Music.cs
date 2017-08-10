@@ -425,13 +425,27 @@ var bytes = await video.GetBytesAsync();
 
             // Get the most preferable stream
             Console.WriteLine("Looking for the best mixed stream...");
-            var streamInfo = videoInfo.MixedStreams
-                .OrderBy(s => s.VideoEncoding == VideoEncoding.Vp8)
-                .Last();
-            youtubePlayer.LoadHtml(
-                "<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" height = \"270\" width = \"480\" autoplay>" +
-                "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
-            Console.WriteLine("Player loaded? " + youtubePlayer.IsLoaded);
+            try
+            {
+                var streamInfo = videoInfo.MixedStreams
+                    .OrderBy(s => s.VideoEncoding == VideoEncoding.Vp8)
+                    .ThenBy(s => s.VideoQuality == VideoQuality.High720).Last();
+                youtubePlayer.LoadHtml(
+                    "<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" autoplay>" +
+                    "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
+                Console.WriteLine("Player loaded? " + youtubePlayer.IsLoaded);
+            }
+            catch
+            {
+                var streamInfo = videoInfo.MixedStreams
+                    .OrderBy(s => s.VideoEncoding == VideoEncoding.Vp8)
+                    .ThenBy(s => s.VideoQuality == VideoQuality.Medium480).Last();
+                youtubePlayer.LoadHtml(
+                    "<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" autoplay>" +
+                    "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
+                Console.WriteLine("Player loaded? " + youtubePlayer.IsLoaded);
+            }
+           
             //Console.WriteLine("Can execute JS: "+ youtubePlayer.CanExecuteJavascriptInMainFrame);
 #if OFFLINE_IMPLEMENTED
             streamInfo = videoInfo.MixedStreams

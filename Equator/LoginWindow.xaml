@@ -6,7 +6,7 @@
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     x:Name="Login" x:Class="Equator.LoginWindow"
     mc:Ignorable="d"
-    Title="Login" Height="565.31" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FF171717">
+    Title="Login" Height="565.31" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FF171717" TitleCharacterCasing="Normal">
     <Grid Margin="0"
           Background="#FF171717">
         <Label x:Name="Label" Content="Welcome!" HorizontalAlignment="Center" Height="45" Margin="0,315,0,0"

@@ -91,14 +91,14 @@ namespace Equator.Controls
 
         private void MusicCardContent_MouseEnter(object sender, MouseEventArgs e)
         {
-            ((Storyboard) FindResource("fadeinplay")).Begin(Play);
-            ((Storyboard) FindResource("fadeinoverlay")).Begin(Overlay);
+            ((Storyboard) FindResource("Fadeinplay")).Begin(Play);
+            ((Storyboard) FindResource("Fadeinoverlay")).Begin(Overlay);
         }
 
         private void MusicCardContent_MouseLeave(object sender, MouseEventArgs e)
         {
-            ((Storyboard) FindResource("fadeoutplay")).Begin(Play);
-            ((Storyboard) FindResource("fadeoutoverlay")).Begin(Overlay);
+            ((Storyboard) FindResource("Fadeoutplay")).Begin(Play);
+            ((Storyboard) FindResource("Fadeoutoverlay")).Begin(Overlay);
         }
     }
 }

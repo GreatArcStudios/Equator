@@ -120,7 +120,7 @@ namespace Equator
             //TransitioningContentControl.Content = SongSearchContainer;
             Panel.SetZIndex(UserPlaylists, -9999);
             Panel.SetZIndex(Media, -9999);
-          
+
         }
 
         //Change this for JS
@@ -260,16 +260,19 @@ namespace Equator
                 MusicContainer.Children.RemoveRange(0, MusicContainer.Children.Count);
                 await QueryYoutube.QueryVideoListAsync(SearchBox.Text);
                 //add card add logic here
-                for (var i = 0; i < QueryYoutube.SongCount; i++)
-                {
-                    var artistName = QueryYoutube.SearchListResponse.Items[i].Snippet.ChannelTitle;
-                    _musicCards = new MusicCards(QueryYoutube.SearchListResponse.Items[i].Id.VideoId,
-                        QueryYoutube.SearchListResponse.Items[i].Snippet.Title, artistName,
-                        new Uri(QueryYoutube.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
-                        ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i,
-                        ref Media.CefPlayer);
-                    MusicContainer.Children.Add(_musicCards);
-                }
+                if (QueryYoutube.SearchListResponse.Items.Count > 0)
+                    for (var i = 0; i < QueryYoutube.SongCount; i++)
+                    {
+                        var artistName = QueryYoutube.SearchListResponse.Items[i].Snippet.ChannelTitle;
+                        _musicCards = new MusicCards(QueryYoutube.SearchListResponse.Items[i].Id.VideoId,
+                            QueryYoutube.SearchListResponse.Items[i].Snippet.Title, artistName,
+                            new Uri(QueryYoutube.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
+                            ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i,
+                            ref Media.CefPlayer);
+                        MusicContainer.Children.Add(_musicCards);
+                    }
+                else
+                    CurrentSong.Text = "No Songs Found!";
             }
             else
             {
@@ -277,18 +280,22 @@ namespace Equator
                 await QueryYoutube.QueryPlaylistList(SearchBox.Text);
                 var oldText = CurrentSong.Text;
                 CurrentSong.Text = "Loading Playlists...";
-
-                for (var i = 0; i < QueryYoutube.SongCount; i++)
+                if (QueryYoutube.SearchListResponse.Items.Count > 0)
                 {
-                    var playlistId = QueryYoutube.SearchListResponse.Items[i].Id.PlaylistId;
-                    var playlistListResponse = await QueryYoutube.PlaylistToPlaylistItems(playlistId);
-                    PlaylistsHolder.Children.Add(new PlaylistCards(false, false, QueryYoutube.SearchListResponse.Items[i].Snippet.Title, null
-                        , playlistListResponse, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView));
+                    for (var i = 0; i < QueryYoutube.PlaylistCount; i++)
+                    {
+                        var playlistId = QueryYoutube.SearchListResponse.Items[i].Id.PlaylistId;
+                        var playlistListResponse = await QueryYoutube.PlaylistToPlaylistItems(playlistId);
+                        PlaylistsHolder.Children.Add(new PlaylistCards(false, false, QueryYoutube.SearchListResponse.Items[i].Snippet.Title, null
+                            , playlistListResponse, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView));
+                    }
+                    if (oldText.Equals("Now Playing: nothing!"))
+                        CurrentSong.Text = "Now Playing: nothing!";
+                    else
+                        CurrentSong.Text = oldText;
                 }
-                if (oldText.Equals("Now Playing: nothing!"))
-                    CurrentSong.Text = "Now Playing: nothing!";
                 else
-                    CurrentSong.Text = oldText;
+                    CurrentSong.Text = "No Songs Found!";
             }
 
         }
@@ -810,15 +817,42 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 
         private void Minimize_Button_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!Media.Minimized)
+            if (Media.State == (int)YoutubePlayer.WindowStates.Normal)
             {
-                ((Storyboard)FindResource("minimize")).Begin(Media.Container);
-                Media.Minimized = true;
+                ((Storyboard)FindResource("Minimize")).Begin(Media);
+                Media.State = (int) YoutubePlayer.WindowStates.Minimized;
+            
             }
-            else
+            else if (Media.State == (int) YoutubePlayer.WindowStates.Minimized)
             {
-                ((Storyboard)FindResource("maximize")).Begin(Media.Container);
-                Media.Minimized = false;
+                ((Storyboard) FindResource("Maximize")).Begin(Media);
+                Media.State = (int) YoutubePlayer.WindowStates.Maximized;
+           
+            }
+            else if (Media.State == (int) YoutubePlayer.WindowStates.Maximized)
+            {
+                ((Storyboard) FindResource("Normalize")).Begin(Media);
+                Media.State = (int) YoutubePlayer.WindowStates.Normal;
+             
+            }
+        }
+
+        private void Media_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Media.State == (int)YoutubePlayer.WindowStates.Normal)
+            {
+                ((Storyboard)FindResource("Minimize")).Begin(Media);
+                Media.State = (int)YoutubePlayer.WindowStates.Minimized;
+            }
+            else if (Media.State == (int)YoutubePlayer.WindowStates.Minimized)
+            {
+                ((Storyboard)FindResource("Maximize")).Begin(Media);
+                Media.State = (int)YoutubePlayer.WindowStates.Maximized;
+            }
+            else if (Media.State == (int)YoutubePlayer.WindowStates.Maximized)
+            {
+                ((Storyboard)FindResource("Normalize")).Begin(Media);
+                Media.State = (int)YoutubePlayer.WindowStates.Normal;
             }
         }
     }
