@@ -14,8 +14,8 @@ namespace Equator.Controls
         public VolumePanel()
         {
             InitializeComponent();
-            slider.Maximum = 1;
-            slider.Minimum = 0;
+            Slider.Maximum = 1;
+            Slider.Minimum = 0;
         }
 
         /* private void VolumeBar_DragStarted(object sender, DragStartedEventArgs e)
@@ -38,9 +38,9 @@ namespace Equator.Controls
         {
             Dispatcher.Invoke(() =>
             {
-                Volume = slider.Value;
+                Volume = Slider.Value;
                 var labelContent = (int) (Volume * 100);
-                label.Content = labelContent + "%";
+                Label.Content = labelContent + "%";
             });
         }
     }

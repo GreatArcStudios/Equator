@@ -5,16 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" Width="250" Height="279.5" Foreground="{x:Null}" BorderThickness="5,5,0,0" Margin="5">
     <UserControl.Resources>
-        <Storyboard x:Key="fadeinplay">
+        <Storyboard x:Key="Fadeinplay">
             <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0" />
         </Storyboard>
-        <Storyboard x:Key="fadeoutplay">
+        <Storyboard x:Key="Fadeoutplay">
             <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0" />
         </Storyboard>
-        <Storyboard x:Key="fadeinoverlay">
+        <Storyboard x:Key="Fadeinoverlay">
             <DoubleAnimation From="0" To="0.4" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0" />
         </Storyboard>
-        <Storyboard x:Key="fadeoutoverlay">
+        <Storyboard x:Key="Fadeoutoverlay">
             <DoubleAnimation From="0.4" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:0.2" BeginTime="0:0:0" />
         </Storyboard>
     </UserControl.Resources>
@@ -36,7 +36,7 @@
                 <DropShadowEffect BlurRadius="5" Color="#CC404040" ShadowDepth="6" />
             </Image.Effect>
         </Image>
-        <Label x:Name="Artist_name" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+        <Label x:Name="ArtistName" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
                VerticalAlignment="Bottom" Background="#00000000" Foreground="White" Height="35" Width="250"
                Canvas.Top="240" Content="Label" FontSize="13.333">
             <Label.Effect>

@@ -6,14 +6,14 @@
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     x:Name="Login" x:Class="Equator.LoginWindow"
     mc:Ignorable="d"
-    Title="Login" Height="600" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid HorizontalAlignment="Left" Height="601" Width="600" Margin="0,0,-6,-30"
+    Title="Login" Height="565.31" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FF171717">
+    <Grid Margin="0"
           Background="#FF171717">
-        <Label x:Name="Label" Content="Welcome!" HorizontalAlignment="Left" Height="45" Margin="232,315,0,0"
+        <Label x:Name="Label" Content="Welcome!" HorizontalAlignment="Center" Height="45" Margin="0,315,0,0"
                VerticalAlignment="Top" Width="130" FontSize="26.667" Foreground="White" />
-        <Image x:Name="Image" HorizontalAlignment="Center" Height="260" Margin="146,40,174,0" VerticalAlignment="Top"
+        <Image x:Name="Image" HorizontalAlignment="Center" Height="260" Margin="0,40,0,0" VerticalAlignment="Top"
                Width="280" Source="Icons/EquatorLogo.png" />
-        <Button x:Name="Login1" Content="Login" HorizontalAlignment="Left" Height="40" Margin="218,395,0,0"
+        <Button x:Name="Login1" Content="Login" HorizontalAlignment="Center" Height="40" Margin="0,395,0,0"
                 VerticalAlignment="Top" Width="152"
                 Click="Login1_Click" FontSize="13.333" controls:ButtonHelper.CornerRadius="0">
             <Button.Style>
@@ -24,12 +24,12 @@
                 </Style>
             </Button.Style>
         </Button>
-        <Label x:Name="Label1" Content="© 2016 Eric Zhu" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Margin="232,505,0,0" Width="125" FontSize="16" Foreground="White" />
+        <Label x:Name="Label1" Content="© 2017 Eric Zhu" HorizontalAlignment="Center" VerticalAlignment="Top"
+               Margin="0,468,0,0" Width="125" FontSize="16" Foreground="White" HorizontalContentAlignment="Center" />
         <Label x:Name="Label1Copy"
                Content="Disclaimer: Eric Zhu is not in any way, shape or form associated with Google"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="95,536,0,0" Width="445"
-               RenderTransformOrigin="0.466,2.115" Foreground="White" />
+               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,500,0,0" Width="445"
+               RenderTransformOrigin="0.466,2.115" Foreground="White" HorizontalContentAlignment="Center" />
     </Grid>
 
 </controls:MetroWindow>

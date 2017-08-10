@@ -4,16 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Equator.Controls"
-             mc:Ignorable="d" d:DesignWidth="300" Height="60" MinHeight="58" MinWidth="700" Margin="5,5,15,5">
+             mc:Ignorable="d" d:DesignWidth="300" Height="60" MinHeight="58" MinWidth="700" Margin="5,5,15,5" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave" MouseLeftButtonDown="UserControl_MouseLeftButtonDown">
     <UserControl.Resources>
 
     </UserControl.Resources>
-    <Grid MinWidth="500" Background="#006A6A6A" MouseEnter="Grid_MouseEnter">
+    <Grid MinWidth="500" Background="#006A6A6A" >
         <Grid.Triggers>
             <EventTrigger RoutedEvent="Grid.MouseEnter">
                 <BeginStoryboard>
                     <Storyboard>
-                        <ColorAnimation To="#74585858" Storyboard.TargetProperty ="(Grid.Background).(SolidColorBrush.Color)"  Duration="0:0:0.3" ></ColorAnimation>
+                        <ColorAnimation To="#8B5B5B5B" Storyboard.TargetProperty ="(Grid.Background).(SolidColorBrush.Color)"  Duration="0:0:0.3" ></ColorAnimation>
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>
@@ -43,7 +43,7 @@
             </TextBlock>
 
         </Label>
-        <Canvas x:Name="Play_Content" HorizontalAlignment="Left" Height="60" VerticalAlignment="Top" Width="68" MouseLeftButtonDown="MusicImage_MouseLeftButtonDownAsync"    MouseEnter="MusicImage_MouseEnter" MouseLeave="MusicImage_MouseLeave">
+        <Canvas x:Name="PlayContent" HorizontalAlignment="Left" Height="60" VerticalAlignment="Top" Width="68">
             <Rectangle x:Name="MusicImage" StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0"
                 Height="60" Width="68" >
                 <Rectangle.Fill>

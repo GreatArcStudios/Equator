@@ -4,7 +4,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Equator.Controls"
-    xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Name="Playlist_Control"
+    xmlns:custom="http://metro.mahapps.com/winfx/xaml/controls" x:Name="PlaylistControl"
     x:Class="Equator.Controls.PlaylistContainer"
     mc:Ignorable="d" Width="1200" MinWidth="600" Padding="0" Margin="10" VerticalAlignment="Top"
     HorizontalAlignment="Left">
@@ -122,13 +122,13 @@
         </Style>
 
     </UserControl.Resources>
-    <Expander Header="Expander" x:Name="Content_Holder" Background="#00647687" BorderBrush="#00647687" Margin="10"
-              FontSize="20" Custom:ControlsHelper.HeaderFontSize="18"
-              Custom:ControlsHelper.HeaderFontStretch="Expanded" Custom:ControlsHelper.HeaderFontWeight="Light">
+    <Expander Header="Expander" x:Name="ContentHolder" Background="#00647687" BorderBrush="#00647687" Margin="10"
+              FontSize="20" custom:ControlsHelper.HeaderFontSize="18"
+              custom:ControlsHelper.HeaderFontStretch="Expanded" custom:ControlsHelper.HeaderFontWeight="Light">
         <Grid Background="#66CBCBCB" Margin="10,0,-12,0" Height="322">
             <ScrollViewer HorizontalContentAlignment="Stretch" Style="{StaticResource FlatScrollViewer}"
                           VerticalAlignment="Top" Height="322">
-                <StackPanel x:Name="Playlist_Content" />
+                <StackPanel x:Name="PlaylistContent" />
             </ScrollViewer>
         </Grid>
     </Expander>

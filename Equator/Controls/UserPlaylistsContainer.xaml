@@ -4,7 +4,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Equator.Controls"
-    xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="Equator.Controls.UserPlaylistsContainer"
+    xmlns:custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="Equator.Controls.UserPlaylistsContainer"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="300" Width="Auto" Height="Auto" MinWidth="1365" MinHeight="736">
     <Grid x:Name="Container" Background="#998D8D8D">
@@ -22,7 +22,7 @@
         <ScrollViewer Style="{StaticResource FlatScrollViewer}" Grid.ColumnSpan="2" Margin="0,85,0,0" Padding="0,5,0,0">
             <WrapPanel x:Name="PlaylistItemHolder" />
         </ScrollViewer>
-        <Label x:Name="Playlist_Title" Content="Your Playlists" HorizontalAlignment="Left" VerticalAlignment="Top"
+        <Label x:Name="PlaylistTitle" Content="Your Playlists" HorizontalAlignment="Left" VerticalAlignment="Top"
             Height="68" Width="318" Background="{x:Null}" Foreground="White"
             FontSize="45" FontWeight="SemiBold" FontStretch="SemiExpanded" FontFamily="Roboto" HorizontalContentAlignment="Center" Margin="0,12,0,0" />
     </Grid>

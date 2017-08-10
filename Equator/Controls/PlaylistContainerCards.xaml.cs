@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CefSharp.Wpf;
 using Equator.Helpers;
+using Equator.Music;
 using Google.Apis.YouTube.v3.Data;
 using SuperfastBlur;
 using Rectangle = System.Windows.Shapes.Rectangle;
@@ -20,25 +21,27 @@ namespace Equator.Controls
     /// </summary>
     public partial class PlaylistContainerCards : UserControl
     {
-        internal Rectangle _backgroundRectangle;
-        internal PlaylistItemListResponse _playlistItemListResponse;
-        internal string _playlistName;
-        internal TextBlock _songLabel;
-        internal ChromiumWebBrowser _youtubePlayer;
-        private PlaylistCards _parentCard;
-
+        internal readonly Rectangle BackgroundRectangle;
+        internal readonly PlaylistItemListResponse PlaylistItemListResponse;
+        internal readonly string PlaylistName;
+        internal readonly TextBlock SongLabel;
+        internal readonly ChromiumWebBrowser YoutubePlayer;
+        private readonly PlaylistCards _parentCard;
+        private readonly ScrollViewer _playlistScrollViewer;
+        private bool _firstShow = true;
         public PlaylistContainerCards(PlaylistItemListResponse playlistItemListResponse, string playlistName,
-            TextBlock songLabel, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer, PlaylistCards parentCard)
+            TextBlock songLabel, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer, PlaylistCards parentCard, ScrollViewer playlistScrollViewer)
         {
             InitializeComponent();
-            _playlistItemListResponse = playlistItemListResponse;
-            _playlistName = playlistName;
-            _youtubePlayer = youtubePlayer;
-            _songLabel = songLabel;
-            _backgroundRectangle = backgroundRectangle;
-            Playlist_Title.Content = playlistName;
-            Channel_Title.Content = playlistItemListResponse.Items[0].Snippet.ChannelTitle;
+            PlaylistItemListResponse = playlistItemListResponse;
+            PlaylistName = playlistName;
+            YoutubePlayer = youtubePlayer;
+            SongLabel = songLabel;
+            BackgroundRectangle = backgroundRectangle;
+            PlaylistTitle.Text = playlistName;
+            ChannelTitle.Content = playlistItemListResponse.Items[0].Snippet.ChannelTitle;
             _parentCard = parentCard;
+            _playlistScrollViewer = playlistScrollViewer;
         }
 
         private async void Close_Click(object sender, RoutedEventArgs e)
@@ -56,37 +59,52 @@ namespace Equator.Controls
                 }
                 else
                 {
-                    ((WrapPanel) VisualTreeHelper.GetParent(_parentCard)).Opacity = 100;
-                    Panel.SetZIndex(((WrapPanel)VisualTreeHelper.GetParent(_parentCard)), 3);
+                    Panel.SetZIndex(_playlistScrollViewer, 3);
+                    _playlistScrollViewer.Opacity = 100;
                 }
             });
         }
 
         private async void PlaylistItemHolder_Loaded(object sender, RoutedEventArgs e)
         {
-            var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
-            Console.WriteLine(_playlistName + " has " + _playlistItemListResponse.Items.Count);
-            for (var i = 0; i < _playlistItemListResponse.Items.Count; i++)
+            if (_firstShow)
             {
-                var playlistItem = _playlistItemListResponse.Items[i];
-                var backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.Medium.Url);
-                try
+                _firstShow = false;
+                var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
+                Console.WriteLine(PlaylistName + " has " + PlaylistItemListResponse.Items.Count);
+                for (var i = 0; i < PlaylistItemListResponse.Items.Count; i++)
                 {
-                    backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.High.Url);
-                }
-                finally
-                {
-                    var request = service.Videos.List("snippet");
-                    request.Id = playlistItem.Snippet.ResourceId.VideoId;
-                    var response = request.ExecuteAsync();
-                    await response;
-                    PlaylistItemHolder.Children.Add(new PlaylistItem(backgroundUri,
-                        _songLabel, playlistItem.Snippet.ResourceId.VideoId, playlistItem.Snippet.Title,
-                        response.Result.Items[0].Snippet.ChannelTitle,
-                        _backgroundRectangle, _youtubePlayer, i, _playlistItemListResponse));
-                    Console.WriteLine("Added item from " + _playlistName + " " + playlistItem.Snippet.Title);
+                    var playlistItem = PlaylistItemListResponse.Items[i];
+                    var backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.Medium.Url);
+                    try
+                    {
+                        backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.High.Url);
+                    }
+                    finally
+                    {
+                        var request = service.Videos.List("snippet");
+                        request.Id = playlistItem.Snippet.ResourceId.VideoId;
+                        var response = request.ExecuteAsync();
+                        await response;
+                        PlaylistItemHolder.Children.Add(new PlaylistItem(backgroundUri,
+                            SongLabel, playlistItem.Snippet.ResourceId.VideoId, playlistItem.Snippet.Title,
+                            response.Result.Items[0].Snippet.ChannelTitle,
+                            BackgroundRectangle, YoutubePlayer, i, PlaylistItemListResponse));
+                        Console.WriteLine("Added item from " + PlaylistName + " " + playlistItem.Snippet.Title);
+                    }
                 }
             }
+        }
+
+        private async void Play_Click(object sender, RoutedEventArgs e)
+        {
+            var firstChild = (PlaylistItem)PlaylistItemHolder.Children[0];
+            MusicPanel.PlayListIndex = firstChild.Index;
+            MusicPanel.PlayingSongs = false;
+            Console.WriteLine("Playing Songs? " + MusicPanel.PlayingSongs);
+            QueryYoutube.CurrentPlaylistItemListResponse = firstChild.ParentPlaylist;
+            await Music.Music.PlaySpecifiedSong(BackgroundRectangle, firstChild.MusicLink, firstChild.SongTitle.Text, SongLabel, YoutubePlayer,
+                firstChild.BackgroundImageUrl);
         }
     }
 }

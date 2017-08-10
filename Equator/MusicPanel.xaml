@@ -14,14 +14,14 @@
     Loaded="MusicPanel_OnLoaded"
     Title="Equator Music" Height="900" Width="1400" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen"
     d:IsEffectDisabled="True" Background="#FF494949" Foreground="Black" OverlayBrush="Black"
-    KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown" MinWidth="1400" MinHeight="900">
+    KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown" MinWidth="1400" MinHeight="900" TitleCharacterCasing="Normal" TitleCaps="False">
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfo Description="Shuffle" Click="Shuffle_Button_OnClick"
                                  ImageSource="Icons/32 shuffle.png" />
                 <ThumbButtonInfo Description="Back" Click="GoLeftButtonClick" ImageSource="Icons/16 back.png" />
-                <ThumbButtonInfo Description="Play" Click="Play_Pause_Button_Click" ImageSource="Icons/Play.png" />
+                <ThumbButtonInfo Description="Play" Click="Play_Pause_Button_Click" ImageSource="Icons/Taskbar Play.png" />
                 <ThumbButtonInfo Description="Next" Click="Next_Song_Button_OnClick"
                                  ImageSource="Icons/16 forwards copy.png" />
                 <ThumbButtonInfo Description="Replay" Click="Replay_Button_Click" ImageSource="Icons/16 replay.png" />
@@ -29,127 +29,20 @@
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
     <Window.Resources>
-        <Storyboard x:Key="fadein">
+        <Storyboard x:Key="Fadein">
             <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" BeginTime="0:0:0" />
         </Storyboard>
-        <Storyboard x:Key="fadeout">
+        <Storyboard x:Key="Fadeout">
             <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2" BeginTime="0:0:0" />
         </Storyboard>
-        <Storyboard x:Key="minimize">
+        <Storyboard x:Key="Minimize">
             <DoubleAnimation Storyboard.TargetProperty="Height" From="270" To="0" Duration="0:0:1" BeginTime="0:0:0" />
             <DoubleAnimation Storyboard.TargetProperty="Width" From="480" To="0" Duration="0:0:1" BeginTime="0:0:0" />
         </Storyboard>
-        <Storyboard x:Key="maximize">
+        <Storyboard x:Key="Maximize">
             <DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="270" Duration="0:0:1" BeginTime="0:0:0" />
             <DoubleAnimation Storyboard.TargetProperty="Width" From="0" To="480" Duration="0:0:1" BeginTime="0:0:0" />
         </Storyboard>
-        <Style x:Key="ScrollerThumb" TargetType="{x:Type Thumb}">
-            <Setter Property="SnapsToDevicePixels"
-                    Value="True" />
-            <Setter Property="OverridesDefaultStyle"
-                    Value="true" />
-            <Setter Property="IsTabStop"
-                    Value="false" />
-            <Setter Property="Focusable"
-                    Value="false" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Thumb">
-                        <Border Name="ThumbBorder" CornerRadius="2" Background="White" />
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="GhostWhite" TargetName="ThumbBorder" />
-                            </Trigger>
-                            <Trigger Property="IsDragging" Value="True">
-                                <Setter Property="Background" Value="#FF5F5F63" TargetName="ThumbBorder" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-        </Style>
-        <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">
-            <Setter Property="SnapsToDevicePixels"
-                    Value="True" />
-            <Setter Property="OverridesDefaultStyle"
-                    Value="true" />
-            <Setter Property="IsTabStop"
-                    Value="false" />
-            <Setter Property="Focusable"
-                    Value="false" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type RepeatButton}">
-                        <Border Background="#4CFFFFFF" />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style TargetType="ScrollBar" x:Key="FlatScrollBar">
-            <Setter Property="SnapsToDevicePixels"
-                    Value="True" />
-            <Setter Property="OverridesDefaultStyle"
-                    Value="true" />
-            <Setter Property="IsTabStop"
-                    Value="false" />
-            <Setter Property="Focusable"
-                    Value="false" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ScrollBar">
-                        <Grid x:Name="Root">
-
-                            <Track IsDirectionReversed="True" Name="PART_Track">
-
-                                <Track.IncreaseRepeatButton>
-                                    <RepeatButton Command="ScrollPageDown" Style="{StaticResource ScrollBarPageButton}" />
-                                </Track.IncreaseRepeatButton>
-                                <Track.Thumb>
-                                    <Thumb Style="{StaticResource ScrollerThumb}" />
-                                </Track.Thumb>
-                                <Track.DecreaseRepeatButton>
-                                    <RepeatButton Command="ScrollPageUp" Style="{StaticResource ScrollBarPageButton}" />
-                                </Track.DecreaseRepeatButton>
-                            </Track>
-
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style TargetType="ScrollViewer" x:Key="FlatScrollViewer" BasedOn="{StaticResource {x:Type ScrollViewer}}">
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
-            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
-            <Setter Property="Width" Value="Auto" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ScrollViewer">
-                        <Grid Width="{TemplateBinding Width}" Background="{TemplateBinding Background}" Margin="0">
-                            <Grid.HorizontalAlignment>Stretch</Grid.HorizontalAlignment>
-                            <Grid.VerticalAlignment>Stretch</Grid.VerticalAlignment>
-
-                            <ScrollContentPresenter x:Name="ScrollContentPresenter" />
-
-                            <ScrollBar Name="PART_VerticalScrollBar" Style="{StaticResource FlatScrollBar}"
-                                       IsTabStop="False"
-                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                       Orientation="Vertical"
-                                       ViewportSize="{TemplateBinding ViewportHeight}"
-                                       Maximum="{TemplateBinding ScrollableHeight}"
-                                       Minimum="0"
-                                       Value="{TemplateBinding VerticalOffset}" HorizontalContentAlignment="Right"
-                                       VerticalContentAlignment="Stretch" HorizontalAlignment="Right" Width="13"
-                                       ScrollViewer.CanContentScroll="True" />
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
     </Window.Resources>
     <Grid x:Name="FullGrid" Margin="0,0,0,-6">
         <Grid.Background>
@@ -170,7 +63,7 @@
                 <ImageBrush ImageSource="Images/IMG_0535.JPG" Stretch="UniformToFill" />
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="Darken_Overlay" Margin="-110,0,-33,-10" Stroke="White" Grid.RowSpan="4"
+        <Rectangle x:Name="DarkenOverlay" Margin="-110,0,-33,-10" Stroke="White" Grid.RowSpan="4"
                    RenderTransformOrigin="0.5,0.5" StrokeThickness="0" StrokeStartLineCap="Square">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -198,17 +91,17 @@
                         Style="{DynamicResource MetroCircleButtonStyle}" Height="44" BorderBrush="{x:Null}"
                         Margin="0,-4,0,0" RenderTransformOrigin="0.902,0.148" Click="Userbutton_Click">
                     <Button.Background>
-                        <ImageBrush x:Name="___No_Name_" ImageSource="Icons/Stop.png" />
+                        <ImageBrush x:Name="NoName" ImageSource="Icons/Stop.png" />
                     </Button.Background>
                 </Button>
                 <xctk:WatermarkTextBox x:Name="SearchBox" TextWrapping="NoWrap" HorizontalAlignment="Center"
                                        Height="38"
-                                       VerticalAlignment="Center" Width="205" Margin="20,0,0,2" FontSize="21.333"
+                                       VerticalAlignment="Center" Margin="20,0,0,2" FontSize="21.333"
                                        Background="{x:Null}" Foreground="White" SelectionBrush="White"
                                        BorderThickness="2"
                                        Watermark="Search..." BorderBrush="White" CaretBrush="#FFC7C7C7"
                                        KeyDown="SearchBox_KeyDown" MouseDoubleClick="SearchBox_MouseDoubleClick"
-                                       TextChanged="SearchBox_TextChanged">
+                                       TextChanged="SearchBox_TextChanged" MinWidth="200" MaxWidth="300">
                     <xctk:WatermarkTextBox.WatermarkTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}" Foreground="White" FontWeight="Light" Focusable="False" />
@@ -321,7 +214,7 @@
                     <StackPanel Orientation="Horizontal" Width="170" VerticalAlignment="Center" Height="55"
                                 Margin="0,3,0,5">
 
-                        <Button x:Name="Last_Song_Button" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"
+                        <Button x:Name="LastSongButton" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Width="55" Margin="0,2,0,0" Style="{DynamicResource MetroCircleButtonStyle}"
                                 Height="55" BorderBrush="{x:Null}" Foreground="#7F787878" OpacityMask="White"
                                 Click="GoLeftButtonClick">
@@ -329,7 +222,7 @@
                                 <ImageBrush ImageSource="Icons/16 back.png" />
                             </Button.Background>
                         </Button>
-                        <Button x:Name="Play_Pause_Button" Content="" HorizontalAlignment="Left"
+                        <Button x:Name="PlayPauseButton" Content="" HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Width="48" Style="{DynamicResource MetroCircleButtonStyle}" Height="48"
                                 BorderBrush="{x:Null}" Margin="0,4.8,0,0" Foreground="#7F787878" OpacityMask="White"
@@ -338,7 +231,7 @@
                                 <ImageBrush ImageSource="Icons/Stop.png" />
                             </Button.Background>
                         </Button>
-                        <Button x:Name="Next_Song_Button" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"
+                        <Button x:Name="NextSongButton" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Width="55" Margin="0,2,0,0" Style="{DynamicResource MetroCircleButtonStyle}"
                                 Height="55" BorderBrush="{x:Null}" Foreground="#7F787878" OpacityMask="White"
                                 Click="Next_Song_Button_OnClick">
@@ -361,7 +254,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                                 VerticalAlignment="Center">
-                        <Button x:Name="Volume_Button" Content="Button" HorizontalAlignment="Right"
+                        <Button x:Name="VolumeButton" Content="Button" HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Width="28" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}"
                                 BorderThickness="0,1,1,1" Margin="0,0,3,0"
@@ -371,7 +264,7 @@
                                 <ImageBrush ImageSource="Icons/16 volume.png" />
                             </Button.Background>
                         </Button>
-                        <Button x:Name="Replay_Button" Content="Button" HorizontalAlignment="Left"
+                        <Button x:Name="ReplayButton" Content="Button" HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="3,0"
                                 Click="Replay_Button_Click" Style="{DynamicResource MetroCircleButtonStyle}"
@@ -380,7 +273,7 @@
                                 <ImageBrush ImageSource="Icons/16 replay.png" />
                             </Button.Background>
                         </Button>
-                        <Button x:Name="Shuffle_Button" Content="Button" HorizontalAlignment="Left"
+                        <Button x:Name="ShuffleButton" Content="Button" HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="0,0,3,0"
                                 Click="Shuffle_Button_OnClick" Style="{DynamicResource MetroCircleButtonStyle}"
@@ -389,7 +282,7 @@
                                 <ImageBrush ImageSource="Icons/32 shuffle.png" />
                             </Button.Background>
                         </Button>
-                        <Button x:Name="Minimize_Button" Content="Button" HorizontalAlignment="Left"
+                        <Button x:Name="MinimizeButton" Content="Button" HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Width="27" Height="27" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="0"
                                 Click="Minimize_Button_OnClick" Style="{DynamicResource MetroCircleButtonStyle}"
@@ -430,20 +323,24 @@
                 <ScrollViewer Style="{StaticResource FlatScrollViewer}" HorizontalScrollBarVisibility="Disabled"
                               VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Stretch" Padding="10"
                               VerticalAlignment="Top">
-                    <StackPanel x:Name="UserPlaylist_Content" />
+                    <StackPanel x:Name="UserPlaylistContent" />
                 </ScrollViewer>
             </Grid>
         </Expander>
-        <Grid x:Name="All_Playlist_Parts" Grid.Row="1" Grid.RowSpan="2">
-            <WrapPanel x:Name="PlaylistsHolder" Margin="50,0,0,0" ItemHeight="279.5"
-                   ItemWidth="250" />
-            <Grid x:Name="Expanded_Playlist_Holder" Margin="0,-2,0,0" />
+        <Grid x:Name="AllPlaylistParts" Grid.Row="1" Grid.RowSpan="2">
+            <!--<WrapPanel x:Name="PlaylistsHolder" Margin="50,0,0,0" ItemHeight="279.5"
+                       ItemWidth="250" />-->
+            <ScrollViewer x:Name="PlaylistScrollView" Grid.RowSpan="2" Style="{StaticResource FlatScrollViewer}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <WrapPanel x:Name="PlaylistsHolder" ItemHeight="279.5"
+                   ItemWidth="250" Margin="50,0,0,0"/>
+            </ScrollViewer>
+            <Grid x:Name="ExpandedPlaylistHolder" Margin="0,-2,0,0" />
         </Grid>
         <controls:TransitioningContentControl x:Name="TransitioningContentControl" HorizontalContentAlignment="Stretch"
                                               VerticalContentAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2" />
 
 
-        <Controls:YoutubePlayer x:Name="media" x:FieldModifier="public" HorizontalAlignment="Right" Height="270"
+        <Controls:YoutubePlayer x:Name="Media" x:FieldModifier="public" HorizontalAlignment="Right" Height="270"
                                 VerticalAlignment="Bottom" Width="480" Margin="0,0,14,-0.5" Grid.Row="2"
                                 HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" />
         <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="57" VerticalAlignment="Bottom"

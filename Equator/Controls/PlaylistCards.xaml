@@ -22,7 +22,7 @@
                 <ImageBrush ImageSource="../Images/IMG_0547.JPG" Stretch="UniformToFill" />
             </Rectangle.Fill>
         </Rectangle>
-        <Label x:Name="Channel_name" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+        <Label x:Name="ChannelName" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
                VerticalAlignment="Bottom" Background="#00000000" Foreground="White" Height="38" Width="300"
                Content="Label" FontSize="13.333" Margin="0,0,0,-1">
             <Label.Effect>
@@ -50,13 +50,13 @@
                 <RowDefinition Height="100*" />
                 <RowDefinition Height="101*" />
             </Grid.RowDefinitions>
-            <Image x:Name="first_image" Stretch="UniformToFill" />
-            <Image x:Name="second_image" Grid.Column="1" Stretch="UniformToFill" />
-            <Image x:Name="third_image" Grid.Row="1" Stretch="UniformToFill" />
-            <Image x:Name="third_image_Copy" Grid.Row="1" Grid.Column="1" Stretch="UniformToFill" />
+            <Image x:Name="FirstImage" Stretch="UniformToFill" />
+            <Image x:Name="SecondImage" Grid.Column="1" Stretch="UniformToFill" />
+            <Image x:Name="ThirdImage" Grid.Row="1" Stretch="UniformToFill" />
+            <Image x:Name="ThirdImageCopy" Grid.Row="1" Grid.Column="1" Stretch="UniformToFill" />
         </Grid>
         <Rectangle x:Name="Overlay" StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0"
-                   Margin="22,4,28,88" Fill="#99343434" Width="200"
+                   Margin="22,4,27,88" Fill="#99343434"
                    Height="183" />
 
     </Grid>

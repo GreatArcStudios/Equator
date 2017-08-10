@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:local="clr-namespace:Equator.Controls"
-    xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Name="Control"
+    xmlns:custom="http://metro.mahapps.com/winfx/xaml/controls" x:Name="Control"
     x:Class="Equator.Controls.PlaylistContainerCards"
     mc:Ignorable="d"
     d:DesignHeight="736" d:DesignWidth="1365">
@@ -32,15 +32,17 @@
 
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,18,0,0"
                     Width="1256" Grid.RowSpan="2" Height="62">
-            <Label x:Name="Playlist_Title" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top"
-                   Height="62" Width="260" Background="{x:Null}" Foreground="White" HorizontalContentAlignment="Center"
-                   FontSize="40" FontWeight="SemiBold" FontStretch="SemiExpanded" FontFamily="Roboto" />
-            <Label x:Name="Channel_Title" Content="Label" VerticalAlignment="Top" Height="62" Background="{x:Null}"
-                   Foreground="White" HorizontalContentAlignment="Center" FontSize="40" FontStretch="SemiExpanded"
-                   FontFamily="Roboto" FontWeight="Light" Width="165" Padding="5" />
+            <Label HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Height="62" Background="{x:Null}" Foreground="White" HorizontalContentAlignment="Center"
+                   FontSize="30" FontWeight="SemiBold" FontStretch="SemiExpanded" FontFamily="Roboto" MinWidth="260" MaxWidth="400" VerticalContentAlignment="Center" Padding="20,5,5,5">
+                <TextBlock x:Name="PlaylistTitle" TextTrimming="CharacterEllipsis"></TextBlock>
+            </Label>
+            <Label x:Name="ChannelTitle" Content="Label" VerticalAlignment="Top" Height="62" Background="{x:Null}"
+                   Foreground="White" HorizontalContentAlignment="Center" FontSize="30" FontStretch="SemiExpanded"
+                   FontFamily="Roboto" FontWeight="Light" Padding="5" MinWidth="165" MaxWidth="400" VerticalContentAlignment="Center" Margin="10,0,0,0" />
             <Button x:Name="Play" Content="play" HorizontalAlignment="Left" VerticalAlignment="Top" Width="225"
-                    Height="62" Foreground="White" Custom:ControlsHelper.ContentCharacterCasing="Upper"
-                    Custom:ButtonHelper.CornerRadius="0" FontSize="20" FontWeight="Bold" Margin="20,0,0,0">
+                    Height="62" Foreground="White" custom:ControlsHelper.ContentCharacterCasing="Upper"
+                    custom:ButtonHelper.CornerRadius="0" FontSize="20" FontWeight="Bold" Margin="20,0,0,0" Click="Play_Click">
                 <Button.Style>
                     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="#7F7E7E7E" />

@@ -38,15 +38,20 @@ namespace Equator
         public static bool IsReplay
         {
             get => _isReplay;
-            set => _isReplay = IsReplay;
+            set => _isReplay = value;
         }
-
+        public static bool PlayingSongs
+        {
+            get => _playingSongs;
+            set => _playingSongs = value;
+        }
         private static int _index;
         private MusicCards _musicCards;
         private bool _sliderDragging;
         private static bool _isReplay;
         private bool _isShuffle;
-        private bool _playingSongs = true;
+        private static bool _playingSongs = true;
+        private static bool _searchingSongs = true;
         private readonly Color _selectedColor = Color.FromArgb(127, 180, 180, 180);
         private readonly Color _deselectedColor = Color.FromArgb(127, 126, 126, 126);
         private readonly Color _hoverColor = Color.FromArgb(127, 170, 170, 170);
@@ -109,12 +114,13 @@ namespace Equator
                 #endregion
             }
             //init media player
-            media.CefPlayer.LoadingStateChanged += CefPlayer_LoadingStateChanged;
+            Media.CefPlayer.LoadingStateChanged += CefPlayer_LoadingStateChanged;
             //init trans content control
             //FullGrid.Children.Remove(SongSearchContainer);
             //TransitioningContentControl.Content = SongSearchContainer;
             Panel.SetZIndex(UserPlaylists, -9999);
-            Panel.SetZIndex(media, -9999);
+            Panel.SetZIndex(Media, -9999);
+          
         }
 
         //Change this for JS
@@ -130,7 +136,7 @@ namespace Equator
             }
 #endif
             if (_songDuration > 0 && !_sliderDragging && _songLoaded)
-                media.CefPlayer.GetMainFrame().EvaluateScriptAsync(CurrentTimeScript).ContinueWith(x =>
+                Media.CefPlayer.GetMainFrame().EvaluateScriptAsync(CurrentTimeScript).ContinueWith(x =>
                 {
                     var response = x.Result;
 
@@ -142,7 +148,7 @@ namespace Equator
                             Console.WriteLine(response.Result.ToString());
                             try
                             {
-                                PlayBarSlider.Value = (double) response.Result;
+                                PlayBarSlider.Value = (double)response.Result;
                                 if (Math.Abs(PlayBarSlider.Value - PlayBarSlider.Maximum) < 0.001)
                                     PlayBackEnded();
                             }
@@ -245,33 +251,46 @@ namespace Equator
             Console.WriteLine("resized");
         }
 #endif
-        //TODO: make it so that topic videos don't play
+
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             Panel.SetZIndex(BoredLabel, -9999);
-            MusicContainer.Children.RemoveRange(0, MusicContainer.Children.Count);
-            await QueryYoutube.QueryVideoListAsync(SearchBox.Text);
-            //add card add logic here
-            for (var i = 0; i < QueryYoutube.SongCount; i++)
+            if (_searchingSongs)
             {
-                var artistName = QueryYoutube.SearchListResponse.Items[i].Snippet.ChannelTitle;
-                if (!artistName.ToLower().Contains("topic") && i > 0)
+                MusicContainer.Children.RemoveRange(0, MusicContainer.Children.Count);
+                await QueryYoutube.QueryVideoListAsync(SearchBox.Text);
+                //add card add logic here
+                for (var i = 0; i < QueryYoutube.SongCount; i++)
                 {
+                    var artistName = QueryYoutube.SearchListResponse.Items[i].Snippet.ChannelTitle;
                     _musicCards = new MusicCards(QueryYoutube.SearchListResponse.Items[i].Id.VideoId,
                         QueryYoutube.SearchListResponse.Items[i].Snippet.Title, artistName,
                         new Uri(QueryYoutube.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
-                        ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i, ref media.CefPlayer);
-                    MusicContainer.Children.Add(_musicCards);
-                }
-                else if (i == 0)
-                {
-                    _musicCards = new MusicCards(QueryYoutube.SearchListResponse.Items[i].Id.VideoId,
-                        QueryYoutube.SearchListResponse.Items[i].Snippet.Title, artistName,
-                        new Uri(QueryYoutube.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
-                        ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i, ref media.CefPlayer);
+                        ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i,
+                        ref Media.CefPlayer);
                     MusicContainer.Children.Add(_musicCards);
                 }
             }
+            else
+            {
+                PlaylistsHolder.Children.RemoveRange(1, PlaylistsHolder.Children.Count);
+                await QueryYoutube.QueryPlaylistList(SearchBox.Text);
+                var oldText = CurrentSong.Text;
+                CurrentSong.Text = "Loading Playlists...";
+
+                for (var i = 0; i < QueryYoutube.SongCount; i++)
+                {
+                    var playlistId = QueryYoutube.SearchListResponse.Items[i].Id.PlaylistId;
+                    var playlistListResponse = await QueryYoutube.PlaylistToPlaylistItems(playlistId);
+                    PlaylistsHolder.Children.Add(new PlaylistCards(false, false, QueryYoutube.SearchListResponse.Items[i].Snippet.Title, null
+                        , playlistListResponse, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView));
+                }
+                if (oldText.Equals("Now Playing: nothing!"))
+                    CurrentSong.Text = "Now Playing: nothing!";
+                else
+                    CurrentSong.Text = oldText;
+            }
+
         }
 
         private void SearchBox_KeyDown(object sender, KeyEventArgs e)
@@ -301,25 +320,25 @@ namespace Equator
                 //media.CefPlayer.ShowDevTools();
                 var script =
                     "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
-                media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
+                Media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                 IsPlaying = false;
                 var playUri = new Uri("Icons/Play.png", UriKind.Relative);
                 var streamInfo = Application.GetResourceStream(playUri);
                 var temp = BitmapFrame.Create(streamInfo.Stream);
-                Play_Pause_Button.Background = new ImageBrush(temp);
+                PlayPauseButton.Background = new ImageBrush(temp);
             }
             else if (_songLoaded)
             {
                 var script =
                     "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
-                media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
+                Media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                 //mediaElement.Play();
                 ///mediaElement.Opacity = 100;
                 IsPlaying = true;
                 var pauseUri = new Uri("Icons/Stop.png", UriKind.Relative);
                 var streamInfo = Application.GetResourceStream(pauseUri);
                 var temp = BitmapFrame.Create(streamInfo.Stream);
-                Play_Pause_Button.Background = new ImageBrush(temp);
+                PlayPauseButton.Background = new ImageBrush(temp);
             }
         }
 
@@ -331,47 +350,45 @@ namespace Equator
                     //mediaElement.Pause();
                     var script =
                         "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
-                    media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
+                    Media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                     IsPlaying = false;
                     var playUri = new Uri("Icons/Play.png", UriKind.Relative);
                     var streamInfo = Application.GetResourceStream(playUri);
                     var temp = BitmapFrame.Create(streamInfo.Stream);
-                    Play_Pause_Button.Background = new ImageBrush(temp);
+                    PlayPauseButton.Background = new ImageBrush(temp);
                 }
                 else
                 {
                     //mediaElement.Play();
                     var script =
                         "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
-                    media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
+                    Media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                     IsPlaying = true;
                     var playUri = new Uri("Icons/Stop.png", UriKind.Relative);
                     var streamInfo = Application.GetResourceStream(playUri);
                     var temp = BitmapFrame.Create(streamInfo.Stream);
-                    Play_Pause_Button.Background = new ImageBrush(temp);
+                    PlayPauseButton.Background = new ImageBrush(temp);
                 }
         }
 
         private void PlayBar_DragStarted(object sender, DragStartedEventArgs e)
         {
-            PlayBarSlider = (Slider) sender;
+            PlayBarSlider = (Slider)sender;
             _sliderDragging = true;
         }
 
         private void PlayBar_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            PlayBarSlider = (Slider) sender;
+            PlayBarSlider = (Slider)sender;
             _sliderDragging = false;
             var script =
-                string.Format(
-                    "(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = {0}}})();",
-                    PlayBarSlider.Value);
-            media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
+                $"(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = {PlayBarSlider.Value}}})();";
+            Media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
         }
 
         private void PlayBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            PlayBarSlider = (Slider) sender;
+            PlayBarSlider = (Slider)sender;
             Dispatcher.Invoke(() =>
             {
                 if (PlayBarSlider.Value <= 60 * 60)
@@ -390,7 +407,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 #endif
         private void CefPlayer_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
         {
-            media.CefPlayer.GetMainFrame()
+            Media.CefPlayer.GetMainFrame()
                 .EvaluateScriptAsync(
                     "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.duration;})();")
                 .ContinueWith(x =>
@@ -399,7 +416,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 
                     if (response.Success && response.Result != null)
                     {
-                        _songDuration = (double) response.Result;
+                        _songDuration = (double)response.Result;
                         Dispatcher.Invoke(() =>
                         {
                             if (_songDuration <= 60 * 60)
@@ -415,12 +432,12 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                                 PlayBarSlider.Width = 870;
                             }
                             _songLoaded = true;
-                            Panel.SetZIndex(media, 3);
+                            Panel.SetZIndex(Media, 3);
                         });
                         // Console.WriteLine("Song duration: " + songDuration);
                     }
                 });
-            media.CefPlayer.GetMainFrame()
+            Media.CefPlayer.GetMainFrame()
                 .EvaluateScriptAsync(
                     "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.volume})();")
                 .ContinueWith(
@@ -432,8 +449,8 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             Dispatcher.Invoke(() =>
                             {
                                 //Console.WriteLine("Music Volume " + response.Result);
-                                VolumeControl.slider.Value = (int) response.Result;
-                                VolumeControl.label.Content = (int) (VolumeControl.slider.Value * 100) + "%";
+                                VolumeControl.Slider.Value = (int)response.Result;
+                                VolumeControl.Label.Content = (int)(VolumeControl.Slider.Value * 100) + "%";
                             });
                     });
         }
@@ -455,7 +472,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1]
                                 .Snippet
                                 .Title,
-                            CurrentSong, media.CefPlayer);
+                            CurrentSong, Media.CefPlayer);
                 }
                 else
                 {
@@ -464,7 +481,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                         QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
                         _index,
                         QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
-                        CurrentSong, media.CefPlayer);
+                        CurrentSong, Media.CefPlayer);
                 }
             }
             else
@@ -476,7 +493,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     await Music.Music.PlaySpecifiedSong(Background,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
-                        media.CefPlayer,
+                        Media.CefPlayer,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
                 else
@@ -485,7 +502,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     await Music.Music.PlaySpecifiedSong(Background,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
-                        media.CefPlayer,
+                        Media.CefPlayer,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
             }
@@ -495,9 +512,10 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         {
             IsPlaying = false;
             _songLoaded = false;
+
             if (_isReplay)
             {
-                media.CefPlayer.GetMainFrame()
+                Media.CefPlayer.GetMainFrame()
                     .ExecuteJavaScriptAsync(
                         "var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = 0; youtubePlayer.play();");
                 IsPlaying = true;
@@ -510,15 +528,15 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 {
                     var random = new Random();
                     await Music.Music.AutoPlaySong(random.Next(0, 50), CurrentSong, MusicContainer, Background,
-                        media.CefPlayer, false);
+                        Media.CefPlayer, false);
                     IsPlaying = true;
                     _songLoaded = true;
                 }
                 else
                 {
                     var random = new Random();
-                    await Music.Music.AutoPlaySong(random.Next(0, 50), CurrentSong, UserPlaylist_Content, Background,
-                        media.CefPlayer, true);
+                    await Music.Music.AutoPlaySong(random.Next(0, 50), CurrentSong, UserPlaylistContent, Background,
+                        Media.CefPlayer, true);
                     IsPlaying = true;
                     _songLoaded = true;
                 }
@@ -528,15 +546,15 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 //TODO: add condition for other playlist panels
                 if (_playingSongs)
                 {
-                    await Music.Music.AutoPlaySong(_index + 1, CurrentSong, MusicContainer, Background, media.CefPlayer,
+                    await Music.Music.AutoPlaySong(_index + 1, CurrentSong, MusicContainer, Background, Media.CefPlayer,
                         false);
                     IsPlaying = true;
                     _songLoaded = true;
                 }
                 else
                 {
-                    await Music.Music.AutoPlaySong(_index + 1, CurrentSong, UserPlaylist_Content, Background,
-                        media.CefPlayer,
+                    await Music.Music.AutoPlaySong(PlayListIndex + 1, CurrentSong, UserPlaylistContent, Background,
+                        Media.CefPlayer,
                         true);
                     IsPlaying = true;
                     _songLoaded = true;
@@ -563,7 +581,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 var uri = new Uri("Icons/16 replay.png", UriKind.Relative);
                 var streamInfo = Application.GetResourceStream(uri);
                 var temp = BitmapFrame.Create(streamInfo.Stream);
-                Replay_Button.Background = new ImageBrush(temp);
+                ReplayButton.Background = new ImageBrush(temp);
             }
             else
             {
@@ -571,20 +589,19 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 var uri = new Uri("Icons/16 replay selected.png", UriKind.Relative);
                 var streamInfo = Application.GetResourceStream(uri);
                 var temp = BitmapFrame.Create(streamInfo.Stream);
-                Replay_Button.Background = new ImageBrush(temp);
+                ReplayButton.Background = new ImageBrush(temp);
             }
         }
 
         private void VolumeControl_OnDragCompleted(object sender, DragCompletedEventArgs e)
         {
-            VolumeControl.Volume = VolumeControl.slider.Value;
-            var labelContent = (int) (VolumeControl.Volume * 100);
-            VolumeControl.label.Content = labelContent + "%";
+            VolumeControl.Volume = VolumeControl.Slider.Value;
+            var labelContent = (int)(VolumeControl.Volume * 100);
+            VolumeControl.Label.Content = labelContent + "%";
             //_mediaElement.Volume = Volume;
-            media.CefPlayer.GetMainFrame()
-                .ExecuteJavaScriptAsync(string.Format(
-                    "(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.volume = {0}}})();",
-                    VolumeControl.Volume));
+            Media.CefPlayer.GetMainFrame()
+                .ExecuteJavaScriptAsync(
+                    $"(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.volume = {VolumeControl.Volume}}})();");
         }
 
         private void VolumeControl_OnLoaded(object sender, RoutedEventArgs e)
@@ -600,7 +617,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 var uri = new Uri("Icons/16 volume selected.png", UriKind.Relative);
                 var streamInfo = Application.GetResourceStream(uri);
                 var temp = BitmapFrame.Create(streamInfo.Stream);
-                Volume_Button.Background = new ImageBrush(temp);
+                VolumeButton.Background = new ImageBrush(temp);
             }
         }
 
@@ -610,17 +627,17 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             var uri = new Uri("Icons/16 Volume.png", UriKind.Relative);
             var streamInfo = Application.GetResourceStream(uri);
             var temp = BitmapFrame.Create(streamInfo.Stream);
-            Volume_Button.Background = new ImageBrush(temp);
+            VolumeButton.Background = new ImageBrush(temp);
         }
 
         private void MusicPanel_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Right)
-                media.CefPlayer.GetMainFrame()
+                Media.CefPlayer.GetMainFrame()
                     .ExecuteJavaScriptAsync(
                         "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = youtubePlayer.currentTime+10;})();");
             else if (e.Key == Key.Left)
-                media.CefPlayer.GetMainFrame()
+                Media.CefPlayer.GetMainFrame()
                     .ExecuteJavaScriptAsync(
                         "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = youtubePlayer.currentTime-10;})();");
         }
@@ -633,7 +650,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 var uri = new Uri("Icons/32 shuffle.png", UriKind.Relative);
                 var streamInfo = Application.GetResourceStream(uri);
                 var temp = BitmapFrame.Create(streamInfo.Stream);
-                Shuffle_Button.Background = new ImageBrush(temp);
+                ShuffleButton.Background = new ImageBrush(temp);
             }
             else
             {
@@ -642,11 +659,11 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 var uri = new Uri("Icons/32 shuffle selected.png", UriKind.Relative);
                 var streamInfo = Application.GetResourceStream(uri);
                 var temp = BitmapFrame.Create(streamInfo.Stream);
-                Shuffle_Button.Background = new ImageBrush(temp);
+                ShuffleButton.Background = new ImageBrush(temp);
                 uri = new Uri("Icons/16 replay.png", UriKind.Relative);
                 streamInfo = Application.GetResourceStream(uri);
                 temp = BitmapFrame.Create(streamInfo.Stream);
-                Replay_Button.Background = new ImageBrush(temp);
+                ReplayButton.Background = new ImageBrush(temp);
             }
         }
 
@@ -667,7 +684,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
                             _index,
                             QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
-                            CurrentSong, media.CefPlayer);
+                            CurrentSong, Media.CefPlayer);
                 }
                 else
                 {
@@ -676,7 +693,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                         QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
                         _index,
                         QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
-                        CurrentSong, media.CefPlayer);
+                        CurrentSong, Media.CefPlayer);
                 }
             }
             else
@@ -688,7 +705,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     await Music.Music.PlaySpecifiedSong(Background,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
-                        media.CefPlayer,
+                        Media.CefPlayer,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
                 else
@@ -697,7 +714,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     await Music.Music.PlaySpecifiedSong(Background,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
-                        media.CefPlayer,
+                        Media.CefPlayer,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
                 }
             }
@@ -723,25 +740,22 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         {
             SongSelector.Background = new SolidColorBrush(_selectedColor);
             PlaylistSelector.Background = new SolidColorBrush(_deselectedColor);
-            _playingSongs = true;
             Panel.SetZIndex(SongSearchContainer, 3);
             FullGrid.Children.Remove(SongSearchContainer);
             TransitioningContentControl.Content = SongSearchContainer;
             Panel.SetZIndex(UserPlaylists, -9999);
-            Panel.SetZIndex(All_Playlist_Parts, -9999);
+            Panel.SetZIndex(AllPlaylistParts, -9999);
+            _searchingSongs = true;
         }
 
         private async void PlaylistSelector_Click(object sender, RoutedEventArgs e)
         {
-            PlaylistSelector.Background = new SolidColorBrush(_selectedColor);
-            SongSelector.Background = new SolidColorBrush(_deselectedColor);
-            _playingSongs = false;
             if (_firstSwitch)
             {
                 Panel.SetZIndex(BoredLabel, -9999);
                 _firstSwitch = false;
                 var oldText = CurrentSong.Text;
-                CurrentSong.Text = "Loading Your QueryYoutube...";
+                CurrentSong.Text = "Loading Your Playlists...";
                 //init user playlist
                 var userPlaylists = await QueryYoutube.QueryUserPlaylists();
                 /*foreach (Playlist userPlaylistResponse in userQueryYoutube.Items)
@@ -753,7 +767,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     
                 }*/
                 PlaylistsHolder.Children.Add(new PlaylistCards(true, false, "null", userPlaylists
-                    , null, CurrentSong, Background, media.CefPlayer, Expanded_Playlist_Holder, null));
+                    , null, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView));
                 if (oldText.Equals("Now Playing: nothing!"))
                     CurrentSong.Text = "Now Playing: nothing!";
                 else
@@ -761,47 +775,50 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 Console.WriteLine("Created User Playlists");
             }
             //Panel.SetZIndex(UserPlaylists, 3);
-            Panel.SetZIndex(All_Playlist_Parts, 3);
-            FullGrid.Children.Remove(All_Playlist_Parts);
-            TransitioningContentControl.Content = All_Playlist_Parts;
+            Panel.SetZIndex(AllPlaylistParts, 3);
+            FullGrid.Children.Remove(AllPlaylistParts);
+            TransitioningContentControl.Content = AllPlaylistParts;
             Panel.SetZIndex(SongSearchContainer, -9999);
+            _searchingSongs = false;
+            PlaylistSelector.Background = new SolidColorBrush(_selectedColor);
+            SongSelector.Background = new SolidColorBrush(_deselectedColor);
         }
 
         private void SongSelector_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (!_playingSongs)
+            if (!_searchingSongs)
                 SongSelector.Background = new SolidColorBrush(_hoverColor);
         }
 
         private void SongSelector_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (!_playingSongs)
+            if (!_searchingSongs)
                 SongSelector.Background = new SolidColorBrush(_deselectedColor);
         }
 
         private void PlaylistSelector_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (_playingSongs)
+            if (_searchingSongs)
                 PlaylistSelector.Background = new SolidColorBrush(_hoverColor);
         }
 
         private void PlaylistSelector_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (_playingSongs)
+            if (_searchingSongs)
                 PlaylistSelector.Background = new SolidColorBrush(_deselectedColor);
         }
 
         private void Minimize_Button_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!media.Minimized)
+            if (!Media.Minimized)
             {
-                ((Storyboard) FindResource("minimize")).Begin(media.Container);
-                media.Minimized = true;
+                ((Storyboard)FindResource("minimize")).Begin(Media.Container);
+                Media.Minimized = true;
             }
             else
             {
-                ((Storyboard) FindResource("maximize")).Begin(media.Container);
-                media.Minimized = false;
+                ((Storyboard)FindResource("maximize")).Begin(Media.Container);
+                Media.Minimized = false;
             }
         }
     }

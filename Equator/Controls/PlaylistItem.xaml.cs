@@ -16,10 +16,22 @@ namespace Equator.Controls
     /// </summary>
     public partial class PlaylistItem : UserControl
     {
+        internal int Index {
+            get => _index;
+            set => _index = value;
+        }
+        internal string MusicLink
+        {
+            get => _musicLink;
+            set => _musicLink = value;
+        }
+
+        internal PlaylistItemListResponse ParentPlaylist => _parentPlaylist;
+        internal string BackgroundImageUrl => _backgroundImageUrl;
+        private int _index;
+        private string _musicLink;
         private readonly string _backgroundImageUrl;
         private readonly Rectangle _backgroundRect;
-        private readonly int _index;
-        private readonly string _musicLink;
         private readonly PlaylistItemListResponse _parentPlaylist;
         private readonly TextBlock _songLabel;
         private readonly ChromiumWebBrowser _youtubePlayer;
@@ -45,29 +57,27 @@ namespace Equator.Controls
             _parentPlaylist = playlistItemListResponse;
         }
 
-        private void MusicImage_MouseEnter(object sender, MouseEventArgs e)
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
             Play.Opacity = 100;
             Overlay.Opacity = 0.4;
         }
 
-        private void MusicImage_MouseLeave(object sender, MouseEventArgs e)
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
         {
             Overlay.Opacity = 0;
             Play.Opacity = 0;
         }
 
-        private async void MusicImage_MouseLeftButtonDownAsync(object sender, MouseButtonEventArgs e)
+        private async void UserControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Play.Opacity = 100;
             MusicPanel.PlayListIndex = _index;
+            MusicPanel.PlayingSongs = false;
+            Console.WriteLine("Playing Songs? " + MusicPanel.PlayingSongs);
             QueryYoutube.CurrentPlaylistItemListResponse = _parentPlaylist;
             await Music.Music.PlaySpecifiedSong(_backgroundRect, _musicLink, SongTitle.Text, _songLabel, _youtubePlayer,
                 _backgroundImageUrl);
-        }
-
-        private void Grid_MouseEnter(object sender, MouseEventArgs e)
-        {
         }
     }
 }

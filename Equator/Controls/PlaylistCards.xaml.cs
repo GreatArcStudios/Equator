@@ -37,15 +37,17 @@ namespace Equator.Controls
         private readonly TextBlock _songLabel;
         private readonly PlaylistListResponse _userPlaylists;
         private readonly ChromiumWebBrowser _youtubePlayer;
-
+        private readonly ScrollViewer _playlistScrollViewer;
         public PlaylistCards(bool userPlaylist, bool userPlaylistContainerParent, string playlistName, PlaylistListResponse userPlaylistResponse,
             PlaylistItemListResponse playlistItemListResponse, TextBlock songLabel, Rectangle backgroundRectangle,
-            ChromiumWebBrowser youtubePlayer, Grid expandedPlaylistHolder, UserPlaylistsContainer userPlaylistsContainer)
+            ChromiumWebBrowser youtubePlayer, Grid expandedPlaylistHolder, UserPlaylistsContainer userPlaylistsContainer, ScrollViewer
+             playlistScrollViewer)
         {
             InitializeComponent();
             Overlay.Opacity = 0;
             _playlistItemListResponse = playlistItemListResponse;
             _isUserPlaylist = userPlaylist;
+            _playlistScrollViewer = playlistScrollViewer;
             if (userPlaylistContainerParent)
             {
                 UserPlaylistsContainer = userPlaylistsContainer;
@@ -65,20 +67,28 @@ namespace Equator.Controls
                 UserPlaylistCover.Fill = userImageBrush;
                 PlaylistName.Text = "Your Playlists";
                 Panel.SetZIndex(SearchedPlaylistImagesCover, -9999);
-                Channel_name.Content = _userPlaylists.Items[0].Snippet.ChannelTitle;
-                UserPlaylistsContainer = new UserPlaylistsContainer(this);
+                ChannelName.Content = _userPlaylists.Items[0].Snippet.ChannelTitle;
+                UserPlaylistsContainer = new UserPlaylistsContainer(this, _playlistScrollViewer);
 
             }
             else
             {
                 for (var i = 0; i < 4; i++)
                 {
-                    var backgroundImageUri = new Uri(_playlistItemListResponse.Items[i].Snippet.Thumbnails.Medium.Url);
-                    ImageSource tempSource = new BitmapImage(backgroundImageUri);
-                    ((Image)SearchedPlaylistImagesCover.Children[i]).Source = tempSource;
+                    Uri backgroundImageUri;
+                    try
+                    {
+                        backgroundImageUri = new Uri(_playlistItemListResponse.Items[i].Snippet.Thumbnails.Medium.Url);
+                        ImageSource tempSource = new BitmapImage(backgroundImageUri);
+                        ((Image)SearchedPlaylistImagesCover.Children[i]).Source = tempSource;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Adding song failed");
+                    }
                 }
                 Panel.SetZIndex(UserPlaylistCover, -9999);
-                Channel_name.Content = playlistItemListResponse.Items[0].Snippet.ChannelTitle;
+                ChannelName.Content = playlistItemListResponse.Items[0].Snippet.ChannelTitle;
                 PlaylistName.Text = playlistName;
             }
             Panel.SetZIndex(this, 1);
@@ -96,7 +106,7 @@ namespace Equator.Controls
         private void SearchedPlaylistImagesCover_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var playlistContainer = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel,
-                _backgroundRectangle, _youtubePlayer, this);
+                _backgroundRectangle, _youtubePlayer, this, _playlistScrollViewer);
             if (_firstShow)
             {
                 var parent = VisualTreeHelper.GetParent(this);
@@ -133,50 +143,9 @@ namespace Equator.Controls
 
         private async void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            Console.WriteLine("Playlist Card First Show? " + _firstShow);
             if (_firstShow)
             {
-                _firstShow = false;
-                /*try
-                {
-                    File.Copy(FilePaths.SaveUserImage() + "\\Userimage.png",
-                        FilePaths.SaveUserImage() + "\\Userimage_temp.png", false);
-                }
-                catch
-                {
-                }
-                var tempPath = FilePaths.SaveUserImage() + "\\Userimage_temp.png";
-                var image = new BitmapImage(new Uri(tempPath));
-                var bitmap = convertBitmap(image);
-                var blur = new GaussianBlur(bitmap);
-                Bitmap blurredThumb = null;
-                try
-                {
-                    blurredThumb = blur.Process(15);
-                }
-                catch
-                {
-                    blurredThumb = blur.Process(15);
-                }
-                bitmap.Dispose();
-                var hBitmap = blurredThumb.GetHbitmap();
-                var backgroundImageBrush = new ImageBrush();
-                backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions()
-                );
-                DeleteObject(hBitmap);
-                blurredThumb.Dispose();
-                backgroundImageBrush.Stretch = Stretch.UniformToFill;
-                _backgroundRectangle.Fill = backgroundImageBrush;
-                try
-                {
-                    File.Delete(FilePaths.SaveUserImage() + "\\Userimage_temp.png");
-                }
-                catch
-                {
-                    Console.WriteLine("Deleting temp user image failed");
-                }*/
                 if (_isUserPlaylist)
                 {
                     foreach (var userPlaylistResponse in _userPlaylists.Items)
@@ -184,18 +153,19 @@ namespace Equator.Controls
                         var playlistItems = await QueryYoutube.PlaylistToPlaylistItems(userPlaylistResponse.Id);
                         UserPlaylistsContainer.PlaylistItemHolder.Children.Add(new PlaylistCards(false, true,
                             userPlaylistResponse.Snippet.Title, null, playlistItems, _songLabel, _backgroundRectangle,
-                            _youtubePlayer, _expandedPlaylistHolder, UserPlaylistsContainer));
+                            _youtubePlayer, _expandedPlaylistHolder, UserPlaylistsContainer, _playlistScrollViewer));
                     }
                     await Dispatcher.InvokeAsync(() =>
                     {
                         _expandedPlaylistHolder.Children.Add(UserPlaylistsContainer);
-                        ((WrapPanel)VisualTreeHelper.GetParent(this)).Opacity = 0;
+                        Panel.SetZIndex(_playlistScrollViewer, -9999);
+                        _playlistScrollViewer.Opacity = 0;
                         Panel.SetZIndex(UserPlaylistsContainer, 3);
                     });
                 }
                 else if (UserPlaylistsContainer != null)
                 {
-                    _playlistContainerCards = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer, this);
+                    _playlistContainerCards = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer, this, _playlistScrollViewer);
                     Panel.SetZIndex(_playlistContainerCards, 4);
                     await Dispatcher.InvokeAsync(() =>
                     {
@@ -205,15 +175,16 @@ namespace Equator.Controls
                 }
                 else
                 {
-                    _playlistContainerCards = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer, this);
+                    _playlistContainerCards = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer, this, _playlistScrollViewer);
                     Panel.SetZIndex(_playlistContainerCards, 4);
                     await Dispatcher.InvokeAsync(() =>
                     {
                         _expandedPlaylistHolder.Children.Add(_playlistContainerCards);
-                        ((WrapPanel)VisualTreeHelper.GetParent(this)).Opacity = 0;
+                        Panel.SetZIndex(_playlistScrollViewer, -9999);
+                        _playlistScrollViewer.Opacity = 0;
                     });
                 }
-
+                _firstShow = false;
             }
             else
             {
@@ -221,8 +192,8 @@ namespace Equator.Controls
                 if (_isUserPlaylist)
                     await Dispatcher.InvokeAsync(() =>
                     {
-                        Panel.SetZIndex(((WrapPanel)VisualTreeHelper.GetParent(this)), -9999);
-                        ((WrapPanel)VisualTreeHelper.GetParent(this)).Opacity = 0;
+                        Panel.SetZIndex(_playlistScrollViewer, -9999);
+                        _playlistScrollViewer.Opacity = 0;
                         UserPlaylistsContainer.Opacity = 100;
                         Panel.SetZIndex(UserPlaylistsContainer, 3);
                         UserPlaylistsContainer.IsEnabled = true;
@@ -235,43 +206,18 @@ namespace Equator.Controls
                         Panel.SetZIndex(_playlistContainerCards, 4);
                         _playlistContainerCards.Opacity = 100;
                         _playlistContainerCards.IsEnabled = true;
-
                     });
                 else
                     await Dispatcher.InvokeAsync(() =>
                     {
-                        Panel.SetZIndex(((WrapPanel)VisualTreeHelper.GetParent(this)), -9999);
-                        ((WrapPanel)VisualTreeHelper.GetParent(this)).Opacity = 0;
+                        Panel.SetZIndex(_playlistScrollViewer, -9999);
+                        _playlistScrollViewer.Opacity = 0;
                         Panel.SetZIndex(_playlistContainerCards, 4);
                         _playlistContainerCards.Opacity = 100;
                         _playlistContainerCards.IsEnabled = true;
                     });
-                /*var tempPath = FilePaths.SaveUserImage() + "\\Userimage_temp.png";
-                var image = new BitmapImage(new Uri(tempPath));
-                var bitmap = convertBitmap(image);
-                var blur = new GaussianBlur(bitmap);
-                Bitmap blurredThumb = null;
-                try
-                {
-                    blurredThumb = blur.Process(15);
-                }
-                catch
-                {
-                    blurredThumb = blur.Process(15);
-                }
-                bitmap.Dispose();
-                var hBitmap = blurredThumb.GetHbitmap();
-                var backgroundImageBrush = new ImageBrush();
-                backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions()
-                );
-                DeleteObject(hBitmap);
-                blurredThumb.Dispose();
-                backgroundImageBrush.Stretch = Stretch.UniformToFill;
-                _backgroundRectangle.Fill = backgroundImageBrush;*/
             }
+
         }
     }
 }

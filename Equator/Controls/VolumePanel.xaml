@@ -9,11 +9,11 @@
              VerticalContentAlignment="Bottom" MaxWidth="250" MaxHeight="57">
     <Grid Width="250" Height="58" Background="#FF282828">
         <StackPanel HorizontalAlignment="Left" Height="61" VerticalAlignment="Top" Width="250" Margin="0" />
-        <Slider x:Name="slider" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="51,34,0,0" Height="20"
+        <Slider x:Name="Slider" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="51,34,0,0" Height="20"
                 Width="179" ValueChanged="Slider_OnValueChanged" />
-        <Label x:Name="label" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,29,0,0"
+        <Label x:Name="Label" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,29,0,0"
                Foreground="White" FontWeight="ExtraLight" />
-        <Label x:Name="Title_Label" Content="Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Width="123"
+        <Label x:Name="TitleLabel" Content="Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Width="123"
                Foreground="White" FontSize="20" Height="34" FontWeight="Medium" Margin="5,0,0,0" />
 
     </Grid>

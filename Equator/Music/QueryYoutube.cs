@@ -41,6 +41,7 @@ namespace Equator.Music
             {
                 Console.WriteLine("Query Failed");
             }
+            //Search for topic songs
             musicList.Q = song + " topic"; // Replace with your search term.
             musicList.MaxResults = 1;
             musicList.Type = "video";
@@ -50,7 +51,7 @@ namespace Equator.Music
             return 1;
         }
 
-        public static void QueryPlaylistList(string song)
+        public static async Task QueryPlaylistList(string song)
         {
             var service = GoogleServices.YoutubeService;
             var musicList = service.Search.List("snippet");
@@ -59,7 +60,7 @@ namespace Equator.Music
             musicList.Type = "playlist";
 
             // Call the search.list method to retrieve results matching the specified query term.
-            SearchListResponse = musicList.Execute();
+            SearchListResponse = await musicList.ExecuteAsync();
             try
             {
                 Console.WriteLine("Queryed Youtube for SearchListResponse and SearchListResponse created with " +

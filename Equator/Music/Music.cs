@@ -75,7 +75,7 @@ namespace Equator.Music
                 return FilePaths.ThumbLocation + "\\" + songName + ".png";
             }
 
-            //SongThumbUris.Add(FilePaths.SaveThumb() + "\\" + songName + ".png");
+            //SongThumbUris.Add(FilePaths.CreateSaveThumbLocation() + "\\" + songName + ".png");
             return FilePaths.ThumbLocation + "\\" + songName + ".png";
         }
         /// <summary>
@@ -98,7 +98,7 @@ namespace Equator.Music
                     if (MusicPanel.IsReplay)
                     {
                         // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
-                        MusicPanel.SetIndex(0);
+                      
                         await
                             PlaySpecifiedSong(background,
                                 QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
@@ -109,6 +109,7 @@ namespace Equator.Music
                     else
                     {
                         currentSong.Text = "No more songs to play!";
+                        MusicPanel.SetIndex(0);
                     }
                 else
                     await PlaySpecifiedSong(background,
@@ -119,14 +120,13 @@ namespace Equator.Music
             }
             else
             {
-                var container = (StackPanel)musicContainer;
+
                 //make it play the first song if playlist is over only if IsReplay
-                if (MusicPanel.GetIndex() == container.Children.Count)
+                if (MusicPanel.PlayListIndex == QueryYoutube.CurrentPlaylistItemListResponse.Items.Count)
                 {
                     if (MusicPanel.IsReplay)
                     {
                         // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
-                        MusicPanel.PlayListIndex = 0;
                         await PlaySpecifiedSong(background,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.ResourceId.VideoId,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Title, currentSong,
@@ -136,6 +136,7 @@ namespace Equator.Music
                     else
                     {
                         currentSong.Text = "Playlist is over!";
+                        MusicPanel.PlayListIndex = 0;
                     }
                 }
                 else

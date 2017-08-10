@@ -32,7 +32,7 @@ namespace Equator.Controls
             //set image to song thumb
             InitializeComponent();
             SongTitle.Text = songTitle;
-            Artist_name.Content = artistName;
+            ArtistName.Content = artistName;
             _musicLink = musicLink;
 
             var backgroundBrush = new ImageBrush(new BitmapImage(backgroundImageUri));
@@ -56,7 +56,7 @@ namespace Equator.Controls
         {
             InitializeComponent();
             SongTitle.Text = songTitle;
-            Artist_name.Content = artistName;
+            ArtistName.Content = artistName;
             _musicLink = musicLink;
 
             var backgroundBrush = new ImageBrush(new BitmapImage(backgroundImageUri));
@@ -84,6 +84,7 @@ namespace Equator.Controls
         {
             MusicCardContent = (Canvas) sender;
             Play.Opacity = 100;
+            MusicPanel.PlayingSongs = true;
             await Music.Music.PlaySpecifiedSong(_backgroundRect, _musicLink, Index, SongTitle.Text, _songLabel,
                 _youtubePlayer);
         }

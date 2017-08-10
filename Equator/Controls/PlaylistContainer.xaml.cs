@@ -42,14 +42,14 @@ namespace Equator.Controls
                     var request = service.Videos.List("snippet");
                     request.Id = playlistItem.Snippet.ResourceId.VideoId;
                     var response = request.Execute();
-                    Playlist_Content.Children.Add(new PlaylistItem(backgroundUri,
+                    PlaylistContent.Children.Add(new PlaylistItem(backgroundUri,
                         songLabel, playlistItem.Snippet.ResourceId.VideoId, playlistItem.Snippet.Title,
                         response.Items[0].Snippet.ChannelTitle,
                         backgroundRectangle, youtubePlayer, i, _playlistItemListResponse));
                     Console.WriteLine("Added item from " + playlistName + " " + playlistItem.Snippet.Title);
                 }
             }
-            Content_Holder.Header = playlistName;
+            ContentHolder.Header = playlistName;
         }
     }
 }

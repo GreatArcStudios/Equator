@@ -21,10 +21,10 @@ namespace Equator
         {
             if (Equator.Properties.Settings.Default.FirstRun)
             {
-                SaveLocation();
-                SaveThumb();
-                SaveUserImage();
-                SaveUserCreds();
+                CreateSaveLocation();
+                CreateSaveThumbLocation();
+                CreateSaveUserImageLocation();
+                CreateSaveUserCredsLocation();
                 Equator.Properties.Settings.Default.FirstRun = false;
                 Settings.Default.Save();
             }
@@ -42,28 +42,28 @@ namespace Equator
             window.Show();
             Close();
         }
-        public string SaveLocation()
+        public string CreateSaveLocation()
         {
             if (!Directory.Exists(FilePaths.saveLocation))
                 Directory.CreateDirectory(FilePaths.saveLocation);
             return FilePaths.saveLocation;
         }
 
-        public string SaveThumb()
+        public string CreateSaveThumbLocation()
         {
             if (!Directory.Exists(FilePaths.ThumbLocation))
                 Directory.CreateDirectory(FilePaths.ThumbLocation);
             return FilePaths.ThumbLocation;
         }
 
-        public static string SaveUserImage()
+        public static string CreateSaveUserImageLocation()
         {
             if (!Directory.Exists(FilePaths.UserImageLocation))
                 Directory.CreateDirectory(FilePaths.UserImageLocation);
             return FilePaths.UserImageLocation;
         }
 
-        public static string SaveUserCreds()
+        public static string CreateSaveUserCredsLocation()
         {
             if (!Directory.Exists(FilePaths.UserCredLocation))
                 Directory.CreateDirectory(FilePaths.UserCredLocation);

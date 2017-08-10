@@ -10,11 +10,12 @@ namespace Equator.Controls
     public partial class UserPlaylistsContainer : UserControl
     {
         private readonly PlaylistCards _card;
-
-        public UserPlaylistsContainer(PlaylistCards card)
+        private readonly ScrollViewer _playlistScrollViewer;
+        public UserPlaylistsContainer(PlaylistCards card, ScrollViewer playlistScrollViewer)
         {
             InitializeComponent();
             _card = card;
+            _playlistScrollViewer = playlistScrollViewer;
         }
 
         private async void Close_Click(object sender, RoutedEventArgs e)
@@ -22,10 +23,10 @@ namespace Equator.Controls
             await Dispatcher.InvokeAsync(() =>
             {
                 this.Opacity = 0;
-                Panel.SetZIndex(((WrapPanel)VisualTreeHelper.GetParent(_card)), 3);
-                ((WrapPanel) VisualTreeHelper.GetParent(_card)).Opacity = 100;
                 Panel.SetZIndex(this, -9999);
                 IsEnabled = false;
+                Panel.SetZIndex(_playlistScrollViewer, 3);
+                _playlistScrollViewer.Opacity = 100;
             });
         }
     }
