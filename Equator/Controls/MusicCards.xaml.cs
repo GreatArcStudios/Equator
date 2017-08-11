@@ -85,6 +85,7 @@ namespace Equator.Controls
             MusicCardContent = (Canvas) sender;
             Play.Opacity = 100;
             MusicPanel.PlayingSongs = true;
+            MusicPanel.PlayedIndicies.Add(Index);
             await Music.Music.PlaySpecifiedSong(_backgroundRect, _musicLink, Index, SongTitle.Text, _songLabel,
                 _youtubePlayer);
         }

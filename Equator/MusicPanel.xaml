@@ -50,8 +50,8 @@
             <DoubleAnimation Storyboard.TargetProperty="Width" From="0" To="{Binding ActualWidth, Mode = OneWay, ElementName=SongSearchContainer}" Duration="0:0:1" BeginTime="0:0:0" />
         </Storyboard>
         <Storyboard x:Key="Normalize">
-            <DoubleAnimation Storyboard.TargetProperty="Height" From="{Binding ActualHeight, Mode = OneWay, ElementName=SongSearchContainer}" To="270" Duration="0:0:1" BeginTime="0:0:0" />
-            <DoubleAnimation Storyboard.TargetProperty="Width" From="{Binding ActualWidth, Mode = OneWay, ElementName=SongSearchContainer}" To="480" Duration="0:0:1" BeginTime="0:0:0" />
+            <DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="270" Duration="0:0:1" BeginTime="0:0:0" />
+            <DoubleAnimation Storyboard.TargetProperty="Width" From="0" To="480" Duration="0:0:1" BeginTime="0:0:0" />
         </Storyboard>
 
     </Window.Resources>
@@ -100,7 +100,7 @@
                         Height="40">
                 <Button x:Name="Userbutton" Content="" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="45"
                         Style="{DynamicResource MetroCircleButtonStyle}" Height="44" BorderBrush="{x:Null}"
-                        Margin="0,-4,0,0" RenderTransformOrigin="0.902,0.148" Click="Userbutton_Click">
+                        Margin="0,-4,0,0" RenderTransformOrigin="0.902,0.148" Click="Userbutton_Click" ToolTip="Logout">
                     <Button.Background>
                         <ImageBrush x:Name="NoName" ImageSource="Icons/Stop.png" />
                     </Button.Background>
@@ -112,7 +112,7 @@
                                        BorderThickness="2"
                                        Watermark="Search..." BorderBrush="White" CaretBrush="#FFC7C7C7"
                                        KeyDown="SearchBox_KeyDown" MouseDoubleClick="SearchBox_MouseDoubleClick"
-                                       TextChanged="SearchBox_TextChanged" MinWidth="200" MaxWidth="300">
+                                       TextChanged="SearchBox_TextChanged" MinWidth="200" MaxWidth="300" ToolTip="Search Query">
                     <xctk:WatermarkTextBox.WatermarkTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}" Foreground="White" FontWeight="Light" Focusable="False" />
@@ -122,7 +122,7 @@
                 <Button x:Name="SearchButton" HorizontalAlignment="Left" VerticalAlignment="Center" Width="43"
                         Margin="15,-2,0,0" Height="42" BorderBrush="#FF363636" Foreground="#FF212121"
                         BorderThickness="0" Click="SearchButton_Click" Style="{DynamicResource MetroCircleButtonStyle}"
-                        OpacityMask="Black">
+                        OpacityMask="Black" ToolTip="Search">
                     <Button.Background>
                         <ImageBrush ImageSource="Icons/Search.png" Stretch="Uniform" />
                     </Button.Background>
@@ -132,13 +132,13 @@
                     <Label.Effect>
                         <DropShadowEffect Color="#3FD3D3D3" BlurRadius="9" ShadowDepth="1" />
                     </Label.Effect>
-                    <TextBlock Name="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="450">Now Playing: nothing!</TextBlock>
+                    <TextBlock Name="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="450" ToolTip="Status">Now Playing: nothing!</TextBlock>
                 </Label>
                 <Button x:Name="SongSelector" Content="Songs" HorizontalAlignment="Left" VerticalAlignment="Top"
                         Width="138" Height="38" Margin="12,2,0,0" Foreground="White"
                         controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0"
                         FontWeight="Bold" Click="SongSelector_Click" Background="#7FB4B4B4"
-                        MouseEnter="SongSelector_MouseEnter" MouseLeave="SongSelector_MouseLeave">
+                        MouseEnter="SongSelector_MouseEnter" MouseLeave="SongSelector_MouseLeave" ToolTip="Songs">
                     <Button.Style>
                         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#7F7E7E7E" x:Name="SongSelectorBackgroundSetter" />
@@ -159,7 +159,7 @@
                         VerticalAlignment="Top" Width="138" Height="38" Margin="2,2,0,0" Foreground="White"
                         controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ButtonHelper.CornerRadius="0"
                         FontWeight="Bold" Click="PlaylistSelector_Click" MouseEnter="PlaylistSelector_MouseEnter"
-                        MouseLeave="PlaylistSelector_MouseLeave">
+                        MouseLeave="PlaylistSelector_MouseLeave" ToolTip="Playlists">
                     <Button.Style>
                         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#7F7E7E7E" />
@@ -228,7 +228,7 @@
                         <Button x:Name="LastSongButton" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Width="55" Margin="0,2,0,0" Style="{DynamicResource MetroCircleButtonStyle}"
                                 Height="55" BorderBrush="{x:Null}" Foreground="#7F787878" OpacityMask="White"
-                                Click="GoLeftButtonClick">
+                                Click="GoLeftButtonClick" RenderTransformOrigin="-1,0" ToolTip="Last Song">
                             <Button.Background>
                                 <ImageBrush ImageSource="Icons/16 back.png" />
                             </Button.Background>
@@ -237,7 +237,7 @@
                                 VerticalAlignment="Top"
                                 Width="48" Style="{DynamicResource MetroCircleButtonStyle}" Height="48"
                                 BorderBrush="{x:Null}" Margin="0,4.8,0,0" Foreground="#7F787878" OpacityMask="White"
-                                Click="Play_Pause_Button_Click">
+                                Click="Play_Pause_Button_Click" ToolTip="Play/Pause">
                             <Button.Background>
                                 <ImageBrush ImageSource="Icons/Stop.png" />
                             </Button.Background>
@@ -245,7 +245,7 @@
                         <Button x:Name="NextSongButton" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Width="55" Margin="0,2,0,0" Style="{DynamicResource MetroCircleButtonStyle}"
                                 Height="55" BorderBrush="{x:Null}" Foreground="#7F787878" OpacityMask="White"
-                                Click="Next_Song_Button_OnClick">
+                                Click="Next_Song_Button_OnClick" ToolTip="Next Song">
                             <Button.Background>
                                 <ImageBrush ImageSource="Icons/16 forwards copy.png" />
                             </Button.Background>
@@ -345,7 +345,7 @@
                 <WrapPanel x:Name="PlaylistsHolder" ItemHeight="279.5"
                    ItemWidth="250" Margin="50,0,0,0"/>
             </ScrollViewer>
-            <Grid x:Name="ExpandedPlaylistHolder" Margin="0,-2,0,0" />
+            <Grid x:Name="ExpandedPlaylistHolder" Margin="0,-1,0,0" />
         </Grid>
         <controls:TransitioningContentControl x:Name="TransitioningContentControl" HorizontalContentAlignment="Stretch"
                                               VerticalContentAlignment="Stretch" Grid.Row="1" Grid.RowSpan="2" />

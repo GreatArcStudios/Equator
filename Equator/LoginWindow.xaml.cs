@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define DEBUG
+using System;
 using System.IO;
 using System.Windows;
 using Equator.Helpers;
@@ -19,6 +20,7 @@ namespace Equator
 
         private async void Login1_Click(object sender, RoutedEventArgs e)
         {
+            /*
             if (Equator.Properties.Settings.Default.FirstRun)
             {
                 CreateSaveLocation();
@@ -27,7 +29,16 @@ namespace Equator
                 CreateSaveUserCredsLocation();
                 Equator.Properties.Settings.Default.FirstRun = false;
                 Settings.Default.Save();
-            }
+            }*/
+#if DEBUG
+            CreateSaveLocation();
+            CreateSaveThumbLocation();
+            CreateSaveUserImageLocation();
+            CreateSaveUserCredsLocation();
+            Equator.Properties.Settings.Default.FirstRun = false;
+            Settings.Default.Save();
+#endif
+
 
             if (Directory.GetFiles(FilePaths.UserCredLocation).Length == 0)
             {
@@ -35,7 +46,7 @@ namespace Equator
                 await GoogleServices.AuthUserCredential(true);
             }
             else
-            await GoogleServices.AuthUserCredential(false);
+                await GoogleServices.AuthUserCredential(false);
             var window = new MusicPanel();
             GoogleServices.YoutubeService =
                 GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, true, GoogleServices.Credential);

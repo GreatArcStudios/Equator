@@ -10,7 +10,7 @@ namespace Equator.Controls
     /// </summary>
     public partial class YoutubePlayer : UserControl
     {
-        internal int State = 0;
+        internal int State = (int)WindowStates.Normal;
         internal enum WindowStates 
         {
             Normal,

@@ -73,6 +73,7 @@ namespace Equator.Controls
         {
             Play.Opacity = 100;
             MusicPanel.PlayListIndex = _index;
+            MusicPanel.PlayedPlaylistIndicies.Add(_index);
             MusicPanel.PlayingSongs = false;
             Console.WriteLine("Playing Songs? " + MusicPanel.PlayingSongs);
             QueryYoutube.CurrentPlaylistItemListResponse = _parentPlaylist;

@@ -100,6 +100,7 @@ namespace Equator.Controls
         {
             var firstChild = (PlaylistItem)PlaylistItemHolder.Children[0];
             MusicPanel.PlayListIndex = firstChild.Index;
+            MusicPanel.PlayedPlaylistIndicies.Add(firstChild.Index);
             MusicPanel.PlayingSongs = false;
             Console.WriteLine("Playing Songs? " + MusicPanel.PlayingSongs);
             QueryYoutube.CurrentPlaylistItemListResponse = firstChild.ParentPlaylist;

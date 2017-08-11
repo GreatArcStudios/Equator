@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,8 +35,11 @@ namespace Equator
         private static extern bool DeleteObject(IntPtr hObject);
 
         public static bool IsPlaying;
-        public static int PlayListIndex;
-
+        public static int PlayListIndex
+        {
+            get { return _playListIndex; }
+            set { _playListIndex = value; }
+        }
         public static bool IsReplay
         {
             get => _isReplay;
@@ -45,6 +50,10 @@ namespace Equator
             get => _playingSongs;
             set => _playingSongs = value;
         }
+        public static List<int> PlayedPlaylistIndicies = new List<int>();
+        public static List<int> PlayedIndicies = new List<int>();
+
+        private static int _playListIndex;
         private static int _index;
         private MusicCards _musicCards;
         private bool _sliderDragging;
@@ -95,7 +104,7 @@ namespace Equator
             {
                 #region First run 
 
-                var image = Image.FromFile(new Uri(@"Images\Img_0535.jpg", UriKind.Relative).ToString());
+                var image = Image.FromFile(new Uri(@"Images\Fire_hydrant.jpg", UriKind.Relative).ToString());
                 var blur = new GaussianBlur(image as Bitmap);
                 var blurredThumb = blur.Process(70);
                 image.Dispose();
@@ -466,51 +475,52 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         {
             if (_playingSongs)
             {
-                SetIndex(_index - 1);
-                //make it play the last song
-                if (GetIndex() < 0)
+                if (PlayedIndicies.Count - 1 > 0)
                 {
-                    SetIndex(QueryYoutube.SearchListResponse.Items.Count - 1);
+                    if (PlayedIndicies.IndexOf(PlayedIndicies.Count - 1) ==
+                        PlayedIndicies.IndexOf(PlayedIndicies.Count - 2))
+                    {
+                        PlayedIndicies.RemoveAt(PlayedIndicies.Count - 1);
+                    }
+                    PlayedIndicies.RemoveAt(PlayedIndicies.Count - 1);
+                    SetIndex(PlayedIndicies.Last());
                     await
                         Music.Music.PlaySpecifiedSong(Background,
-                            QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1].Id
+                            QueryYoutube.SearchListResponse.Items[_index].Id
                                 .VideoId,
                             _index,
-                            QueryYoutube.SearchListResponse.Items[QueryYoutube.SearchListResponse.Items.Count - 1]
+                            QueryYoutube.SearchListResponse.Items[_index]
                                 .Snippet
                                 .Title,
                             CurrentSong, Media.CefPlayer);
                 }
                 else
                 {
-                    //otherwise play the next song
-                    await Music.Music.PlaySpecifiedSong(Background,
-                        QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
-                        _index,
-                        QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
-                        CurrentSong, Media.CefPlayer);
+                    CurrentSong.Text = "Can't go back";
                 }
+
             }
             else
             {
-                PlayListIndex--;
-                if (PlayListIndex < 0)
+                if (PlayedPlaylistIndicies.Count - 1 > 0)
                 {
-                    PlayListIndex = QueryYoutube.CurrentPlaylistItemListResponse.Items.Count - 1;
+                    if (PlayedPlaylistIndicies.IndexOf(PlayedPlaylistIndicies.Count - 1) ==
+                        PlayedPlaylistIndicies.IndexOf(PlayedPlaylistIndicies.Count - 2))
+                    {
+                        PlayedPlaylistIndicies.RemoveAt(PlayedPlaylistIndicies.Count - 1);
+                    }
+                    PlayedPlaylistIndicies.RemoveAt(PlayedPlaylistIndicies.Count - 1);
+                    _playListIndex = PlayedPlaylistIndicies.Last();
                     await Music.Music.PlaySpecifiedSong(Background,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.ResourceId.VideoId,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Title, CurrentSong,
                         Media.CefPlayer,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Thumbnails.Medium
+                            .Url);
                 }
                 else
                 {
-                    //otherwise play the next song
-                    await Music.Music.PlaySpecifiedSong(Background,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
-                        Media.CefPlayer,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                    CurrentSong.Text = "Can't go back";
                 }
             }
         }
@@ -542,7 +552,9 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 else
                 {
                     var random = new Random();
-                    await Music.Music.AutoPlaySong(random.Next(0, 50), CurrentSong, UserPlaylistContent, Background,
+                    int generatedIndex = random.Next(0, 50);
+                    PlayedPlaylistIndicies.Add(generatedIndex);
+                    await Music.Music.AutoPlaySong(generatedIndex, CurrentSong, UserPlaylistContent, Background,
                         Media.CefPlayer, true);
                     IsPlaying = true;
                     _songLoaded = true;
@@ -560,9 +572,10 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 }
                 else
                 {
-                    await Music.Music.AutoPlaySong(PlayListIndex + 1, CurrentSong, UserPlaylistContent, Background,
+                    await Music.Music.AutoPlaySong(_playListIndex + 1, CurrentSong, UserPlaylistContent, Background,
                         Media.CefPlayer,
                         true);
+                    PlayedPlaylistIndicies.Add(_playListIndex + 1);
                     IsPlaying = true;
                     _songLoaded = true;
                 }
@@ -681,11 +694,13 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             if (_playingSongs)
             {
                 SetIndex(_index + 1);
+         
                 //make it play the first song
                 if (GetIndex() == MusicContainer.Children.Count)
                 {
                     // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
                     SetIndex(0);
+                    PlayedIndicies.Add(0);
                     await
                         Music.Music.PlaySpecifiedSong(Background,
                             QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
@@ -705,24 +720,26 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             }
             else
             {
-                PlayListIndex++;
-                if (PlayListIndex == QueryYoutube.CurrentPlaylistItemListResponse.Items.Count)
+                _playListIndex++;
+                if (_playListIndex == QueryYoutube.CurrentPlaylistItemListResponse.Items.Count)
                 {
-                    PlayListIndex = 0;
+                    _playListIndex = 0;
+                    PlayedPlaylistIndicies.Add(_playListIndex);
                     await Music.Music.PlaySpecifiedSong(Background,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.ResourceId.VideoId,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Title, CurrentSong,
                         Media.CefPlayer,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Thumbnails.Medium.Url);
                 }
                 else
                 {
+                    PlayedPlaylistIndicies.Add(_playListIndex);
                     //otherwise play the next song
                     await Music.Music.PlaySpecifiedSong(Background,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.ResourceId.VideoId,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Title, CurrentSong,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.ResourceId.VideoId,
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Title, CurrentSong,
                         Media.CefPlayer,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[PlayListIndex].Snippet.Thumbnails.Medium.Url);
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Thumbnails.Medium.Url);
                 }
             }
         }
@@ -819,41 +836,40 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         {
             if (Media.State == (int)YoutubePlayer.WindowStates.Normal)
             {
-                ((Storyboard)FindResource("Minimize")).Begin(Media);
-                Media.State = (int) YoutubePlayer.WindowStates.Minimized;
-            
+                ((Storyboard)FindResource("Minimize")).Begin(Media.Container);
+                Media.State = (int)YoutubePlayer.WindowStates.Minimized;
             }
+            else if (Media.State == (int)YoutubePlayer.WindowStates.Minimized)
+            {
+                ((Storyboard)FindResource("Normalize")).Begin(Media.Container);
+                Media.State = (int)YoutubePlayer.WindowStates.Normal;
+            }
+            /*
             else if (Media.State == (int) YoutubePlayer.WindowStates.Minimized)
             {
                 ((Storyboard) FindResource("Maximize")).Begin(Media);
                 Media.State = (int) YoutubePlayer.WindowStates.Maximized;
            
-            }
-            else if (Media.State == (int) YoutubePlayer.WindowStates.Maximized)
-            {
-                ((Storyboard) FindResource("Normalize")).Begin(Media);
-                Media.State = (int) YoutubePlayer.WindowStates.Normal;
-             
-            }
+            }*/
         }
 
         private void Media_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Media.State == (int)YoutubePlayer.WindowStates.Normal)
             {
-                ((Storyboard)FindResource("Minimize")).Begin(Media);
+                ((Storyboard)FindResource("Minimize")).Begin(Media.Container);
                 Media.State = (int)YoutubePlayer.WindowStates.Minimized;
             }
             else if (Media.State == (int)YoutubePlayer.WindowStates.Minimized)
             {
-                ((Storyboard)FindResource("Maximize")).Begin(Media);
-                Media.State = (int)YoutubePlayer.WindowStates.Maximized;
-            }
-            else if (Media.State == (int)YoutubePlayer.WindowStates.Maximized)
-            {
-                ((Storyboard)FindResource("Normalize")).Begin(Media);
+                ((Storyboard)FindResource("Normalize")).Begin(Media.Container);
                 Media.State = (int)YoutubePlayer.WindowStates.Normal;
             }
+            /*else if (Media.State == (int)YoutubePlayer.WindowStates.Minimized)
+           {
+               ((Storyboard)FindResource("Maximize")).Begin(Media);
+               Media.State = (int)YoutubePlayer.WindowStates.Maximized;
+           }*/
         }
     }
 }

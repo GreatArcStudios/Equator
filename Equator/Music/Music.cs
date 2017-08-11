@@ -431,7 +431,7 @@ var bytes = await video.GetBytesAsync();
                     .OrderBy(s => s.VideoEncoding == VideoEncoding.Vp8)
                     .ThenBy(s => s.VideoQuality == VideoQuality.High720).Last();
                 youtubePlayer.LoadHtml(
-                    "<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" autoplay>" +
+                    "<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" height = \"270\" width = \"480\" autoplay>" +
                     "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
                 Console.WriteLine("Player loaded? " + youtubePlayer.IsLoaded);
             }
@@ -441,7 +441,7 @@ var bytes = await video.GetBytesAsync();
                     .OrderBy(s => s.VideoEncoding == VideoEncoding.Vp8)
                     .ThenBy(s => s.VideoQuality == VideoQuality.Medium480).Last();
                 youtubePlayer.LoadHtml(
-                    "<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" autoplay>" +
+                    "<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" height = \"270\" width = \"480\" autoplay>" +
                     "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
                 Console.WriteLine("Player loaded? " + youtubePlayer.IsLoaded);
             }

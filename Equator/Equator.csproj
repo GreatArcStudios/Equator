@@ -418,6 +418,18 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\fence.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Flower 2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Railing.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Rust.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Icons\Fullscreen icon.png" />
     <Resource Include="Icons\16 replay selected.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -430,7 +442,7 @@
     <Resource Include="Icons\Taskbar Play.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Images\Dandelion no crop.jpg">
+    <Content Include="Images\Fire_hydrant.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\IMG_0535.JPG">
