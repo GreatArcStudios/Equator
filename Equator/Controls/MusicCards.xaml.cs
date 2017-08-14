@@ -20,13 +20,14 @@ namespace Equator.Controls
         private readonly string _musicLink;
         private readonly TextBlock _songLabel;
         private readonly ChromiumWebBrowser _youtubePlayer;
+        private readonly Button _playButton;
         private Label _endTimeLabel;
         private Slider _playBarSlider;
         public int Index;
 
         public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
             ref MediaElement mediaElement, ref TextBlock songLabel, ref Label endTimeLabel,
-            ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer)
+            ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer, ref Button playButton)
         {
             //Set the text to song name 
             //set image to song thumb
@@ -48,11 +49,12 @@ namespace Equator.Controls
             Index = index;
             _backgroundRect = backgroundRectangle;
             _youtubePlayer = youtubePlayer;
+            _playButton = playButton;
         }
 
         public MusicCards(string musicLink, string songTitle, string artistName, Uri backgroundImageUri,
             ref TextBlock songLabel, ref Label endTimeLabel,
-            ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer)
+            ref Rectangle backgroundRectangle, ref Slider slider, int index, ref ChromiumWebBrowser youtubePlayer, ref Button playButton)
         {
             InitializeComponent();
             SongTitle.Text = songTitle;
@@ -71,6 +73,7 @@ namespace Equator.Controls
             Index = index;
             _backgroundRect = backgroundRectangle;
             _youtubePlayer = youtubePlayer;
+            _playButton = playButton;
         }
 
 
@@ -85,9 +88,9 @@ namespace Equator.Controls
             MusicCardContent = (Canvas) sender;
             Play.Opacity = 100;
             MusicPanel.PlayingSongs = true;
-            MusicPanel.PlayedIndicies.Add(Index);
+            MusicPanel.PlayedIndiciesBackwards.Add(Index);
             await Music.Music.PlaySpecifiedSong(_backgroundRect, _musicLink, Index, SongTitle.Text, _songLabel,
-                _youtubePlayer);
+                _youtubePlayer, _playButton);
         }
 
         private void MusicCardContent_MouseEnter(object sender, MouseEventArgs e)

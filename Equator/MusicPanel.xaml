@@ -14,19 +14,19 @@
     Loaded="MusicPanel_OnLoaded"
     Title="Equator Music" Height="900" Width="1400" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen"
     d:IsEffectDisabled="True" Background="#FF494949" Foreground="Black" OverlayBrush="Black"
-    KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown" MinWidth="1400" MinHeight="900" TitleCharacterCasing="Normal" TitleCaps="False">
-    <controls:MetroWindow.RightWindowCommands>
+    KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown" MinWidth="1400" MinHeight="900" TitleCharacterCasing="Normal" TitleCaps="False" Closing="MusicPlayer_Closing">
+    <!--<controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button Content="Settings" />
 
         </controls:WindowCommands>
-    </controls:MetroWindow.RightWindowCommands>
+    </controls:MetroWindow.RightWindowCommands>-->
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfo Description="Shuffle" Click="Shuffle_Button_OnClick"
                                  ImageSource="Icons/32 shuffle.png" />
-                <ThumbButtonInfo Description="Back" Click="GoLeftButtonClick" ImageSource="Icons/16 back.png" />
+                <ThumbButtonInfo Description="Back" Click="Last_Song_Button_OnClick" ImageSource="Icons/16 back.png" />
                 <ThumbButtonInfo Description="Play" Click="Play_Pause_Button_Click" ImageSource="Icons/Taskbar Play.png" />
                 <ThumbButtonInfo Description="Next" Click="Next_Song_Button_OnClick"
                                  ImageSource="Icons/16 forwards copy.png" />
@@ -71,7 +71,7 @@
         <Rectangle x:Name="Background" Margin="-130,0,-93,-40" Stroke="White" Grid.RowSpan="4"
                    RenderTransformOrigin="0.5,0.5" StrokeThickness="0" StrokeStartLineCap="Square">
             <Rectangle.Fill>
-                <ImageBrush ImageSource="Images/IMG_0535.JPG" Stretch="UniformToFill" />
+                <ImageBrush ImageSource="Images/Fire_hydrant.jpg" Stretch="UniformToFill" />
             </Rectangle.Fill>
         </Rectangle>
         <Rectangle x:Name="DarkenOverlay" Margin="-110,0,-33,-10" Stroke="White" Grid.RowSpan="4"
@@ -96,7 +96,7 @@
             </Grid.ColumnDefinitions>
             <Rectangle x:FieldModifier="public" x:Name="TopBar" Grid.ColumnSpan="4" Panel.ZIndex="-7"
                        OpacityMask="Black" Margin="-45,0,0,0" Fill="#750F0F0F" Grid.RowSpan="2" />
-            <StackPanel Grid.ColumnSpan="3" Margin="30,10,14,10" Orientation="Horizontal" VerticalAlignment="Center"
+            <StackPanel Grid.ColumnSpan="4" Margin="30,12,0,11" Orientation="Horizontal" VerticalAlignment="Center"
                         Height="40">
                 <Button x:Name="Userbutton" Content="" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="45"
                         Style="{DynamicResource MetroCircleButtonStyle}" Height="44" BorderBrush="{x:Null}"
@@ -132,7 +132,7 @@
                     <Label.Effect>
                         <DropShadowEffect Color="#3FD3D3D3" BlurRadius="9" ShadowDepth="1" />
                     </Label.Effect>
-                    <TextBlock Name="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="450" ToolTip="Status">Now Playing: nothing!</TextBlock>
+                    <TextBlock Name="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="450" ToolTip="{Binding Text, ElementName=CurrentSong}">Now Playing: nothing!</TextBlock>
                 </Label>
                 <Button x:Name="SongSelector" Content="Songs" HorizontalAlignment="Left" VerticalAlignment="Top"
                         Width="138" Height="38" Margin="12,2,0,0" Foreground="White"
@@ -228,7 +228,7 @@
                         <Button x:Name="LastSongButton" Content="" HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Width="55" Margin="0,2,0,0" Style="{DynamicResource MetroCircleButtonStyle}"
                                 Height="55" BorderBrush="{x:Null}" Foreground="#7F787878" OpacityMask="White"
-                                Click="GoLeftButtonClick" RenderTransformOrigin="-1,0" ToolTip="Last Song">
+                                Click="Last_Song_Button_OnClick" RenderTransformOrigin="-1,0" ToolTip="Last Song">
                             <Button.Background>
                                 <ImageBrush ImageSource="Icons/16 back.png" />
                             </Button.Background>
@@ -323,21 +323,6 @@
                       Grid.RowSpan="2" Margin="0" Padding="0" Panel.ZIndex="3">
             <WrapPanel x:Name="MusicContainer" Grid.Row="2" ItemHeight="279.5" ItemWidth="250" Margin="50,0,0,0" />
         </ScrollViewer>
-        <Expander x:Name="UserPlaylists" Header="Your Playlists" Background="#00647687" BorderBrush="#00667583"
-                  FontSize="20" VerticalContentAlignment="Stretch" VerticalAlignment="Top" Grid.Row="1"
-                  controls:ControlsHelper.HeaderFontStretch="SemiExpanded"
-                  controls:ControlsHelper.ContentCharacterCasing="Upper" controls:ControlsHelper.HeaderFontSize="20"
-                  controls:ControlsHelper.HeaderFontWeight="SemiBold" Margin="10,10,10,0" Padding="5,0,0,0"
-                  HorizontalContentAlignment="Stretch" IsEnabled="False" Panel.ZIndex="-9999"
-                  Opacity="0" Height="37" d:IsHidden="True">
-            <Grid Background="#66AAAAAA">
-                <ScrollViewer Style="{StaticResource FlatScrollViewer}" HorizontalScrollBarVisibility="Disabled"
-                              VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Stretch" Padding="10"
-                              VerticalAlignment="Top">
-                    <StackPanel x:Name="UserPlaylistContent" />
-                </ScrollViewer>
-            </Grid>
-        </Expander>
         <Grid x:Name="AllPlaylistParts" Grid.Row="1" Grid.RowSpan="2">
             <!--<WrapPanel x:Name="PlaylistsHolder" Margin="50,0,0,0" ItemHeight="279.5"
                        ItemWidth="250" />-->
@@ -354,7 +339,7 @@
         <Controls:YoutubePlayer x:Name="Media" x:FieldModifier="public" HorizontalAlignment="Right" Height="270"
                                 VerticalAlignment="Bottom" Width="480" Margin="0,0,14,-0.5" Grid.Row="2"
                                 HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" MouseDown="Media_MouseDown" >
-            
+
         </Controls:YoutubePlayer>
         <Controls:VolumePanel x:Name="VolumeControl" HorizontalAlignment="Right" Height="57" VerticalAlignment="Bottom"
                               Width="250" Grid.Row="2" Thumb.DragCompleted="VolumeControl_OnDragCompleted"

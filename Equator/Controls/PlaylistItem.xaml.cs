@@ -30,6 +30,7 @@ namespace Equator.Controls
         internal string BackgroundImageUrl => _backgroundImageUrl;
         private int _index;
         private string _musicLink;
+        private Button _playButton;
         private readonly string _backgroundImageUrl;
         private readonly Rectangle _backgroundRect;
         private readonly PlaylistItemListResponse _parentPlaylist;
@@ -38,7 +39,7 @@ namespace Equator.Controls
 
         public PlaylistItem(Uri backgroundImageUri, TextBlock songLabel, string musicLink, string songTitle,
             string artistName, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer, int index,
-            PlaylistItemListResponse playlistItemListResponse)
+            PlaylistItemListResponse playlistItemListResponse, Button playButton)
         {
             InitializeComponent();
             var backgroundBrush = new ImageBrush(new BitmapImage(backgroundImageUri));
@@ -55,6 +56,7 @@ namespace Equator.Controls
             _backgroundImageUrl = backgroundImageUri.ToString();
             _index = index;
             _parentPlaylist = playlistItemListResponse;
+            _playButton = playButton;
         }
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
@@ -73,12 +75,12 @@ namespace Equator.Controls
         {
             Play.Opacity = 100;
             MusicPanel.PlayListIndex = _index;
-            MusicPanel.PlayedPlaylistIndicies.Add(_index);
+            MusicPanel.PlayedPlaylistIndiciesBackwards.Add(_index);
             MusicPanel.PlayingSongs = false;
             Console.WriteLine("Playing Songs? " + MusicPanel.PlayingSongs);
             QueryYoutube.CurrentPlaylistItemListResponse = _parentPlaylist;
             await Music.Music.PlaySpecifiedSong(_backgroundRect, _musicLink, SongTitle.Text, _songLabel, _youtubePlayer,
-                _backgroundImageUrl);
+                _backgroundImageUrl, _playButton);
         }
     }
 }

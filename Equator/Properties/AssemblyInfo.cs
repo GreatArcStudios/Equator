@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -7,14 +8,14 @@ using System.Windows;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Equator")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Executable for the Equator Music Player")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Great Arc Studios")]
 [assembly: AssemblyProduct("Equator")]
 [assembly: AssemblyCopyright("Copyright © Eric Zhu 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
+[assembly: NeutralResourcesLanguage("en-US")]
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.

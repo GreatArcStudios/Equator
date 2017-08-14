@@ -38,18 +38,18 @@
         </Image>
         <Label x:Name="ArtistName" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
                VerticalAlignment="Bottom" Background="#00000000" Foreground="White" Height="35" Width="250"
-               Canvas.Top="240" Content="Label" FontSize="13.333">
+               Canvas.Top="238" Content="Label" FontSize="14">
             <Label.Effect>
-                <DropShadowEffect BlurRadius="5" ShadowDepth="4" />
+                <DropShadowEffect BlurRadius="5" ShadowDepth="2" />
             </Label.Effect>
         </Label>
         <Label x:Name="SongTitleHolder" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="#00000000" Foreground="White"
                Height="55" Width="250" FontWeight="Bold" FontSize="16" Canvas.Top="189">
-            <TextBlock TextWrapping="Wrap" TextTrimming="WordEllipsis" x:Name="SongTitle" TextAlignment="Center"
-                       Text="sdfsdfsafasf" Padding="0" Height="56" Width="243" Margin="0,-5,0,0">
+            <TextBlock TextWrapping="Wrap" TextTrimming="CharacterEllipsis" x:Name="SongTitle" TextAlignment="Center"
+                       Text="sdfsdfsafasf" Padding="5,0" Margin="0,-5,0,0" FontSize="14.5">
                 <TextBlock.Effect>
-                    <DropShadowEffect BlurRadius="16" ShadowDepth="2" />
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" />
                 </TextBlock.Effect>
             </TextBlock>
 

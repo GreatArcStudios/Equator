@@ -11,8 +11,8 @@
           Background="#FF171717">
         <Label x:Name="Label" Content="Welcome!" HorizontalAlignment="Center" Height="45" Margin="0,315,0,0"
                VerticalAlignment="Top" Width="130" FontSize="26.667" Foreground="White" />
-        <Image x:Name="Image" HorizontalAlignment="Center" Height="260" Margin="0,40,0,0" VerticalAlignment="Top"
-               Width="280" Source="Icons/EquatorLogo.png" />
+        <Image x:Name="Image" HorizontalAlignment="Center" Height="260" Margin="95,40,114,0" VerticalAlignment="Top"
+               Width="285" Source="Icons/EquatorLogo.png" />
         <Button x:Name="Login1" Content="Login" HorizontalAlignment="Center" Height="40" Margin="0,395,0,0"
                 VerticalAlignment="Top" Width="152"
                 Click="Login1_Click" FontSize="13.333" controls:ButtonHelper.CornerRadius="0">

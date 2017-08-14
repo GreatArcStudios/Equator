@@ -22,7 +22,20 @@
             Error code
             </summary>
         </member>
+        <member name="P:YoutubeExplode.Exceptions.VideoNotAvailableException.Reason">
+            <summary>
+            Error reason
+            </summary>
+        </member>
         <member name="M:YoutubeExplode.Exceptions.VideoNotAvailableException.#ctor(System.Int32,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:YoutubeExplode.Exceptions.VideoRequiresPurchaseException">
+            <summary>
+            Thrown when the video is a paid Youtube Red video since then we have no access to more video details
+            </summary>
+        </member>
+        <member name="M:YoutubeExplode.Exceptions.VideoRequiresPurchaseException.#ctor">
             <inheritdoc />
         </member>
         <member name="M:YoutubeExplode.Internal.CipherOperations.ICipherOperation.Decipher(System.String)">
@@ -130,7 +143,7 @@
             Manifest URL
             </summary>
         </member>
-        <member name="P:YoutubeExplode.Models.ClosedCaptions.ClosedCaptionTrackInfo.Culture">
+        <member name="P:YoutubeExplode.Models.ClosedCaptions.ClosedCaptionTrackInfo.Language">
             <summary>
             Text culture
             </summary>
@@ -140,7 +153,25 @@
             Whether this caption track was generated automatically
             </summary>
         </member>
-        <member name="M:YoutubeExplode.Models.ClosedCaptions.ClosedCaptionTrackInfo.#ctor(System.String,System.Globalization.CultureInfo,System.Boolean)">
+        <member name="M:YoutubeExplode.Models.ClosedCaptions.ClosedCaptionTrackInfo.#ctor(System.String,YoutubeExplode.Models.ClosedCaptions.Language,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:YoutubeExplode.Models.ClosedCaptions.Language">
+            <summary>
+            Language information
+            </summary>
+        </member>
+        <member name="P:YoutubeExplode.Models.ClosedCaptions.Language.Code">
+            <summary>
+            The ISO 639-1 Code of that language
+            </summary>
+        </member>
+        <member name="P:YoutubeExplode.Models.ClosedCaptions.Language.Name">
+            <summary>
+            The full english name of that language
+            </summary>
+        </member>
+        <member name="M:YoutubeExplode.Models.ClosedCaptions.Language.#ctor(System.String,System.String)">
             <inheritdoc />
         </member>
         <member name="T:YoutubeExplode.Models.Extensions">
@@ -573,7 +604,7 @@
             Playlist type
             </summary>
         </member>
-        <member name="F:YoutubeExplode.Models.PlaylistType.UserMade">
+        <member name="F:YoutubeExplode.Models.PlaylistType.Normal">
             <summary>
             Regular playlist created by a user
             </summary>
@@ -583,22 +614,22 @@
             Mix playlist generated to group similar videos
             </summary>
         </member>
-        <member name="F:YoutubeExplode.Models.PlaylistType.ChannelMix">
+        <member name="F:YoutubeExplode.Models.PlaylistType.ChannelVideoMix">
             <summary>
             Mix playlist generated to group similar videos uploaded by the same channel
             </summary>
         </member>
-        <member name="F:YoutubeExplode.Models.PlaylistType.ChannelUploads">
+        <member name="F:YoutubeExplode.Models.PlaylistType.ChannelVideos">
             <summary>
             Playlist generated from channel uploads
             </summary>
         </member>
-        <member name="F:YoutubeExplode.Models.PlaylistType.ChannelPopular">
+        <member name="F:YoutubeExplode.Models.PlaylistType.PopularChannelVideos">
             <summary>
             Playlist generated from popular channel uploads
             </summary>
         </member>
-        <member name="F:YoutubeExplode.Models.PlaylistType.Liked">
+        <member name="F:YoutubeExplode.Models.PlaylistType.LikedVideos">
             <summary>
             System playlist for videos liked by a user
             </summary>
@@ -621,11 +652,6 @@
         <member name="P:YoutubeExplode.Models.VideoInfo.Author">
             <summary>
             Author
-            </summary>
-        </member>
-        <member name="P:YoutubeExplode.Models.VideoInfo.Duration">
-            <summary>
-            Duration
             </summary>
         </member>
         <member name="P:YoutubeExplode.Models.VideoInfo.Watermarks">
@@ -691,6 +717,11 @@
             Title
             </summary>
         </member>
+        <member name="P:YoutubeExplode.Models.VideoInfoSnippet.Duration">
+            <summary>
+            Duration
+            </summary>
+        </member>
         <member name="P:YoutubeExplode.Models.VideoInfoSnippet.Description">
             <summary>
             Description
@@ -748,8 +779,23 @@
             Average user rating in stars (1* to 5*)
             </summary>
         </member>
-        <member name="M:YoutubeExplode.Models.VideoInfoSnippet.#ctor(System.String,System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Int64,System.Int64,System.Int64)">
+        <member name="M:YoutubeExplode.Models.VideoInfoSnippet.#ctor(System.String,System.String,System.TimeSpan,System.String,System.Collections.Generic.IEnumerable{System.String},System.Int64,System.Int64,System.Int64)">
             <inheritdoc />
+        </member>
+        <member name="T:YoutubeExplode.Services.Extensions">
+            <summary>
+            Service extensions
+            </summary>
+        </member>
+        <member name="M:YoutubeExplode.Services.Extensions.GetStringAsync(YoutubeExplode.Services.IHttpService,System.String)">
+            <summary>
+            Send a GET request and return content as a string
+            </summary>
+        </member>
+        <member name="M:YoutubeExplode.Services.Extensions.GetStreamAsync(YoutubeExplode.Services.IHttpService,System.String)">
+            <summary>
+            Send a GET request and return content as a stream
+            </summary>
         </member>
         <member name="T:YoutubeExplode.Services.HttpService">
             <summary>
@@ -769,13 +815,7 @@
         <member name="M:YoutubeExplode.Services.HttpService.Finalize">
             <inheritdoc />
         </member>
-        <member name="M:YoutubeExplode.Services.HttpService.GetStringAsync(System.String)">
-            <inheritdoc />
-        </member>
-        <member name="M:YoutubeExplode.Services.HttpService.GetHeadersAsync(System.String)">
-            <inheritdoc />
-        </member>
-        <member name="M:YoutubeExplode.Services.HttpService.GetStreamAsync(System.String)">
+        <member name="M:YoutubeExplode.Services.HttpService.PerformRequestAsync(System.Net.Http.HttpRequestMessage)">
             <inheritdoc />
         </member>
         <member name="M:YoutubeExplode.Services.HttpService.Dispose(System.Boolean)">
@@ -791,29 +831,14 @@
             Returns a reusable instance of HttpService
             </summary>
         </member>
-        <member name="M:YoutubeExplode.Services.HttpService.NormalizeResponseHeaders(System.Net.Http.HttpResponseMessage)">
-            <summary>
-            Converts headers returned by <see cref="T:System.Net.Http.HttpResponseMessage"/> into a dictionary
-            </summary>
-        </member>
         <member name="T:YoutubeExplode.Services.IHttpService">
             <summary>
             Performs HTTP requests
             </summary>
         </member>
-        <member name="M:YoutubeExplode.Services.IHttpService.GetStringAsync(System.String)">
+        <member name="M:YoutubeExplode.Services.IHttpService.PerformRequestAsync(System.Net.Http.HttpRequestMessage)">
             <summary>
-            Performs a GET request and returns the response content as a string
-            </summary>
-        </member>
-        <member name="M:YoutubeExplode.Services.IHttpService.GetHeadersAsync(System.String)">
-            <summary>
-            Performs a HEAD request and returns response headers as a dictionary
-            </summary>
-        </member>
-        <member name="M:YoutubeExplode.Services.IHttpService.GetStreamAsync(System.String)">
-            <summary>
-            Performs a GET request and returns the response content as a stream
+            Performs a generic HTTP request
             </summary>
         </member>
         <member name="T:YoutubeExplode.YoutubeClient">

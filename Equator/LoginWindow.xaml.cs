@@ -55,9 +55,9 @@ namespace Equator
         }
         public string CreateSaveLocation()
         {
-            if (!Directory.Exists(FilePaths.saveLocation))
-                Directory.CreateDirectory(FilePaths.saveLocation);
-            return FilePaths.saveLocation;
+            if (!Directory.Exists(FilePaths.SaveLocation))
+                Directory.CreateDirectory(FilePaths.SaveLocation);
+            return FilePaths.SaveLocation;
         }
 
         public string CreateSaveThumbLocation()

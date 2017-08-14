@@ -29,8 +29,9 @@ namespace Equator.Controls
         private readonly PlaylistCards _parentCard;
         private readonly ScrollViewer _playlistScrollViewer;
         private bool _firstShow = true;
+        private Button _playButton;
         public PlaylistContainerCards(PlaylistItemListResponse playlistItemListResponse, string playlistName,
-            TextBlock songLabel, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer, PlaylistCards parentCard, ScrollViewer playlistScrollViewer)
+            TextBlock songLabel, Rectangle backgroundRectangle, ChromiumWebBrowser youtubePlayer, PlaylistCards parentCard, ScrollViewer playlistScrollViewer, Button playButton)
         {
             InitializeComponent();
             PlaylistItemListResponse = playlistItemListResponse;
@@ -42,6 +43,7 @@ namespace Equator.Controls
             ChannelTitle.Content = playlistItemListResponse.Items[0].Snippet.ChannelTitle;
             _parentCard = parentCard;
             _playlistScrollViewer = playlistScrollViewer;
+            _playButton = playButton;
         }
 
         private async void Close_Click(object sender, RoutedEventArgs e)
@@ -60,7 +62,18 @@ namespace Equator.Controls
                 else
                 {
                     Panel.SetZIndex(_playlistScrollViewer, 3);
-                    _playlistScrollViewer.Opacity = 100;
+                    _playlistScrollViewer.Opacity = 100;                
+                    /*
+                    if (((Grid) VisualTreeHelper.GetParent(this)).Children.Count > 4)
+                    {
+                        for (int i = 0; i < ((Grid)VisualTreeHelper.GetParent(this)).Children.Count - 1; i++)
+                        {
+                            ((Grid)VisualTreeHelper.GetParent(this)).Children.RemoveAt(i);
+                            Console.WriteLine(((Grid)VisualTreeHelper.GetParent(this)).Children.Count);
+                        }
+                    }*/
+
+
                 }
             });
         }
@@ -70,7 +83,7 @@ namespace Equator.Controls
             if (_firstShow)
             {
                 _firstShow = false;
-                var service = GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, false, null);
+                var service = GoogleServices.YoutubeService;
                 Console.WriteLine(PlaylistName + " has " + PlaylistItemListResponse.Items.Count);
                 for (var i = 0; i < PlaylistItemListResponse.Items.Count; i++)
                 {
@@ -89,7 +102,7 @@ namespace Equator.Controls
                         PlaylistItemHolder.Children.Add(new PlaylistItem(backgroundUri,
                             SongLabel, playlistItem.Snippet.ResourceId.VideoId, playlistItem.Snippet.Title,
                             response.Result.Items[0].Snippet.ChannelTitle,
-                            BackgroundRectangle, YoutubePlayer, i, PlaylistItemListResponse));
+                            BackgroundRectangle, YoutubePlayer, i, PlaylistItemListResponse, _playButton));
                         Console.WriteLine("Added item from " + PlaylistName + " " + playlistItem.Snippet.Title);
                     }
                 }
@@ -100,12 +113,12 @@ namespace Equator.Controls
         {
             var firstChild = (PlaylistItem)PlaylistItemHolder.Children[0];
             MusicPanel.PlayListIndex = firstChild.Index;
-            MusicPanel.PlayedPlaylistIndicies.Add(firstChild.Index);
+            MusicPanel.PlayedPlaylistIndiciesBackwards.Add(firstChild.Index);
             MusicPanel.PlayingSongs = false;
             Console.WriteLine("Playing Songs? " + MusicPanel.PlayingSongs);
             QueryYoutube.CurrentPlaylistItemListResponse = firstChild.ParentPlaylist;
             await Music.Music.PlaySpecifiedSong(BackgroundRectangle, firstChild.MusicLink, firstChild.SongTitle.Text, SongLabel, YoutubePlayer,
-                firstChild.BackgroundImageUrl);
+                firstChild.BackgroundImageUrl, _playButton);
         }
     }
 }

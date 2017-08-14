@@ -41,7 +41,7 @@
 
         </Label>
         <Grid x:Name="SearchedPlaylistImagesCover" HorizontalAlignment="Left" Height="183" VerticalAlignment="Bottom"
-              Width="200" Margin="23,0,0,88" MouseDown="SearchedPlaylistImagesCover_MouseDown">
+              Width="200" Margin="23,0,0,88" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />

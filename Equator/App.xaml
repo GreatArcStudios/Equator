@@ -32,7 +32,7 @@
                             <Border Name="ThumbBorder" CornerRadius="2" Background="White" />
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="GhostWhite" TargetName="ThumbBorder" />
+                                    <Setter Property="Background" Value="WhiteSmoke" TargetName="ThumbBorder" />
                                 </Trigger>
                                 <Trigger Property="IsDragging" Value="True">
                                     <Setter Property="Background" Value="#FF5F5F63" TargetName="ThumbBorder" />

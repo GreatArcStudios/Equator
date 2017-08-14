@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using CefSharp;
 using CefSharp.Wpf;
 using Equator.Helpers;
+using Google.Apis.YouTube.v3.Data;
 using SuperfastBlur;
 using YoutubeExplode;
 using YoutubeExplode.Models.MediaStreams;
@@ -87,14 +88,13 @@ namespace Equator.Music
         /// <param name="musicContainer"></param>
         /// <param name="background"></param>
         /// <returns></returns>
-        public static async Task AutoPlaySong(int index, TextBlock currentSong, object musicContainer,
-            Rectangle background, ChromiumWebBrowser youtubePlayer, bool playlistPlaying)
+        public static async Task AutoPlaySong(int index, TextBlock currentSong,
+            Rectangle background, ChromiumWebBrowser youtubePlayer, bool playlistPlaying, Button playButton)
         {
             if (!playlistPlaying)
             {
-                var container = (WrapPanel)musicContainer;
                 //make it play the first song if playlist is over only if IsReplay
-                if (MusicPanel.GetIndex() == container.Children.Count)
+                if (MusicPanel.GetIndex() == QueryYoutube.PlaylistCount)
                     if (MusicPanel.IsReplay)
                     {
                         // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
@@ -104,7 +104,7 @@ namespace Equator.Music
                                 QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
                                 index,
                                 QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
-                                currentSong, youtubePlayer);
+                                currentSong, youtubePlayer, playButton);
                     }
                     else
                     {
@@ -116,7 +116,7 @@ namespace Equator.Music
                         QueryYoutube.SearchListResponse.Items[index].Id.VideoId,
                         index,
                         QueryYoutube.SearchListResponse.Items[index].Snippet.Title,
-                        currentSong, youtubePlayer);
+                        currentSong, youtubePlayer, playButton);
             }
             else
             {
@@ -131,7 +131,7 @@ namespace Equator.Music
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.ResourceId.VideoId,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Title, currentSong,
                             youtubePlayer,
-                            QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Thumbnails.Medium.Url);
+                            QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Thumbnails.Medium.Url, playButton);
                     }
                     else
                     {
@@ -146,7 +146,7 @@ namespace Equator.Music
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.ResourceId.VideoId,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Title, currentSong,
                         youtubePlayer,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Thumbnails.Medium.Url);
+                        QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Thumbnails.Medium.Url, playButton);
                     MusicPanel.PlayListIndex = index;
                 }
             }
@@ -261,16 +261,22 @@ namespace Equator.Music
             GC.Collect();
             return r.Replace(path, "");
         }
+
         public static async Task PlaySpecifiedSong(Rectangle backgroundRect,
-            string musicLink, int index, string songTitle, TextBlock songLabel, ChromiumWebBrowser youtubePlayer)
+            string musicLink, int index, string songTitle, TextBlock songLabel, ChromiumWebBrowser youtubePlayer, Button playButton)
         {
             songLabel.Text = "Loading...";
             MusicPanel.SetIndex(index);
             var songName = await GetMusicVideo(musicLink, youtubePlayer);
             MusicPanel.IsPlaying = true;
             songLabel.Text = "Now Playing: " + songTitle;
+            var pauseUri = new Uri("Icons/Stop.png", UriKind.Relative);
+            var streamInfo = Application.GetResourceStream(pauseUri);
+            var temp = BitmapFrame.Create(streamInfo.Stream);
+            playButton.Background = new ImageBrush(temp);
+            streamInfo.Stream.Close();
+            streamInfo.Stream.Dispose();
             //Set the background
-
             var fileName = Music.GetSongThumb(
                 QueryYoutube.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
                 RemoveIllegalPathCharacters(songName));
@@ -326,12 +332,18 @@ namespace Equator.Music
         /// <returns></returns>
         public static async Task PlaySpecifiedSong(Rectangle backgroundRect,
             string musicLink, string songTitle, TextBlock songLabel, ChromiumWebBrowser youtubePlayer,
-            string backgroundImageUrl)
+            string backgroundImageUrl, Button playButton)
         {
             songLabel.Text = "Loading...";
             var songName = await GetMusicVideo(musicLink, youtubePlayer);
             MusicPanel.IsPlaying = true;
             songLabel.Text = "Now Playing: " + songTitle;
+            var pauseUri = new Uri("Icons/Stop.png", UriKind.Relative);
+            var streamInfo = Application.GetResourceStream(pauseUri);
+            var temp = BitmapFrame.Create(streamInfo.Stream);
+            playButton.Background = new ImageBrush(temp);
+            streamInfo.Stream.Close();
+            streamInfo.Stream.Dispose();
             //Set the background
             var fileName = Music.GetSongThumb(
                 backgroundImageUrl,

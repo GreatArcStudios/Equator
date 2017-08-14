@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -31,7 +30,7 @@ namespace Equator.Controls
         private bool _firstShow = true;
         private bool _isUserPlaylist;
         private PlaylistContainerCards _playlistContainerCards;
-
+        private readonly Button _playButton;
         private readonly PlaylistItemListResponse _playlistItemListResponse;
         private readonly string _playlistName;
         private readonly TextBlock _songLabel;
@@ -41,13 +40,14 @@ namespace Equator.Controls
         public PlaylistCards(bool userPlaylist, bool userPlaylistContainerParent, string playlistName, PlaylistListResponse userPlaylistResponse,
             PlaylistItemListResponse playlistItemListResponse, TextBlock songLabel, Rectangle backgroundRectangle,
             ChromiumWebBrowser youtubePlayer, Grid expandedPlaylistHolder, UserPlaylistsContainer userPlaylistsContainer, ScrollViewer
-             playlistScrollViewer)
+             playlistScrollViewer, Button playButton)
         {
             InitializeComponent();
             Overlay.Opacity = 0;
             _playlistItemListResponse = playlistItemListResponse;
             _isUserPlaylist = userPlaylist;
             _playlistScrollViewer = playlistScrollViewer;
+            _playButton = playButton;
             if (userPlaylistContainerParent)
             {
                 UserPlaylistsContainer = userPlaylistsContainer;
@@ -99,20 +99,6 @@ namespace Equator.Controls
             _expandedPlaylistHolder = expandedPlaylistHolder;
             _isUserPlaylist = userPlaylist;
         }
-
-        //[DllImport("gdi32.dll")]
-        //private static extern bool DeleteObject(IntPtr hObject);
-
-        private void SearchedPlaylistImagesCover_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var playlistContainer = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel,
-                _backgroundRectangle, _youtubePlayer, this, _playlistScrollViewer);
-            if (_firstShow)
-            {
-                var parent = VisualTreeHelper.GetParent(this);
-                ((WrapPanel)parent).Children.Add(playlistContainer);
-            }
-        }
         /*
         /// <summary>
         ///     https://social.msdn.microsoft.com/Forums/vstudio/en-US/13147707-a9d3-40b9-82e4-290d1c64ccac/bitmapbitmapimage-conversion?forum=wpf
@@ -153,7 +139,7 @@ namespace Equator.Controls
                         var playlistItems = await QueryYoutube.PlaylistToPlaylistItems(userPlaylistResponse.Id);
                         UserPlaylistsContainer.PlaylistItemHolder.Children.Add(new PlaylistCards(false, true,
                             userPlaylistResponse.Snippet.Title, null, playlistItems, _songLabel, _backgroundRectangle,
-                            _youtubePlayer, _expandedPlaylistHolder, UserPlaylistsContainer, _playlistScrollViewer));
+                            _youtubePlayer, _expandedPlaylistHolder, UserPlaylistsContainer, _playlistScrollViewer, _playButton));
                     }
                     await Dispatcher.InvokeAsync(() =>
                     {
@@ -165,7 +151,7 @@ namespace Equator.Controls
                 }
                 else if (UserPlaylistsContainer != null)
                 {
-                    _playlistContainerCards = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer, this, _playlistScrollViewer);
+                    _playlistContainerCards = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer, this, _playlistScrollViewer,_playButton);
                     Panel.SetZIndex(_playlistContainerCards, 4);
                     await Dispatcher.InvokeAsync(() =>
                     {
@@ -175,7 +161,7 @@ namespace Equator.Controls
                 }
                 else
                 {
-                    _playlistContainerCards = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer, this, _playlistScrollViewer);
+                    _playlistContainerCards = new PlaylistContainerCards(_playlistItemListResponse, _playlistName, _songLabel, _backgroundRectangle, _youtubePlayer, this, _playlistScrollViewer, _playButton);
                     Panel.SetZIndex(_playlistContainerCards, 4);
                     await Dispatcher.InvokeAsync(() =>
                     {

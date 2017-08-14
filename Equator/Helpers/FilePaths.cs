@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using Org.BouncyCastle.Bcpg;
 
 //using VideoLibrary;
 
@@ -13,7 +12,7 @@ namespace Equator.Helpers
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Equator Music\\userdata\\images\\DefaultImage.png";
 
-        public static readonly string saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+        public static readonly string SaveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
                                                       "\\Equator Music\\cache";
 
         public static readonly string ThumbLocation =
