@@ -98,12 +98,12 @@ namespace Equator.Music
                     {
                         // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
 
-                       var status =  await
-                            PlaySpecifiedSong(background,
-                                QueryYoutube.SongSearchListResponse.Items[0].Id.VideoId,
-                                index,
-                                QueryYoutube.SongSearchListResponse.Items[0].Snippet.Title,
-                                currentSong, youtubePlayer, playButton);
+                        var status = await
+                             PlaySpecifiedSong(background,
+                                 QueryYoutube.SongSearchListResponse.Items[0].Id.VideoId,
+                                 index,
+                                 QueryYoutube.SongSearchListResponse.Items[0].Snippet.Title,
+                                 currentSong, youtubePlayer, playButton);
                         return status;
                     }
                     else
@@ -115,7 +115,7 @@ namespace Equator.Music
                 else
                 {
                     Console.WriteLine(QueryYoutube.SongSearchListResponse.Items[index].Id.VideoId);
-                    var status =  await PlaySpecifiedSong(background,
+                    var status = await PlaySpecifiedSong(background,
                         QueryYoutube.SongSearchListResponse.Items[index].Id.VideoId,
                         index,
                         QueryYoutube.SongSearchListResponse.Items[index].Snippet.Title,
@@ -166,6 +166,7 @@ namespace Equator.Music
         {
             //use video id to get the song
             VideoId = videoId;
+
 #if OFFLINE_IMPLEMENTED
             if (!FilePaths.InCache())
             {
@@ -493,27 +494,28 @@ var bytes = await video.GetBytesAsync();
             // Print metadata
             Console.WriteLine($"Id: {videoInfo.Id} | Title: {videoInfo.Title} | Author: {videoInfo.Author.Title}");
 
-            // Get the most preferable stream
-            Console.WriteLine("Looking for the best mixed stream...");
             try
             {
-                var streamInfo = videoInfo.MixedStreams
-                    .OrderBy(s => s.VideoEncoding == VideoEncoding.Vp8)
-                    .ThenBy(s => s.VideoQuality == VideoQuality.High720).Last();
-                youtubePlayer.LoadHtml(
-                    "<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" height = \"270\" width = \"480\" autoplay>" +
-                    "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
-                Console.WriteLine("Player loaded? " + youtubePlayer.IsLoaded);
+                //var streamInfo = videoInfo.MixedStreams
+                //  .OrderBy(s => s.VideoEncoding == VideoEncoding.Vp8)
+                // .ThenBy(s => s.VideoQuality == VideoQuality.High720).Last();
+                //youtubePlayer.LoadHtml(
+                  // $"<html><body scroll=\"no\" style=\"overflow: hidden\"><iframe id = \"youtubePlayer\" src=\"http://youtube.com/embed/{videoInfo.Id}?autoplay=1&controls=0&disablekb=1&enablejsapi=1&rel=0&showinfo=0&showsearch=0\" width=\"480\" height=\"270\" frameborder=\"0\" allowfullscreen=\"\" Style =\"pointer-events:none;\"></iframe>",
+                 //  "Music Player");
+                youtubePlayer.LoadHtml("<b>fuck this </b>");
+                string loadedStr = await youtubePlayer.WebBrowser.GetSourceAsync();
+                Console.WriteLine("Player loaded? " + youtubePlayer.IsLoaded + $"| Html loaded: {loadedStr}");
             }
             catch
             {
-                var streamInfo = videoInfo.MixedStreams
-                    .OrderBy(s => s.VideoEncoding == VideoEncoding.Vp8)
-                    .ThenBy(s => s.VideoQuality == VideoQuality.Medium480).Last();
+                //   var streamInfo = videoInfo.MixedStreams
+                //        .OrderBy(s => s.VideoEncoding == VideoEncoding.Vp8)
+                //      .ThenBy(s => s.VideoQuality == VideoQuality.Medium480).Last();
                 youtubePlayer.LoadHtml(
-                    "<html><body scroll=\"no\" style=\"overflow: hidden\"><video id = \"youtubePlayer\" height = \"270\" width = \"480\" autoplay>" +
-                    "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
-                Console.WriteLine("Player loaded? " + youtubePlayer.IsLoaded);
+                    $"<html><body scroll=\"no\" style=\"overflow: hidden\"><iframe  id = \"youtubePlayer\" src=\"http://youtube.com/embed/{videoInfo.Id}?autoplay=1&controls=0&disablekb=1&enablejsapi=1&rel=0&showinfo=0&showsearch=0\" width=\"480\" height=\"270\" frameborder=\"0\" allowfullscreen=\"\" Style =\"pointer-events:none;\"></iframe>",
+                    "Music Player");
+                string loadedStr = await youtubePlayer.WebBrowser.GetSourceAsync();
+                Console.WriteLine("Player loaded? " + youtubePlayer.IsLoaded + $"| Html loaded: {loadedStr}");
             }
 
             //Console.WriteLine("Can execute JS: "+ youtubePlayer.CanExecuteJavascriptInMainFrame);

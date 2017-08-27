@@ -83,7 +83,7 @@ namespace Equator
 
         //private string songURI;
         private const string CurrentTimeScript =
-                "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.currentTime;})();"
+                "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.getCurrentTime();})();"
             ;
 
         private double _songDuration;
@@ -143,7 +143,7 @@ namespace Equator
                 #endregion
             }
             //init media player
-            Media.CefPlayer.LoadingStateChanged += CefPlayer_LoadingStateChanged;
+           // Media.CefPlayer.LoadingStateChanged += CefPlayer_LoadingStateChanged;
             //init trans content control
             //FullGrid.Children.Remove(SongSearchContainer);
             //TransitioningContentControl.Content = SongSearchContainer;
@@ -358,7 +358,7 @@ namespace Equator
                 //mediaElement.Opacity = 0;
                 //media.CefPlayer.ShowDevTools();
                 var script =
-                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
+                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pauseVideo();})();";
                 Media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                 IsPlaying = false;
                 var playUri = new Uri("Icons/Play.png", UriKind.Relative);
@@ -371,7 +371,7 @@ namespace Equator
             else if (_songLoaded)
             {
                 var script =
-                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
+                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.playVideo();})();";
                 Media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                 //mediaElement.Play();
                 ///mediaElement.Opacity = 100;
@@ -392,7 +392,7 @@ namespace Equator
                 {
                     //mediaElement.Pause();
                     var script =
-                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pause();})();";
+                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.pauseVideo();})();";
                     Media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                     IsPlaying = false;
                     var playUri = new Uri("Icons/Play.png", UriKind.Relative);
@@ -404,7 +404,7 @@ namespace Equator
                 {
                     //mediaElement.Play();
                     var script =
-                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.play();})();";
+                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.playVideo();})();";
                     Media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
                     IsPlaying = true;
                     var playUri = new Uri("Icons/Stop.png", UriKind.Relative);
@@ -425,7 +425,7 @@ namespace Equator
             PlayBarSlider = (Slider)sender;
             _sliderDragging = false;
             var script =
-                $"(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = {PlayBarSlider.Value}}})();";
+                $"(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.seekTo({PlayBarSlider.Value});}})();";
             Media.CefPlayer.GetMainFrame().ExecuteJavaScriptAsync(script);
         }
 
@@ -452,7 +452,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         {
             Media.CefPlayer.GetMainFrame()
                 .EvaluateScriptAsync(
-                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.duration;})();")
+                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.getDuration();})();")
                 .ContinueWith(x =>
                 {
                     var response = x.Result;
@@ -490,7 +490,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 });
             Media.CefPlayer.GetMainFrame()
                 .EvaluateScriptAsync(
-                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.volume})();")
+                    "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); return youtubePlayer.getVolume();})();")
                 .ContinueWith(
                     x =>
                     {
@@ -544,7 +544,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             {
                 Media.CefPlayer.GetMainFrame()
                     .ExecuteJavaScriptAsync(
-                        "var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = 0; youtubePlayer.play();");
+                        "var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.seekTo(0, true); youtubePlayer.playVideo();");
                 IsPlaying = true;
                 _songLoaded = true;
             }
@@ -631,7 +631,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             //_mediaElement.Volume = Volume;
             Media.CefPlayer.GetMainFrame()
                 .ExecuteJavaScriptAsync(
-                    $"(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.volume = {VolumeControl.Volume}}})();");
+                    $"(function(){{var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.setVolume({VolumeControl.Volume});}})();");
         }
 
         private void VolumeControl_OnLoaded(object sender, RoutedEventArgs e)
@@ -669,11 +669,11 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             if (e.Key == Key.Right)
                 Media.CefPlayer.GetMainFrame()
                     .ExecuteJavaScriptAsync(
-                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = youtubePlayer.currentTime+10;})();");
+                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.seekTo(youtubePlayer.getcurrentTime+10, true);})();");
             else if (e.Key == Key.Left)
                 Media.CefPlayer.GetMainFrame()
                     .ExecuteJavaScriptAsync(
-                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.currentTime = youtubePlayer.currentTime-10;})();");
+                        "(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.seekTo(youtubePlayer.getcurrentTime-10, true);})();");
         }
 
         private void Shuffle_Button_OnClick(object sender, EventArgs e)
