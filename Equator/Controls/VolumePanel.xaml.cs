@@ -28,7 +28,7 @@ namespace Equator.Controls
             Volume = slider.Value;
             label.Content = slider.Value + "%";
             //_mediaElement.Volume = Volume;
-            _youtubePlayer.GetMainFrame().ExecuteJavaScriptAsync(String.Format("(function(){var youtubePlayer = document.getElementById('youtubePlayer'); youtubePlayer.volume = {0}})();",Volume));
+            _youtubePlayer.GetMainFrame().ExecuteJavaScriptAsync(String.Format("(function(){youtubePlayer.volume = {0}})();",Volume));
         }
         private void button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
