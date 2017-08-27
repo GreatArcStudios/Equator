@@ -8,12 +8,12 @@ namespace Equator.Music
 {
     internal static class QueryYoutube
     {
-        public static SearchListResponse SearchListResponse;
-
+        public static SearchListResponse SongSearchListResponse;
+        public static SearchListResponse PlaylistSearchListResponse;
         //keep the list of videos separate from the playlists
         public static List<string> videos = new List<string>();
 
-        //public static SearchListResponse TopicSearchListResponse;
+        //public static SongSearchListResponse TopicSearchListResponse;
         //public static string CurrentSongTitle; 
         public static int SongCount { get; set; } = 50;
         public static int PlaylistCount { get; set; } = 20;
@@ -33,13 +33,13 @@ namespace Equator.Music
                 musicList.Type = "video";
 
                 // Call the search.list method to retrieve results matching the specified query term.
-                SearchListResponse = await musicList.ExecuteAsync();
+                SongSearchListResponse = await musicList.ExecuteAsync();
                 //Search for topic songs
                 musicList.Q = song + " topic"; // Replace with your search term.
                 musicList.MaxResults = 1;
                 musicList.Type = "video";
                 var topicResponse = await musicList.ExecuteAsync();
-                SearchListResponse.Items.Insert(0, topicResponse.Items[0]);
+                SongSearchListResponse.Items.Insert(0, topicResponse.Items[0]);
             }
             catch
             {
@@ -50,7 +50,7 @@ namespace Equator.Music
             return 1;
         }
 
-        public static async Task QueryPlaylistList(string song)
+        public static async Task QueryPlaylistListAsync(string song)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace Equator.Music
                 musicList.MaxResults = SongCount;
                 musicList.Type = "playlist";
                 // Call the search.list method to retrieve results matching the specified query term.
-                SearchListResponse = await musicList.ExecuteAsync();
+                PlaylistSearchListResponse = await musicList.ExecuteAsync();
             }
             catch
             {
@@ -78,12 +78,12 @@ namespace Equator.Music
             musicList.Type = "channel";
 
             // Call the search.list method to retrieve results matching the specified query term.
-            SearchListResponse = musicList.Execute();
+            PlaylistSearchListResponse = musicList.Execute();
             try
             {
-                Console.WriteLine("Queryed Youtube for SearchListResponse and SearchListResponse created with " +
-                                  SearchListResponse.Items.Count + " items" + "Fist item is: " +
-                                  SearchListResponse.Items[0].Id.VideoId);
+                Console.WriteLine("Queryed Youtube for SongSearchListResponse and SongSearchListResponse created with " +
+                                  PlaylistSearchListResponse.Items.Count + " items" + "Fist item is: " +
+                                  PlaylistSearchListResponse.Items[0].Id.VideoId);
             }
             catch
             {
@@ -108,7 +108,7 @@ namespace Equator.Music
             return response;
         }
 
-        public static async Task<PlaylistListResponse> QueryUserPlaylists()
+        public static async Task<PlaylistListResponse> QueryUserPlaylistsAsync()
         {
             var service = GoogleServices.YoutubeService;
             var userPlaylistRequest = service.Playlists.List("snippet");

@@ -16,7 +16,6 @@ using CefSharp;
 using CefSharp.Wpf;
 using Equator.Helpers;
 using Google.Apis.YouTube.v3.Data;
-using SuperfastBlur;
 using YoutubeExplode;
 using YoutubeExplode.Models.MediaStreams;
 using Image = System.Drawing.Image;
@@ -48,16 +47,16 @@ namespace Equator.Music
                 // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
                 await
               Music.PlaySpecifiedSong(Background, mediaElement,
-                  QueryVideo.SearchListResponse.Items[0].Id.VideoId,
+                  QueryVideo.SongSearchListResponse.Items[0].Id.VideoId,
                   index,
-                  QueryVideo.SearchListResponse.Items[0].Snippet.Title,
+                  QueryVideo.SongSearchListResponse.Items[0].Snippet.Title,
                   CurrentSong, youtubePlayer);
             }
             //otherwise play the next song
             await Music.PlaySpecifiedSong(Background, mediaElement,
-                 QueryVideo.SearchListResponse.Items[index].Id.VideoId,
+                 QueryVideo.SongSearchListResponse.Items[index].Id.VideoId,
                  index,
-                 QueryVideo.SearchListResponse.Items[index].Snippet.Title,
+                 QueryVideo.SongSearchListResponse.Items[index].Snippet.Title,
                  CurrentSong, youtubePlayer);
         }
 #endif
@@ -88,35 +87,42 @@ namespace Equator.Music
         /// <param name="musicContainer"></param>
         /// <param name="background"></param>
         /// <returns></returns>
-        public static async Task AutoPlaySong(int index, TextBlock currentSong,
+        public static async Task<bool> AutoPlaySong(int index, TextBlock currentSong,
             Rectangle background, ChromiumWebBrowser youtubePlayer, bool playlistPlaying, Button playButton)
         {
             if (!playlistPlaying)
             {
                 //make it play the first song if playlist is over only if IsReplay
-                if (MusicPanel.GetIndex() == QueryYoutube.PlaylistCount)
-                    if (MusicPanel.IsReplay)
+                if (MusicPanel.Index == QueryYoutube.PlaylistCount)
+                    if (MusicPanel.ReplayState == (int)MusicPanel.ReplayStates.ReplayAll)
                     {
                         // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
-                      
-                        await
+
+                       var status =  await
                             PlaySpecifiedSong(background,
-                                QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
+                                QueryYoutube.SongSearchListResponse.Items[0].Id.VideoId,
                                 index,
-                                QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
+                                QueryYoutube.SongSearchListResponse.Items[0].Snippet.Title,
                                 currentSong, youtubePlayer, playButton);
+                        return status;
                     }
                     else
                     {
                         currentSong.Text = "No more songs to play!";
-                        MusicPanel.SetIndex(0);
+                        MusicPanel.Index = 0;
+                        return true;
                     }
                 else
-                    await PlaySpecifiedSong(background,
-                        QueryYoutube.SearchListResponse.Items[index].Id.VideoId,
+                {
+                    Console.WriteLine(QueryYoutube.SongSearchListResponse.Items[index].Id.VideoId);
+                    var status =  await PlaySpecifiedSong(background,
+                        QueryYoutube.SongSearchListResponse.Items[index].Id.VideoId,
                         index,
-                        QueryYoutube.SearchListResponse.Items[index].Snippet.Title,
+                        QueryYoutube.SongSearchListResponse.Items[index].Snippet.Title,
                         currentSong, youtubePlayer, playButton);
+                    return status;
+                }
+
             }
             else
             {
@@ -124,30 +130,33 @@ namespace Equator.Music
                 //make it play the first song if playlist is over only if IsReplay
                 if (MusicPanel.PlayListIndex == QueryYoutube.CurrentPlaylistItemListResponse.Items.Count)
                 {
-                    if (MusicPanel.IsReplay)
+                    if (MusicPanel.ReplayState == (int)MusicPanel.ReplayStates.ReplayAll)
                     {
                         // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
-                        await PlaySpecifiedSong(background,
+                        var status = await PlaySpecifiedSong(background,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.ResourceId.VideoId,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Title, currentSong,
                             youtubePlayer,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Thumbnails.Medium.Url, playButton);
+                        return status;
                     }
                     else
                     {
                         currentSong.Text = "Playlist is over!";
                         MusicPanel.PlayListIndex = 0;
+                        return true;
                     }
                 }
                 else
                 {
                     //otherwise play the next song
-                    await PlaySpecifiedSong(background,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.ResourceId.VideoId,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Title, currentSong,
-                        youtubePlayer,
-                        QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Thumbnails.Medium.Url, playButton);
+                    var status = await PlaySpecifiedSong(background,
+                          QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.ResourceId.VideoId,
+                          QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Title, currentSong,
+                          youtubePlayer,
+                          QueryYoutube.CurrentPlaylistItemListResponse.Items[index].Snippet.Thumbnails.Medium.Url, playButton);
                     MusicPanel.PlayListIndex = index;
+                    return status;
                 }
             }
         }
@@ -201,7 +210,7 @@ namespace Equator.Music
 
             ///<summary>Set the background</summary>
             var fileName = SongThumb.GetSongThumb(
-                                QueryVideo.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
+                                QueryVideo.SongSearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
                          Path.GetFileNameWithoutExtension(fullSavePath));
             var image = System.Drawing.Image.FromFile(fileName);
             var blur = new GaussianBlur(image as Bitmap);
@@ -256,55 +265,84 @@ namespace Equator.Music
 #endif
         public static string RemoveIllegalPathCharacters(string path)
         {
+            //Create a string with all the illegal path + filename chars
             var regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            //Creates a regex with a character group pattern    
             var r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
-            GC.Collect();
+            //Replaces parts of the string that match r's pattern with "" & returns the sanitized str
             return r.Replace(path, "");
         }
 
-        public static async Task PlaySpecifiedSong(Rectangle backgroundRect,
+        public static async Task<bool> PlaySpecifiedSong(Rectangle backgroundRect,
             string musicLink, int index, string songTitle, TextBlock songLabel, ChromiumWebBrowser youtubePlayer, Button playButton)
         {
             songLabel.Text = "Loading...";
-            MusicPanel.SetIndex(index);
-            var songName = await GetMusicVideo(musicLink, youtubePlayer);
-            MusicPanel.IsPlaying = true;
-            songLabel.Text = "Now Playing: " + songTitle;
-            var pauseUri = new Uri("Icons/Stop.png", UriKind.Relative);
-            var streamInfo = Application.GetResourceStream(pauseUri);
-            var temp = BitmapFrame.Create(streamInfo.Stream);
-            playButton.Background = new ImageBrush(temp);
-            streamInfo.Stream.Close();
-            streamInfo.Stream.Dispose();
-            //Set the background
-            var fileName = Music.GetSongThumb(
-                QueryYoutube.SearchListResponse.Items[MusicPanel.GetIndex()].Snippet.Thumbnails.High.Url,
-                RemoveIllegalPathCharacters(songName));
-            var image = Image.FromFile(fileName);
-            var blur = new GaussianBlur(image as Bitmap);
-            Bitmap blurredThumb = null;
-            try
+            int maxTries = 4;
+            int count = 0;
+            while (true)
             {
-                blurredThumb = blur.Process(15);
-            }
-            catch
-            {
-                blurredThumb = blur.Process(15);
-            }
-            image.Dispose();
-            var hBitmap = blurredThumb.GetHbitmap();
-            var backgroundImageBrush = new ImageBrush();
-            backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()
-            );
-            DeleteObject(hBitmap);
-            blurredThumb.Dispose();
-            backgroundImageBrush.Stretch = Stretch.UniformToFill;
-            backgroundRect.Fill = backgroundImageBrush;
-            backgroundRect.Effect = null;
+                try
+                {
+                    MusicPanel.Index = index;
+                    var songName = await GetMusicVideo(musicLink, youtubePlayer);
+                    MusicPanel.IsPlaying = true;
+                    songLabel.Text = "Now Playing: " + songTitle;
+                    var pauseUri = new Uri("Icons/Stop.png", UriKind.Relative);
+                    var streamInfo = Application.GetResourceStream(pauseUri);
+                    var temp = BitmapFrame.Create(streamInfo.Stream);
+                    playButton.Background = new ImageBrush(temp);
 
+                    string fileName;
+                    //Set the background
+                    if (MusicPanel.PlayingSongs)
+                        fileName = GetSongThumb(
+                            QueryYoutube.SongSearchListResponse.Items[MusicPanel.Index].Snippet.Thumbnails.High.Url,
+                            RemoveIllegalPathCharacters(songName));
+                    else
+                    {
+                        fileName = Music.GetSongThumb(
+                            QueryYoutube.SongSearchListResponse.Items[MusicPanel.Index].Snippet.Thumbnails.High.Url,
+                            RemoveIllegalPathCharacters(songName));
+                    }
+                    var image = Image.FromFile(fileName);
+                    var blur = new GaussianBlur(image as Bitmap);
+                    Bitmap blurredThumb = null;
+                    try
+                    {
+                        blurredThumb = blur.Process(15);
+                    }
+                    catch
+                    {
+                        blurredThumb = blur.Process(15);
+                    }
+                    image.Dispose();
+                    var hBitmap = blurredThumb.GetHbitmap();
+                    var backgroundImageBrush = new ImageBrush();
+                    backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
+                        IntPtr.Zero,
+                        Int32Rect.Empty,
+                        BitmapSizeOptions.FromEmptyOptions()
+                    );
+                    DeleteObject(hBitmap);
+                    blurredThumb.Dispose();
+                    backgroundImageBrush.Stretch = Stretch.UniformToFill;
+                    backgroundRect.Fill = backgroundImageBrush;
+                    backgroundRect.Effect = null;
+                    streamInfo.Stream.Close();
+                    streamInfo.Stream.Dispose();
+                    GC.Collect();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    count++;
+                    if (count == maxTries)
+                    {
+                        return false;
+                    }
+                }
+            }
 
             /* var saveName = Path.GetFileName(fullSavePath);
              Console.WriteLine("Save name variable in PlaySpecifiedSong method " + saveName);
@@ -330,48 +368,68 @@ namespace Equator.Music
         /// <param name="youtubePlayer"></param>
         /// <param name="backgroundImageUrl"></param>
         /// <returns></returns>
-        public static async Task PlaySpecifiedSong(Rectangle backgroundRect,
+        public static async Task<bool> PlaySpecifiedSong(Rectangle backgroundRect,
             string musicLink, string songTitle, TextBlock songLabel, ChromiumWebBrowser youtubePlayer,
             string backgroundImageUrl, Button playButton)
         {
             songLabel.Text = "Loading...";
-            var songName = await GetMusicVideo(musicLink, youtubePlayer);
-            MusicPanel.IsPlaying = true;
-            songLabel.Text = "Now Playing: " + songTitle;
-            var pauseUri = new Uri("Icons/Stop.png", UriKind.Relative);
-            var streamInfo = Application.GetResourceStream(pauseUri);
-            var temp = BitmapFrame.Create(streamInfo.Stream);
-            playButton.Background = new ImageBrush(temp);
-            streamInfo.Stream.Close();
-            streamInfo.Stream.Dispose();
-            //Set the background
-            var fileName = Music.GetSongThumb(
-                backgroundImageUrl,
-                RemoveIllegalPathCharacters(songName));
-            var image = Image.FromFile(fileName);
-            var blur = new GaussianBlur(image as Bitmap);
-            Bitmap blurredThumb = null;
-            try
+            int maxTries = 4;
+            int count = 0;
+            while (true)
             {
-                blurredThumb = blur.Process(15);
+                try
+                {
+
+                    var songName = await GetMusicVideo(musicLink, youtubePlayer);
+                    MusicPanel.IsPlaying = true;
+                    songLabel.Text = "Now Playing: " + songTitle;
+                    var pauseUri = new Uri("Icons/Stop.png", UriKind.Relative);
+                    var streamInfo = Application.GetResourceStream(pauseUri);
+                    var temp = BitmapFrame.Create(streamInfo.Stream);
+                    playButton.Background = new ImageBrush(temp);
+                    //Set the background
+                    var fileName = Music.GetSongThumb(
+                        backgroundImageUrl,
+                        RemoveIllegalPathCharacters(songName));
+                    var image = Image.FromFile(fileName);
+                    var blur = new GaussianBlur(image as Bitmap);
+                    Bitmap blurredThumb = null;
+                    try
+                    {
+                        blurredThumb = blur.Process(15);
+                    }
+                    catch
+                    {
+                        blurredThumb = blur.Process(15);
+                    }
+                    image.Dispose();
+                    var hBitmap = blurredThumb.GetHbitmap();
+                    var backgroundImageBrush = new ImageBrush();
+                    backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
+                        IntPtr.Zero,
+                        Int32Rect.Empty,
+                        BitmapSizeOptions.FromEmptyOptions()
+                    );
+                    DeleteObject(hBitmap);
+                    blurredThumb.Dispose();
+                    backgroundImageBrush.Stretch = Stretch.UniformToFill;
+                    backgroundRect.Fill = backgroundImageBrush;
+                    backgroundRect.Effect = null;
+                    streamInfo.Stream.Close();
+                    streamInfo.Stream.Dispose();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    count++;
+                    if (count == maxTries)
+                    {
+                        return false;
+                    }
+                }
+
             }
-            catch
-            {
-                blurredThumb = blur.Process(15);
-            }
-            image.Dispose();
-            var hBitmap = blurredThumb.GetHbitmap();
-            var backgroundImageBrush = new ImageBrush();
-            backgroundImageBrush.ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()
-            );
-            DeleteObject(hBitmap);
-            blurredThumb.Dispose();
-            backgroundImageBrush.Stretch = Stretch.UniformToFill;
-            backgroundRect.Fill = backgroundImageBrush;
-            backgroundRect.Effect = null;
         }
 
 #if OFFLINE_IMPLEMENTED
@@ -457,7 +515,7 @@ var bytes = await video.GetBytesAsync();
                     "<source src=\"" + streamInfo.Url + "\" type=\"video/webm\"></source><html>", "http://rendering");
                 Console.WriteLine("Player loaded? " + youtubePlayer.IsLoaded);
             }
-           
+
             //Console.WriteLine("Can execute JS: "+ youtubePlayer.CanExecuteJavascriptInMainFrame);
 #if OFFLINE_IMPLEMENTED
             streamInfo = videoInfo.MixedStreams
@@ -518,7 +576,7 @@ var bytes = await video.GetBytesAsync();
             isConverting = false;
         }
 #endif
-       
+
 #if OFFLINE_IMPLEMENTED
         public static bool InCache()
         {

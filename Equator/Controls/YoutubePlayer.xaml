@@ -16,6 +16,9 @@
         </Storyboard>
     </UserControl.Resources>
     <Grid x:Name="Container">
+        <Grid.Effect>
+            <DropShadowEffect Direction="-245" BlurRadius="14" Opacity="0.75" ShadowDepth="3.5"/>
+        </Grid.Effect>
         <Grid.RowDefinitions>
             <RowDefinition Height="66*" />
             <RowDefinition Height="139*" />

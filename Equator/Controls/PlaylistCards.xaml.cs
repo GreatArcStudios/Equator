@@ -13,7 +13,6 @@ using CefSharp.Wpf;
 using Equator.Helpers;
 using Equator.Music;
 using Google.Apis.YouTube.v3.Data;
-using SuperfastBlur;
 using Image = System.Windows.Controls.Image;
 using Rectangle = System.Windows.Shapes.Rectangle;
 

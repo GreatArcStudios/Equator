@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -20,7 +21,6 @@ using Equator.Controls;
 using Equator.Helpers;
 using Equator.Music;
 using MahApps.Metro.Controls;
-using SuperfastBlur;
 using Color = System.Windows.Media.Color;
 using Image = System.Drawing.Image;
 
@@ -40,16 +40,30 @@ namespace Equator
             get { return _playListIndex; }
             set { _playListIndex = value; }
         }
-        public static bool IsReplay
-        {
-            get => _isReplay;
-            set => _isReplay = value;
-        }
+
         public static bool PlayingSongs
         {
             get => _playingSongs;
             set => _playingSongs = value;
         }
+
+        public static int Index
+        {
+            get { return _index; }
+            set { _index = value; }
+        }
+
+        public static int ReplayState
+        {
+            get { return _replayState; }
+            set { _replayState = value; }
+        }
+
+        public enum ReplayStates
+        {
+            Off, ReplayAll, ReplaySong
+        }
+
         public static List<int> PlayedPlaylistIndiciesBackwards = new List<int>();
         public static List<int> PlayedPlaylistIndiciesFowards = new List<int>();
         public static List<int> PlayedIndiciesBackwards = new List<int>();
@@ -58,7 +72,7 @@ namespace Equator
         private static int _index;
         private MusicCards _musicCards;
         private bool _sliderDragging;
-        private static bool _isReplay;
+        private static int _replayState;
         private bool _isShuffle;
         private static bool _playingSongs = true;
         private static bool _searchingSongs = true;
@@ -78,6 +92,11 @@ namespace Equator
 
         public MusicPanel()
         {
+#if DEBUG
+           GoogleServices.AuthUserCredential(true);
+           GoogleServices.YoutubeService =
+                GoogleServices.CreateYoutubeService(GoogleServices.ApiKey, true, GoogleServices.Credential);
+#endif
             InitializeComponent();
             //create user image
             ImageBrush userImageBrush;
@@ -105,9 +124,9 @@ namespace Equator
             {
                 #region First run 
 
-                var image = Image.FromFile(new Uri(@"Images\Fire_hydrant.jpg", UriKind.Relative).ToString());
+                var image = Image.FromFile(new Uri(@"Images\Grass Blades.jpg", UriKind.Relative).ToString());
                 var blur = new GaussianBlur(image as Bitmap);
-                var blurredThumb = blur.Process(70);
+                var blurredThumb = blur.Process(20);
                 image.Dispose();
                 var hBitmap = blurredThumb.GetHbitmap();
                 blurredThumb.Save(FilePaths.DefaultImageLocation, ImageFormat.Png);
@@ -154,7 +173,7 @@ namespace Equator
                         {
                             PlayBarSlider.Minimum = 0;
                             PlayBarSlider.Maximum = _songDuration;
-                            Console.WriteLine(response.Result.ToString());
+                            //Console.WriteLine(response.Result.ToString());
                             try
                             {
                                 PlayBarSlider.Value = (double)response.Result;
@@ -168,17 +187,6 @@ namespace Equator
                         });
                 });
         }
-
-        public static int GetIndex()
-        {
-            return _index;
-        }
-
-        public static void SetIndex(int indexParam)
-        {
-            _index = indexParam;
-        }
-
         private void MusicPanel_OnLoaded(object sender, RoutedEventArgs e)
         {
             // ExtensionMethods.Refresh(TopBar);
@@ -266,38 +274,53 @@ namespace Equator
             Panel.SetZIndex(BoredLabel, -9999);
             if (_searchingSongs)
             {
+                _index = -1;
                 MusicContainer.Children.RemoveRange(0, MusicContainer.Children.Count);
                 await QueryYoutube.QueryVideoListAsync(SearchBox.Text);
                 //add card add logic here
-                if (QueryYoutube.SearchListResponse.Items.Count > 0)
-                    for (var i = 0; i < QueryYoutube.SearchListResponse.Items.Count; i++)
+                if (QueryYoutube.SongSearchListResponse.Items.Count > 0)
+                    for (var i = 0; i < QueryYoutube.SongSearchListResponse.Items.Count; i++)
                     {
-                        var artistName = QueryYoutube.SearchListResponse.Items[i].Snippet.ChannelTitle;
-                        _musicCards = new MusicCards(QueryYoutube.SearchListResponse.Items[i].Id.VideoId,
-                            QueryYoutube.SearchListResponse.Items[i].Snippet.Title, artistName,
-                            new Uri(QueryYoutube.SearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
-                            ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i,
-                            ref Media.CefPlayer, ref PlayPauseButton);
-                        MusicContainer.Children.Add(_musicCards);
+                        var artistName = QueryYoutube.SongSearchListResponse.Items[i].Snippet.ChannelTitle;
+                        if (!artistName.ToLower().Contains("topic") || i == 0)
+                        {
+                            _musicCards = new MusicCards(QueryYoutube.SongSearchListResponse.Items[i].Id.VideoId,
+                                QueryYoutube.SongSearchListResponse.Items[i].Snippet.Title, artistName,
+                                new Uri(QueryYoutube.SongSearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
+                                ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i,
+                                ref Media.CefPlayer, ref PlayPauseButton);
+                            MusicContainer.Children.Add(_musicCards);
+                        }
                     }
                 else
                     CurrentSong.Text = "No Songs Found!";
+                GC.Collect();
             }
             else
             {
-                PlaylistsHolder.Children.RemoveRange(1, PlaylistsHolder.Children.Count);
-                await QueryYoutube.QueryPlaylistList(SearchBox.Text);
+                PlaylistsHolder.Children.Clear();
+                ExpandedPlaylistHolder.Children.Clear();
+                this.UpdateLayout();
+
+                await QueryYoutube.QueryPlaylistListAsync(SearchBox.Text);
                 var oldText = CurrentSong.Text;
                 CurrentSong.Text = "Loading Playlists...";
-                if (QueryYoutube.SearchListResponse.Items.Count > 0)
+                var userPlaylists = await QueryYoutube.QueryUserPlaylistsAsync();
+                PlaylistsHolder.Children.Add(new PlaylistCards(true, false, "null", userPlaylists
+                    , null, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView, PlayPauseButton));
+                if (QueryYoutube.PlaylistSearchListResponse.Items.Count > 0)
                 {
                     for (var i = 0; i < QueryYoutube.PlaylistCount; i++)
                     {
-                        var playlistId = QueryYoutube.SearchListResponse.Items[i].Id.PlaylistId;
-                        var playlistListResponse = await QueryYoutube.PlaylistToPlaylistItems(playlistId);
-                        PlaylistsHolder.Children.Add(new PlaylistCards(false, false, QueryYoutube.SearchListResponse.Items[i].Snippet.Title, null
-                            , playlistListResponse, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView, PlayPauseButton));
+                        var playlistId = QueryYoutube.PlaylistSearchListResponse.Items[i].Id.PlaylistId;
+                        if (playlistId != null)
+                        {
+                            var playlistListResponse = await QueryYoutube.PlaylistToPlaylistItems(playlistId);
+                            PlaylistsHolder.Children.Add(new PlaylistCards(false, false, QueryYoutube.PlaylistSearchListResponse.Items[i].Snippet.Title, null
+                                , playlistListResponse, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView, PlayPauseButton));
+                        }
                     }
+
                     if (oldText.Equals("Now Playing: nothing!"))
                         CurrentSong.Text = "Now Playing: nothing!";
                     else
@@ -436,7 +459,15 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 
                     if (response.Success && response.Result != null)
                     {
-                        _songDuration = (double)response.Result;
+                        try
+                        {
+                            _songDuration = (double)response.Result;
+                        }
+                        catch
+                        {
+                            _songDuration = (int)response.Result;
+                        }
+
                         Dispatcher.Invoke(() =>
                         {
                             if (_songDuration <= 60 * 60)
@@ -481,8 +512,35 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
         {
             IsPlaying = false;
             _songLoaded = false;
-
-            if (_isReplay)
+            if (ReplayState != (int)ReplayStates.ReplaySong && !_isShuffle)
+            {
+                //TODO: add condition for other playlist panels
+                if (_playingSongs)
+                {
+                    Index++;
+                    if (!await Music.Music.AutoPlaySong(Index, CurrentSong, Background, Media.CefPlayer,
+                        false, PlayPauseButton))
+                    {
+                        MessageBox.Show("An error occured. Please click on a song.");
+                    }
+                    IsPlaying = true;
+                    _songLoaded = true;
+                }
+                else
+                {
+                    _playListIndex++;
+                    if (!await Music.Music.AutoPlaySong(_playListIndex, CurrentSong, Background,
+                        Media.CefPlayer,
+                        true, PlayPauseButton))
+                    {
+                        MessageBox.Show("An error occured. Please click on a song.");
+                    }
+                    PlayedPlaylistIndiciesBackwards.Add(_playListIndex);
+                    IsPlaying = true;
+                    _songLoaded = true;
+                }
+            }
+            else if (ReplayState == (int)ReplayStates.ReplaySong)
             {
                 Media.CefPlayer.GetMainFrame()
                     .ExecuteJavaScriptAsync(
@@ -497,7 +555,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 {
                     var random = new Random();
                     int generatedIndex = random.Next(0, 50);
-                    SetIndex(generatedIndex);
+                    _index = generatedIndex;
                     await Music.Music.AutoPlaySong(generatedIndex, CurrentSong, Background,
                         Media.CefPlayer, false, PlayPauseButton);
                     IsPlaying = true;
@@ -509,30 +567,11 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     int generatedIndex = random.Next(0, 50);
                     PlayedPlaylistIndiciesBackwards.Add(generatedIndex);
                     _playListIndex = generatedIndex;
-                    await Music.Music.AutoPlaySong(generatedIndex, CurrentSong, Background,
-                        Media.CefPlayer, true, PlayPauseButton);
-                    IsPlaying = true;
-                    _songLoaded = true;
-                }
-            }
-            else
-            {
-                //TODO: add condition for other playlist panels
-                if (_playingSongs)
-                {
-                    SetIndex(_index++);
-                    await Music.Music.AutoPlaySong(_index + 1, CurrentSong, Background, Media.CefPlayer,
-                        false, PlayPauseButton);
-                    IsPlaying = true;
-                    _songLoaded = true;
-                }
-                else
-                {
-                    _playListIndex++;
-                    await Music.Music.AutoPlaySong(_playListIndex + 1, CurrentSong, Background,
-                        Media.CefPlayer,
-                        true, PlayPauseButton);
-                    PlayedPlaylistIndiciesBackwards.Add(_playListIndex + 1);
+                    if (await Music.Music.AutoPlaySong(generatedIndex, CurrentSong, Background,
+                        Media.CefPlayer, true, PlayPauseButton))
+                    {
+                        MessageBox.Show("An error occured. Please click on a song.");
+                    }
                     IsPlaying = true;
                     _songLoaded = true;
                 }
@@ -552,20 +591,30 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 
         private void Replay_Button_Click(object sender, EventArgs e)
         {
-            if (_isReplay)
+            if (ReplayState == (int)ReplayStates.Off)
             {
-                _isReplay = false;
-                var uri = new Uri("Icons/16 replay.png", UriKind.Relative);
+                ReplayState = (int)ReplayStates.ReplayAll;
+                var uri = new Uri("Icons/reply all.png", UriKind.Relative);
                 var streamInfo = Application.GetResourceStream(uri);
                 var temp = BitmapFrame.Create(streamInfo.Stream);
                 ReplayButton.Background = new ImageBrush(temp);
                 streamInfo.Stream.Close();
                 streamInfo.Stream.Dispose();
             }
-            else
+            else if (ReplayState == (int)ReplayStates.ReplayAll)
             {
-                _isReplay = true;
-                var uri = new Uri("Icons/16 replay selected.png", UriKind.Relative);
+                ReplayState = (int)ReplayStates.ReplaySong;
+                var uri = new Uri("Icons/replay song.png", UriKind.Relative);
+                var streamInfo = Application.GetResourceStream(uri);
+                var temp = BitmapFrame.Create(streamInfo.Stream);
+                ReplayButton.Background = new ImageBrush(temp);
+                streamInfo.Stream.Close();
+                streamInfo.Stream.Dispose();
+            }
+            else if (ReplayState == (int)ReplayStates.ReplaySong)
+            {
+                ReplayState = (int)ReplayStates.Off;
+                var uri = new Uri("Icons/replay off.png", UriKind.Relative);
                 var streamInfo = Application.GetResourceStream(uri);
                 var temp = BitmapFrame.Create(streamInfo.Stream);
                 ReplayButton.Background = new ImageBrush(temp);
@@ -636,23 +685,18 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 var streamInfo = Application.GetResourceStream(uri);
                 var temp = BitmapFrame.Create(streamInfo.Stream);
                 ShuffleButton.Background = new ImageBrush(temp);
-                uri = new Uri("Icons/16 replay selected.png", UriKind.Relative);
-                streamInfo = Application.GetResourceStream(uri);
-                temp = BitmapFrame.Create(streamInfo.Stream);
-                ReplayButton.Background = new ImageBrush(temp);
+                streamInfo.Stream.Close();
+                streamInfo.Stream.Dispose();
             }
             else
             {
                 _isShuffle = true;
-                _isReplay = false;
                 var uri = new Uri("Icons/32 shuffle selected.png", UriKind.Relative);
                 var streamInfo = Application.GetResourceStream(uri);
                 var temp = BitmapFrame.Create(streamInfo.Stream);
                 ShuffleButton.Background = new ImageBrush(temp);
-                uri = new Uri("Icons/16 replay.png", UriKind.Relative);
-                streamInfo = Application.GetResourceStream(uri);
-                temp = BitmapFrame.Create(streamInfo.Stream);
-                ReplayButton.Background = new ImageBrush(temp);
+                streamInfo.Stream.Close();
+                streamInfo.Stream.Dispose();
             }
         }
         private async void Last_Song_Button_OnClick(object sender, EventArgs e)
@@ -665,61 +709,70 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     {
                         PlayedIndiciesForward.Add(PlayedIndiciesBackwards[PlayedIndiciesBackwards.Count - 1]);
                         PlayedIndiciesBackwards.RemoveAt(PlayedIndiciesBackwards.Count - 1);
-                        SetIndex(PlayedIndiciesBackwards.Last());
+                        _index = PlayedIndiciesBackwards.Last();
                     }
                     else
                     {
                         PlayedIndiciesForward.Add(PlayedIndiciesBackwards[PlayedIndiciesBackwards.Count - 1]);
-                        SetIndex(PlayedIndiciesBackwards.Last());
+                        _index = PlayedIndiciesBackwards.Last();
                         PlayedIndiciesBackwards.RemoveAt(PlayedIndiciesBackwards.Count - 1);
                     }
-                    await
+                    if (!await
                         Music.Music.PlaySpecifiedSong(Background,
-                            QueryYoutube.SearchListResponse.Items[_index].Id
+                            QueryYoutube.SongSearchListResponse.Items[Index].Id
                                 .VideoId,
-                            _index,
-                            QueryYoutube.SearchListResponse.Items[_index]
+                            Index,
+                            QueryYoutube.SongSearchListResponse.Items[Index]
                                 .Snippet
                                 .Title,
-                            CurrentSong, Media.CefPlayer, PlayPauseButton);
+                            CurrentSong, Media.CefPlayer, PlayPauseButton))
+                    {
+                        MessageBox.Show("An error occured. Please click on a song.");
+                    }
                 }
                 else
                 {
-                    if (_index != 0)
+                    if (Index != 0)
                     {
-                        _index--;
+                        Index--;
                         if (PlayedIndiciesBackwards.Count == 1)
                         {
                             PlayedIndiciesForward.Add(PlayedIndiciesBackwards[PlayedIndiciesBackwards.Count - 1]);
                             PlayedIndiciesBackwards.RemoveAt(PlayedIndiciesBackwards.Count - 1);
                         }
-                        await
+                        if (!await
                             Music.Music.PlaySpecifiedSong(Background,
-                                QueryYoutube.SearchListResponse.Items[_index].Id
+                                QueryYoutube.SongSearchListResponse.Items[Index].Id
                                     .VideoId,
-                                _index,
-                                QueryYoutube.SearchListResponse.Items[_index]
+                                Index,
+                                QueryYoutube.SongSearchListResponse.Items[Index]
                                     .Snippet
                                     .Title,
-                                CurrentSong, Media.CefPlayer, PlayPauseButton);
+                                CurrentSong, Media.CefPlayer, PlayPauseButton))
+                        {
+                            MessageBox.Show("An error occured. Please click on a song.");
+                        }
                     }
                     else
                     {
-                        _index = QueryYoutube.SearchListResponse.Items.Count - 1;
+                        Index = QueryYoutube.SongSearchListResponse.Items.Count - 1;
                         if (PlayedIndiciesBackwards.Count == 1)
                         {
                             PlayedIndiciesForward.Add(PlayedIndiciesBackwards[PlayedIndiciesBackwards.Count - 1]);
                             PlayedIndiciesBackwards.RemoveAt(PlayedIndiciesBackwards.Count - 1);
                         }
-                        await
+                        if (!await
                             Music.Music.PlaySpecifiedSong(Background,
-                                QueryYoutube.SearchListResponse.Items[_index].Id
+                                QueryYoutube.SongSearchListResponse.Items[Index].Id
                                     .VideoId,
-                                _index,
-                                QueryYoutube.SearchListResponse.Items[_index]
+                                Index,
+                                QueryYoutube.SongSearchListResponse.Items[Index]
                                     .Snippet
                                     .Title,
-                                CurrentSong, Media.CefPlayer, PlayPauseButton);
+                                CurrentSong, Media.CefPlayer, PlayPauseButton))
+                        {
+                            MessageBox.Show("An error occured. Please click on a song.");
+                        }
                     }
 
                 }
@@ -734,21 +787,24 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     {
                         PlayedPlaylistIndiciesFowards.Add(PlayedPlaylistIndiciesBackwards[PlayedPlaylistIndiciesBackwards.Count - 1]);
                         PlayedPlaylistIndiciesBackwards.RemoveAt(PlayedPlaylistIndiciesBackwards.Count - 1);
-                        SetIndex(PlayedPlaylistIndiciesBackwards.Last());
+                        _index = PlayedPlaylistIndiciesBackwards.Last();
                     }
                     else
                     {
                         PlayedPlaylistIndiciesFowards.Add(PlayedPlaylistIndiciesBackwards[PlayedPlaylistIndiciesBackwards.Count - 1]);
-                        SetIndex(PlayedPlaylistIndiciesBackwards.Last());
+                        _index = PlayedPlaylistIndiciesBackwards.Last();
                         PlayedPlaylistIndiciesBackwards.RemoveAt(PlayedPlaylistIndiciesBackwards.Count - 1);
                     }
                     _playListIndex = PlayedPlaylistIndiciesBackwards.Last();
-                    await Music.Music.PlaySpecifiedSong(Background,
+                    if (!await Music.Music.PlaySpecifiedSong(Background,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.ResourceId.VideoId,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Title, CurrentSong,
                         Media.CefPlayer,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Thumbnails.Medium
-                            .Url, PlayPauseButton);
+                            .Url, PlayPauseButton))
+                    {
+                        MessageBox.Show("An error occured. Please click on a song.");
+                    }
                 }
                 else
                 {
@@ -760,15 +816,19 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             PlayedPlaylistIndiciesFowards.Add(PlayedPlaylistIndiciesBackwards[PlayedPlaylistIndiciesBackwards.Count - 1]);
                             PlayedPlaylistIndiciesBackwards.RemoveAt(PlayedPlaylistIndiciesBackwards.Count - 1);
                         }
-                        await
+                        if (!await
                             Music.Music.PlaySpecifiedSong(Background,
                                 QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.ResourceId
                                     .VideoId,
                                 QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Title,
                                 CurrentSong,
                                 Media.CefPlayer,
-                                QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Thumbnails.Medium
-                                    .Url, PlayPauseButton);
+                                QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Thumbnails
+                                    .Medium
+                                    .Url, PlayPauseButton))
+                        {
+                            MessageBox.Show("An error occured. Please click on a song.");
+                        }
                     }
                     else
                     {
@@ -778,15 +838,19 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                             PlayedPlaylistIndiciesFowards.Add(PlayedPlaylistIndiciesBackwards[PlayedPlaylistIndiciesBackwards.Count - 1]);
                             PlayedPlaylistIndiciesBackwards.RemoveAt(PlayedPlaylistIndiciesBackwards.Count - 1);
                         }
-                        await
+                        if (!await
                             Music.Music.PlaySpecifiedSong(Background,
                                 QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.ResourceId
                                     .VideoId,
                                 QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Title,
                                 CurrentSong,
                                 Media.CefPlayer,
-                                QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Thumbnails.Medium
-                                    .Url, PlayPauseButton);
+                                QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Thumbnails
+                                    .Medium
+                                    .Url, PlayPauseButton))
+                        {
+                            MessageBox.Show("An error occured. Please click on a song.");
+                        }
                     }
                 }
             }
@@ -799,43 +863,52 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             {
                 if (PlayedIndiciesForward.Count == 0)
                 {
-                    SetIndex(_index + 1);
+                    _index = _index + 1;
 
                     //make it play the first song
-                    if (GetIndex() == MusicContainer.Children.Count)
+                    if (_index == MusicContainer.Children.Count)
                     {
                         // MusicContainer.Children[GetIndex() + 1].MouseLeftButtonDown
-                        SetIndex(0);
+                        _index = 0;
                         PlayedIndiciesBackwards.Add(0);
-                        await
+                        if (!await
                             Music.Music.PlaySpecifiedSong(Background,
-                                QueryYoutube.SearchListResponse.Items[0].Id.VideoId,
-                                _index,
-                                QueryYoutube.SearchListResponse.Items[0].Snippet.Title,
-                                CurrentSong, Media.CefPlayer, PlayPauseButton);
+                                QueryYoutube.SongSearchListResponse.Items[0].Id.VideoId,
+                                Index,
+                                QueryYoutube.SongSearchListResponse.Items[0].Snippet.Title,
+                                CurrentSong, Media.CefPlayer, PlayPauseButton))
+                        {
+                            MessageBox.Show("An error occured. Please click on a song.");
+                        }
                     }
                     else
                     {
-                        PlayedIndiciesBackwards.Add(_index);
+                        PlayedIndiciesBackwards.Add(Index);
                         //otherwise play the next song
-                        await Music.Music.PlaySpecifiedSong(Background,
-                            QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
-                            _index,
-                            QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
-                            CurrentSong, Media.CefPlayer, PlayPauseButton);
+                        if (!await Music.Music.PlaySpecifiedSong(Background,
+                            QueryYoutube.SongSearchListResponse.Items[Index].Id.VideoId,
+                            Index,
+                            QueryYoutube.SongSearchListResponse.Items[Index].Snippet.Title,
+                            CurrentSong, Media.CefPlayer, PlayPauseButton))
+                        {
+                            MessageBox.Show("An error occured. Please click on a song.");
+                        }
                     }
                 }
                 else
                 {
 
-                    _index = PlayedIndiciesForward.Last();
+                    Index = PlayedIndiciesForward.Last();
                     PlayedIndiciesForward.RemoveAt(PlayedIndiciesForward.Count - 1);
-                    PlayedIndiciesBackwards.Add(_index);
-                    await Music.Music.PlaySpecifiedSong(Background,
-                        QueryYoutube.SearchListResponse.Items[_index].Id.VideoId,
-                        _index,
-                        QueryYoutube.SearchListResponse.Items[_index].Snippet.Title,
-                        CurrentSong, Media.CefPlayer, PlayPauseButton);
+                    PlayedIndiciesBackwards.Add(Index);
+                    if (!await Music.Music.PlaySpecifiedSong(Background,
+                        QueryYoutube.SongSearchListResponse.Items[Index].Id.VideoId,
+                        Index,
+                        QueryYoutube.SongSearchListResponse.Items[Index].Snippet.Title,
+                        CurrentSong, Media.CefPlayer, PlayPauseButton))
+                    {
+                        MessageBox.Show("An error occured. Please click on a song.");
+                    }
                 }
 
             }
@@ -848,27 +921,33 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     {
                         _playListIndex = 0;
                         PlayedPlaylistIndiciesBackwards.Add(_playListIndex);
-                        await Music.Music.PlaySpecifiedSong(Background,
+                        if (!await Music.Music.PlaySpecifiedSong(Background,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.ResourceId
                                 .VideoId,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Title,
                             CurrentSong,
                             Media.CefPlayer,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Thumbnails.Medium
-                                .Url, PlayPauseButton);
+                                .Url, PlayPauseButton))
+                        {
+                            MessageBox.Show("An error occured. Please click on a song.");
+                        }
                     }
                     else
                     {
                         PlayedPlaylistIndiciesBackwards.Add(_playListIndex);
                         //otherwise play the next song
-                        await Music.Music.PlaySpecifiedSong(Background,
+                        if (!await Music.Music.PlaySpecifiedSong(Background,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.ResourceId
                                 .VideoId,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Title,
                             CurrentSong,
                             Media.CefPlayer,
                             QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Thumbnails.Medium
-                                .Url, PlayPauseButton);
+                                .Url, PlayPauseButton))
+                        {
+                            MessageBox.Show("An error occured. Please click on a song.");
+                        }
                     }
                 }
                 else
@@ -876,14 +955,17 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     _playListIndex = PlayedPlaylistIndiciesFowards.Last();
                     PlayedPlaylistIndiciesFowards.RemoveAt(PlayedPlaylistIndiciesFowards.Count - 1);
                     PlayedPlaylistIndiciesBackwards.Add(_playListIndex);
-                    await Music.Music.PlaySpecifiedSong(Background,
+                    if (!await Music.Music.PlaySpecifiedSong(Background,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.ResourceId
                             .VideoId,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Title,
                         CurrentSong,
                         Media.CefPlayer,
                         QueryYoutube.CurrentPlaylistItemListResponse.Items[_playListIndex].Snippet.Thumbnails.Medium
-                            .Url, PlayPauseButton);
+                            .Url, PlayPauseButton))
+                    {
+                        MessageBox.Show("An error occured. Please click on a song.");
+                    }
                 }
             }
         }
@@ -924,7 +1006,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 var oldText = CurrentSong.Text;
                 CurrentSong.Text = "Loading Your Playlists...";
                 //init user playlist
-                var userPlaylists = await QueryYoutube.QueryUserPlaylists();
+                var userPlaylists = await QueryYoutube.QueryUserPlaylistsAsync();
                 /*foreach (Playlist userPlaylistResponse in userQueryYoutube.Items)
                 {
                     Console.WriteLine(userPlaylistResponse.Id);

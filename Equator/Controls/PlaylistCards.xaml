@@ -15,7 +15,7 @@
             <DoubleAnimation BeginTime="0:0:0" Duration="0:0:0.2" From="0.6" To="0" />
         </Storyboard>
     </UserControl.Resources>
-    <Grid>
+    <Grid x:Name="ContentHolder">
         <Rectangle x:Name="UserPlaylistCover" StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0"
                    Margin="23,4,28,88" Height="183">
             <Rectangle.Fill>

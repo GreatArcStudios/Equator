@@ -27,18 +27,19 @@
                 <ImageBrush ImageSource="/Equator;component/Images/IMG_0547.JPG" Stretch="UniformToFill" />
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="Overlay" Fill="#FF2B2B2B" HorizontalAlignment="Left" Height="185"
+        <Rectangle x:Name="Overlay" Fill="#FF2B2B2B" HorizontalAlignment="Left" Height="183"
                    StrokeStartLineCap="Square" Stroke="White" StrokeThickness="0" VerticalAlignment="Top" Width="209"
-                   Canvas.Left="18" Canvas.Top="4" d:IsHidden="True" />
+                   Canvas.Left="18" Canvas.Top="4" />
         <Image x:Name="Play" HorizontalAlignment="Left" Height="112" VerticalAlignment="Center" Width="115"
                Source="/Equator;component/Icons/Play.png" Canvas.Left="69" Canvas.Top="33">
             <Image.Effect>
-                <DropShadowEffect BlurRadius="5" Color="#CC404040" ShadowDepth="6" />
+                <DropShadowEffect BlurRadius="5" Color="#CC404040" ShadowDepth="4" />
             </Image.Effect>
         </Image>
-        <Label x:Name="ArtistName" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+        <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center"
                VerticalAlignment="Bottom" Background="#00000000" Foreground="White" Height="35" Width="250"
-               Canvas.Top="238" Content="Label" FontSize="14">
+               Canvas.Top="238" FontSize="14">
+            <TextBlock x:Name="ArtistName" TextTrimming ="CharacterEllipsis" Text="Artist Name"/>
             <Label.Effect>
                 <DropShadowEffect BlurRadius="5" ShadowDepth="2" />
             </Label.Effect>

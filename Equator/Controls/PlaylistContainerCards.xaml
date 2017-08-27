@@ -34,15 +34,17 @@
                     Width="1256" Grid.RowSpan="2" Height="62">
             <Label HorizontalAlignment="Left" VerticalAlignment="Top"
                    Height="62" Background="{x:Null}" Foreground="White" HorizontalContentAlignment="Center"
-                   FontSize="30" FontWeight="SemiBold" FontStretch="SemiExpanded" FontFamily="Roboto" MinWidth="260" MaxWidth="400" VerticalContentAlignment="Center" Padding="20,5,5,5">
-                <TextBlock x:Name="PlaylistTitle" TextTrimming="CharacterEllipsis"></TextBlock>
+                   FontSize="30" FontWeight="SemiBold" FontStretch="SemiExpanded" FontFamily="Roboto" MinWidth="260" VerticalContentAlignment="Center" Padding="20,5,5,5" ToolTip="{Binding Text, ElementName=PlaylistTitle}">
+                <TextBlock x:Name="PlaylistTitle" TextTrimming="CharacterEllipsis" MaxWidth="730" ToolTip="{Binding Text, ElementName=PlaylistTitle}"></TextBlock>
             </Label>
-            <Label x:Name="ChannelTitle" Content="Label" VerticalAlignment="Top" Height="62" Background="{x:Null}"
+            <Label VerticalAlignment="Top" Height="62" Background="{x:Null}"
                    Foreground="White" HorizontalContentAlignment="Center" FontSize="30" FontStretch="SemiExpanded"
-                   FontFamily="Roboto" FontWeight="Light" Padding="5" MinWidth="165" MaxWidth="400" VerticalContentAlignment="Center" Margin="10,0,0,0" />
+                   FontFamily="Roboto" FontWeight="Light" Padding="5" MinWidth="165" MaxWidth="500" VerticalContentAlignment="Center" Margin="10,0" ToolTip="{Binding Text, ElementName=ChannelTitle}" >
+                <TextBlock  x:Name="ChannelTitle" TextTrimming ="CharacterEllipsis"></TextBlock>
+            </Label>
             <Button x:Name="Play" Content="play" HorizontalAlignment="Left" VerticalAlignment="Top" Width="225"
                     Height="62" Foreground="White" custom:ControlsHelper.ContentCharacterCasing="Upper"
-                    custom:ButtonHelper.CornerRadius="0" FontSize="20" FontWeight="Bold" Margin="20,0,0,0" Click="Play_Click">
+                    custom:ButtonHelper.CornerRadius="0" FontSize="20" FontWeight="Bold" Margin="10,0,0,0" Click="Play_Click">
                 <Button.Style>
                     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="#7F7E7E7E" />

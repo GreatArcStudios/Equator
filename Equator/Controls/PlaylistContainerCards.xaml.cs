@@ -11,7 +11,6 @@ using CefSharp.Wpf;
 using Equator.Helpers;
 using Equator.Music;
 using Google.Apis.YouTube.v3.Data;
-using SuperfastBlur;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace Equator.Controls
@@ -40,7 +39,7 @@ namespace Equator.Controls
             SongLabel = songLabel;
             BackgroundRectangle = backgroundRectangle;
             PlaylistTitle.Text = playlistName;
-            ChannelTitle.Content = playlistItemListResponse.Items[0].Snippet.ChannelTitle;
+            ChannelTitle.Text = playlistItemListResponse.Items[0].Snippet.ChannelTitle;
             _parentCard = parentCard;
             _playlistScrollViewer = playlistScrollViewer;
             _playButton = playButton;

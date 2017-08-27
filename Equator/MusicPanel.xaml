@@ -14,7 +14,7 @@
     Loaded="MusicPanel_OnLoaded"
     Title="Equator Music" Height="900" Width="1400" EnableDWMDropShadow="True" WindowStartupLocation="CenterScreen"
     d:IsEffectDisabled="True" Background="#FF494949" Foreground="Black" OverlayBrush="Black"
-    KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown" MinWidth="1400" MinHeight="900" TitleCharacterCasing="Normal" TitleCaps="False" Closing="MusicPlayer_Closing">
+    KeyDown="PanelKeyDown" PreviewKeyDown="MusicPanel_OnPreviewKeyDown" MinWidth="1400" MinHeight="900" TitleCharacterCasing="Normal" TitleCaps="False" Closing="MusicPlayer_Closing" UseLayoutRounding="True">
     <!--<controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button Content="Settings" />
@@ -27,10 +27,10 @@
                 <ThumbButtonInfo Description="Shuffle" Click="Shuffle_Button_OnClick"
                                  ImageSource="Icons/32 shuffle.png" />
                 <ThumbButtonInfo Description="Back" Click="Last_Song_Button_OnClick" ImageSource="Icons/16 back.png" />
-                <ThumbButtonInfo Description="Play" Click="Play_Pause_Button_Click" ImageSource="Icons/Taskbar Play.png" />
+                <ThumbButtonInfo Description="Play/Pause" Click="Play_Pause_Button_Click" ImageSource="Icons/Taskbar Play.png" />
                 <ThumbButtonInfo Description="Next" Click="Next_Song_Button_OnClick"
                                  ImageSource="Icons/16 forwards copy.png" />
-                <ThumbButtonInfo Description="Replay" Click="Replay_Button_Click" ImageSource="Icons/16 replay.png" />
+                <ThumbButtonInfo Description="Replay" Click="Replay_Button_Click" ImageSource="Icons/replay off.png" />
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
@@ -71,7 +71,7 @@
         <Rectangle x:Name="Background" Margin="-130,0,-93,-40" Stroke="White" Grid.RowSpan="4"
                    RenderTransformOrigin="0.5,0.5" StrokeThickness="0" StrokeStartLineCap="Square">
             <Rectangle.Fill>
-                <ImageBrush ImageSource="Images/Fire_hydrant.jpg" Stretch="UniformToFill" />
+                <ImageBrush ImageSource="Images/Grass Blades.jpg" Stretch="UniformToFill" />
             </Rectangle.Fill>
         </Rectangle>
         <Rectangle x:Name="DarkenOverlay" Margin="-110,0,-33,-10" Stroke="White" Grid.RowSpan="4"
@@ -128,11 +128,11 @@
                     </Button.Background>
                 </Button>
                 <Label x:Name="CurrentSongContainer"
-                       VerticalAlignment="Center" FontSize="24" Margin="15,-2,10,-4" Foreground="White" Height="46" MaxWidth="450">
+                       VerticalAlignment="Center" FontSize="24" Margin="5,-2,10,-4" Foreground="White" Height="46" MaxWidth="{Binding MaxWidth, ElementName=CurrentSong}">
                     <Label.Effect>
                         <DropShadowEffect Color="#3FD3D3D3" BlurRadius="9" ShadowDepth="1" />
                     </Label.Effect>
-                    <TextBlock Name="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="450" ToolTip="{Binding Text, ElementName=CurrentSong}">Now Playing: nothing!</TextBlock>
+                    <TextBlock Name="CurrentSong" TextTrimming="CharacterEllipsis" MaxWidth="580" ToolTip="{Binding Text, ElementName=CurrentSong}" FontSize="21" Padding="0,3,0,0">Now Playing: nothing!</TextBlock>
                 </Label>
                 <Button x:Name="SongSelector" Content="Songs" HorizontalAlignment="Left" VerticalAlignment="Top"
                         Width="138" Height="38" Margin="12,2,0,0" Foreground="White"
@@ -281,7 +281,7 @@
                                 Click="Replay_Button_Click" Style="{DynamicResource MetroCircleButtonStyle}"
                                 HorizontalContentAlignment="Left" ToolTip="Replay">
                             <Button.Background>
-                                <ImageBrush ImageSource="Icons/16 replay.png" />
+                                <ImageBrush ImageSource="Icons/replay off.png" Stretch="UniformToFill" />
                             </Button.Background>
                         </Button>
                         <Button x:Name="ShuffleButton" Content="Button" HorizontalAlignment="Left"
@@ -337,7 +337,7 @@
 
 
         <Controls:YoutubePlayer x:Name="Media" x:FieldModifier="public" HorizontalAlignment="Right" Height="270"
-                                VerticalAlignment="Bottom" Width="480" Margin="0,0,14,-0.5" Grid.Row="2"
+                                VerticalAlignment="Bottom" Width="480" Margin="0,0,14,-0.45" Grid.Row="2"
                                 HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" MouseDown="Media_MouseDown" >
 
         </Controls:YoutubePlayer>

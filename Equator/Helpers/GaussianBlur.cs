@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace SuperfastBlur
+namespace Equator.Helpers
 {
     public class GaussianBlur
     {
@@ -22,7 +22,6 @@ namespace SuperfastBlur
         {
             var rct = new Rectangle(0, 0, image.Width, image.Height);
             var source = new int[rct.Width * rct.Height];
-            Console.Write("Source size: " + rct.Width * rct.Height);
             var bits = image.LockBits(rct, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
             Marshal.Copy(bits.Scan0, source, 0, source.Length);
             image.UnlockBits(bits);

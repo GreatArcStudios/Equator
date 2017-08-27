@@ -89,7 +89,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\x86\Release\</OutputPath>
     <Prefer32Bit>false</Prefer32Bit>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icons\Equator Logo.ico</ApplicationIcon>
@@ -358,19 +358,39 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\16 replay.png">
+    <Resource Include="Icons\replay off.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\replay song.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\EquatorLogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Images\beach and coast.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Dandelion no crop.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\fence.jpg" />
     <Content Include="Images\Flower 2.jpg" />
+    <Content Include="Images\Catalonia Sunrise.png" />
+    <Content Include="Images\IMG_0328.JPG" />
+    <Content Include="Images\Grass Blades.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IMG_0442.JPG" />
+    <Content Include="Images\IMG_0451.JPG" />
+    <Content Include="Images\Sunset in the bayou.png" />
     <Content Include="Images\Railing.jpg" />
     <Content Include="Images\Rust.jpg" />
     <Resource Include="Icons\Fullscreen icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Icons\16 replay selected.png">
+    <Resource Include="Icons\reply all.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Icons\16 volume selected.png">
@@ -385,9 +405,7 @@
     <Resource Include="Icons\Taskbar Play.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Images\Fire_hydrant.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\Fire_hydrant.jpg" />
     <Content Include="Images\IMG_0535.JPG" />
     <Content Include="Images\IMG_0547.JPG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -460,11 +478,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\Equator Logo.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\EquatorLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

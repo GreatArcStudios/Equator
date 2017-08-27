@@ -53,8 +53,6 @@ Global
 		{0C4F59F6-59F8-4D33-BD81-B0C5DE84A721}.Release|ARM.Build.0 = Release|ARM
 		{0C4F59F6-59F8-4D33-BD81-B0C5DE84A721}.Release|ARM.Deploy.0 = Release|ARM
 		{0C4F59F6-59F8-4D33-BD81-B0C5DE84A721}.Release|x64.ActiveCfg = Release|x64
-		{0C4F59F6-59F8-4D33-BD81-B0C5DE84A721}.Release|x64.Build.0 = Release|x64
-		{0C4F59F6-59F8-4D33-BD81-B0C5DE84A721}.Release|x64.Deploy.0 = Release|x64
 		{0C4F59F6-59F8-4D33-BD81-B0C5DE84A721}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
