@@ -85,7 +85,9 @@ namespace Equator
         private const string CurrentTimeScript =
                 "(function(){return youtubePlayer.getCurrentTime();})();"
             ;
-
+        private const string CheckPlaybackEndedScript =
+                "(function(){return playBackEnded;})();"
+            ;
         private double _songDuration;
         private bool _songLoaded;
         private bool _firstSwitch = true;
@@ -164,28 +166,52 @@ namespace Equator
             }
 #endif
             if (_songDuration > 0 && !_sliderDragging && _songLoaded)
+            {
                 Media.CefPlayer.GetMainFrame().EvaluateScriptAsync(CurrentTimeScript).ContinueWith(x =>
+               {
+                   var response = x.Result;
+
+                   if (response.Success && response.Result != null)
+                       Dispatcher.Invoke(() =>
+                       {
+                           PlayBarSlider.Minimum = 0;
+                           PlayBarSlider.Maximum = _songDuration;
+                           Console.WriteLine(response.Result.ToString());
+                           try
+                           {
+                               PlayBarSlider.Value = (double)response.Result;
+                           }
+                           catch
+                           {
+                               Console.WriteLine("Media hasn't loaded yet");
+                           }
+                       });
+               });
+                Media.CefPlayer.GetMainFrame().EvaluateScriptAsync(CheckPlaybackEndedScript).ContinueWith(x =>
                 {
                     var response = x.Result;
-
+                    Console.WriteLine(response.Result);
                     if (response.Success && response.Result != null)
-                        Dispatcher.Invoke(() =>
-                        {
-                            PlayBarSlider.Minimum = 0;
-                            PlayBarSlider.Maximum = _songDuration;
-                            //Console.WriteLine(response.Result.ToString());
-                            try
-                            {
-                                PlayBarSlider.Value = (double)response.Result;
-                                if (Math.Abs(PlayBarSlider.Value - PlayBarSlider.Maximum) < 0.001)
-                                    PlayBackEnded();
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Media hasn't loaded yet");
-                            }
-                        });
+                    {
+
+                        if (response.Result.ToString().ToLower().Equals("true"))
+                            Dispatcher.Invoke(() =>
+                                {
+                                    try
+                                    {
+                                        PlayBackEnded();
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine("Media hasn't loaded yet");
+                                    }
+
+                                }
+                                   );
+                    }
                 });
+            }
+
         }
         private void MusicPanel_OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -456,7 +482,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 .ContinueWith(x =>
                 {
                     var response = x.Result;
-
+                    Console.WriteLine(response.Result);
                     if (response.Success && response.Result != null)
                     {
                         try
@@ -625,8 +651,8 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
 
         private void VolumeControl_OnDragCompleted(object sender, DragCompletedEventArgs e)
         {
-            VolumeControl.Volume = VolumeControl.Slider.Value;
-            var labelContent = (int)(VolumeControl.Volume * 100);
+            VolumeControl.Volume = VolumeControl.Slider.Value * 100;
+            var labelContent = (int)(VolumeControl.Volume);
             VolumeControl.Label.Content = labelContent + "%";
             //_mediaElement.Volume = Volume;
             Media.CefPlayer.GetMainFrame()
@@ -1013,7 +1039,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                     var playlistItems = await QueryYoutube.PlaylistToPlaylistItems(userPlaylistResponse.Id);
                     UserPlaylist_Content.Children.Add(
                         new PlaylistContainer(playlistItems, userPlaylistResponse.Snippet.Title, CurrentSong, Background, media.CefPlayer));
-                    
+
                 }*/
                 PlaylistsHolder.Children.Add(new PlaylistCards(true, false, "null", userPlaylists
                     , null, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView, PlayPauseButton));
@@ -1074,7 +1100,7 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             {
                 ((Storyboard) FindResource("Maximize")).Begin(Media);
                 Media.State = (int) YoutubePlayer.WindowStates.Maximized;
-           
+
             }*/
         }
 
