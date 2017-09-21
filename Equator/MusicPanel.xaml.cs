@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -91,6 +92,10 @@ namespace Equator
         private double _songDuration;
         private bool _songLoaded;
         private bool _firstSwitch = true;
+        private static bool creatingSongCards;
+        private static bool creatingPlaylistCards;
+
+
 
         public MusicPanel()
         {
@@ -300,60 +305,73 @@ namespace Equator
             Panel.SetZIndex(BoredLabel, -9999);
             if (_searchingSongs)
             {
-                _index = -1;
-                MusicContainer.Children.RemoveRange(0, MusicContainer.Children.Count);
-                await QueryYoutube.QueryVideoListAsync(SearchBox.Text);
-                //add card add logic here
-                if (QueryYoutube.SongSearchListResponse.Items.Count > 0)
-                    for (var i = 0; i < QueryYoutube.SongSearchListResponse.Items.Count; i++)
-                    {
-                        var artistName = QueryYoutube.SongSearchListResponse.Items[i].Snippet.ChannelTitle;
-                        if (!artistName.ToLower().Contains("topic") || i == 0)
+                if (!creatingSongCards)
+                {
+                    creatingSongCards = true;
+                    _index = -1;
+                    MusicContainer.Children.RemoveRange(0, MusicContainer.Children.Count);
+                    await QueryYoutube.QueryVideoListAsync(SearchBox.Text);
+                    //add card add logic here
+                    if (QueryYoutube.SongSearchListResponse.Items.Count > 0)
+                        for (var i = 0; i < QueryYoutube.SongSearchListResponse.Items.Count; i++)
                         {
-                            _musicCards = new MusicCards(QueryYoutube.SongSearchListResponse.Items[i].Id.VideoId,
-                                QueryYoutube.SongSearchListResponse.Items[i].Snippet.Title, artistName,
-                                new Uri(QueryYoutube.SongSearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
-                                ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i,
-                                ref Media.CefPlayer, ref PlayPauseButton);
-                            MusicContainer.Children.Add(_musicCards);
+                            var artistName = QueryYoutube.SongSearchListResponse.Items[i].Snippet.ChannelTitle;
+                            var songTitle = QueryYoutube.SongSearchListResponse.Items[i].Snippet.Title;
+                            if (!artistName.ToLower().Contains("topic") && !artistName.ToLower().Equals(songTitle) || i == 0)
+                            {
+                                _musicCards = new MusicCards(QueryYoutube.SongSearchListResponse.Items[i].Id.VideoId,
+                                    QueryYoutube.SongSearchListResponse.Items[i].Snippet.Title, artistName,
+                                    new Uri(QueryYoutube.SongSearchListResponse.Items[i].Snippet.Thumbnails.Medium.Url),
+                                    ref CurrentSong, ref EndTimeLabel, ref Background, ref PlayBarSlider, i,
+                                    ref Media.CefPlayer, ref PlayPauseButton);
+                                MusicContainer.Children.Add(_musicCards);
+                            }
                         }
-                    }
-                else
-                    CurrentSong.Text = "No Songs Found!";
+                    else
+                        CurrentSong.Text = "No Songs Found!";
+                    creatingSongCards = false;
+                }
+
                 GC.Collect();
             }
             else
             {
-                PlaylistsHolder.Children.Clear();
-                ExpandedPlaylistHolder.Children.Clear();
-                this.UpdateLayout();
-
-                await QueryYoutube.QueryPlaylistListAsync(SearchBox.Text);
-                var oldText = CurrentSong.Text;
-                CurrentSong.Text = "Loading Playlists...";
-                var userPlaylists = await QueryYoutube.QueryUserPlaylistsAsync();
-                PlaylistsHolder.Children.Add(new PlaylistCards(true, false, "null", userPlaylists
-                    , null, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView, PlayPauseButton));
-                if (QueryYoutube.PlaylistSearchListResponse.Items.Count > 0)
+                if (!creatingPlaylistCards)
                 {
-                    for (var i = 0; i < QueryYoutube.PlaylistCount; i++)
-                    {
-                        var playlistId = QueryYoutube.PlaylistSearchListResponse.Items[i].Id.PlaylistId;
-                        if (playlistId != null)
-                        {
-                            var playlistListResponse = await QueryYoutube.PlaylistToPlaylistItems(playlistId);
-                            PlaylistsHolder.Children.Add(new PlaylistCards(false, false, QueryYoutube.PlaylistSearchListResponse.Items[i].Snippet.Title, null
-                                , playlistListResponse, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView, PlayPauseButton));
-                        }
-                    }
+                    creatingPlaylistCards = true;
+                    PlaylistsHolder.Children.Clear();
+                    ExpandedPlaylistHolder.Children.Clear();
+                    this.UpdateLayout();
 
-                    if (oldText.Equals("Now Playing: nothing!"))
-                        CurrentSong.Text = "Now Playing: nothing!";
+                    await QueryYoutube.QueryPlaylistListAsync(SearchBox.Text);
+                    var oldText = CurrentSong.Text;
+                    CurrentSong.Text = "Loading Playlists...";
+                    var userPlaylists = await QueryYoutube.QueryUserPlaylistsAsync();
+                    PlaylistsHolder.Children.Add(new PlaylistCards(true, false, "null", userPlaylists
+                        , null, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView, PlayPauseButton));
+                    if (QueryYoutube.PlaylistSearchListResponse.Items.Count > 0)
+                    {
+                        for (var i = 0; i < QueryYoutube.PlaylistSearchListResponse.Items.Count; i++)
+                        {
+                            var playlistId = QueryYoutube.PlaylistSearchListResponse.Items[i].Id.PlaylistId;
+                            if (playlistId != null)
+                            {
+                                var playlistListResponse = await QueryYoutube.PlaylistToPlaylistItems(playlistId);
+                                PlaylistsHolder.Children.Add(new PlaylistCards(false, false, QueryYoutube.PlaylistSearchListResponse.Items[i].Snippet.Title, null
+                                    , playlistListResponse, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView, PlayPauseButton));
+                            }
+                        }
+
+                        if (oldText.Equals("Now Playing: nothing!"))
+                            CurrentSong.Text = "Now Playing: nothing!";
+                        else
+                            CurrentSong.Text = oldText;
+                    }
                     else
-                        CurrentSong.Text = oldText;
+                        CurrentSong.Text = "No Songs Found!";
+                    creatingPlaylistCards = false;
                 }
-                else
-                    CurrentSong.Text = "No Songs Found!";
+
             }
 
         }
@@ -540,10 +558,25 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             _songLoaded = false;
             if (ReplayState != (int)ReplayStates.ReplaySong && !_isShuffle)
             {
-                //TODO: add condition for other playlist panels
                 if (_playingSongs)
                 {
-                    Index++;
+                    if (Index == Music.QueryYoutube.SongSearchListResponse.Items.Count - 1)
+                    {
+                        if (ReplayState == (int)ReplayStates.Off)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            Index = 0;
+                        }
+
+                    }
+                    else
+                    {
+                        Index++;
+                    }
+
                     if (!await Music.Music.AutoPlaySong(Index, CurrentSong, Background, Media.CefPlayer,
                         false, PlayPauseButton))
                     {
@@ -554,7 +587,22 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 }
                 else
                 {
-                    _playListIndex++;
+                    if (_playListIndex == Music.QueryYoutube.CurrentPlaylistItemListResponse.Items.Count - 1)
+                    {
+                        if (ReplayState == (int)ReplayStates.Off)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            _playListIndex = 0;
+                        }
+
+                    }
+                    else
+                    {
+                        _playListIndex++;
+                    }
                     if (!await Music.Music.AutoPlaySong(_playListIndex, CurrentSong, Background,
                         Media.CefPlayer,
                         true, PlayPauseButton))
@@ -576,11 +624,10 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
             }
             else if (_isShuffle)
             {
-                //TODO: add condition for other playlist panels
                 if (_playingSongs)
                 {
                     var random = new Random();
-                    int generatedIndex = random.Next(0, 50);
+                    int generatedIndex = random.Next(0, QueryYoutube.SongSearchListResponse.Items.Count);
                     _index = generatedIndex;
                     await Music.Music.AutoPlaySong(generatedIndex, CurrentSong, Background,
                         Media.CefPlayer, false, PlayPauseButton);
@@ -590,10 +637,10 @@ TimeSpan.FromSeconds(mediaElement.NaturalDuration.TimeSpan.TotalSeconds).ToStrin
                 else
                 {
                     var random = new Random();
-                    int generatedIndex = random.Next(0, 50);
+                    int generatedIndex = random.Next(0, QueryYoutube.CurrentPlaylistItemListResponse.Items.Count);
                     PlayedPlaylistIndiciesBackwards.Add(generatedIndex);
                     _playListIndex = generatedIndex;
-                    if (await Music.Music.AutoPlaySong(generatedIndex, CurrentSong, Background,
+                    if (!await Music.Music.AutoPlaySong(generatedIndex, CurrentSong, Background,
                         Media.CefPlayer, true, PlayPauseButton))
                     {
                         MessageBox.Show("An error occured. Please click on a song.");

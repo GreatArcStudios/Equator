@@ -2,7 +2,6 @@
 using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -15,9 +14,7 @@ using System.Windows.Media.Imaging;
 using CefSharp;
 using CefSharp.Wpf;
 using Equator.Helpers;
-using Google.Apis.YouTube.v3.Data;
 using YoutubeExplode;
-using YoutubeExplode.Models.MediaStreams;
 using Image = System.Drawing.Image;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
@@ -29,7 +26,6 @@ namespace Equator.Music
         private static extern bool DeleteObject(IntPtr hObject);
 
         public static string VideoId;
-
 
 #if OFFLINE_IMPLEMENTED /// <summary>
 ///     Downloads the first song in the Searchlist response list
@@ -301,7 +297,7 @@ namespace Equator.Music
                             RemoveIllegalPathCharacters(songName));
                     else
                     {
-                        fileName = Music.GetSongThumb(
+                        fileName = GetSongThumb(
                             QueryYoutube.SongSearchListResponse.Items[MusicPanel.Index].Snippet.Thumbnails.High.Url,
                             RemoveIllegalPathCharacters(songName));
                     }
