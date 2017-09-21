@@ -369,12 +369,8 @@
     <Resource Include="Icons\EquatorLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Images\beach and coast.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Dandelion no crop.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\beach and coast.jpg" />
+    <Content Include="Images\Dandelion no crop.jpg" />
     <Content Include="Images\fence.jpg" />
     <Content Include="Images\Flower 2.jpg" />
     <Content Include="Images\Catalonia Sunrise.png" />
