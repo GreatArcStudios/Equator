@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -92,8 +91,8 @@ namespace Equator
         private double _songDuration;
         private bool _songLoaded;
         private bool _firstSwitch = true;
-        private static bool creatingSongCards;
-        private static bool creatingPlaylistCards;
+        private static bool _creatingSongCards;
+        private static bool _creatingPlaylistCards;
 
 
 
@@ -305,9 +304,9 @@ namespace Equator
             Panel.SetZIndex(BoredLabel, -9999);
             if (_searchingSongs)
             {
-                if (!creatingSongCards)
+                if (!_creatingSongCards)
                 {
-                    creatingSongCards = true;
+                    _creatingSongCards = true;
                     _index = -1;
                     MusicContainer.Children.RemoveRange(0, MusicContainer.Children.Count);
                     await QueryYoutube.QueryVideoListAsync(SearchBox.Text);
@@ -329,16 +328,16 @@ namespace Equator
                         }
                     else
                         CurrentSong.Text = "No Songs Found!";
-                    creatingSongCards = false;
+                    _creatingSongCards = false;
                 }
 
                 GC.Collect();
             }
             else
             {
-                if (!creatingPlaylistCards)
+                if (!_creatingPlaylistCards)
                 {
-                    creatingPlaylistCards = true;
+                    _creatingPlaylistCards = true;
                     PlaylistsHolder.Children.Clear();
                     ExpandedPlaylistHolder.Children.Clear();
                     this.UpdateLayout();
@@ -369,7 +368,7 @@ namespace Equator
                     }
                     else
                         CurrentSong.Text = "No Songs Found!";
-                    creatingPlaylistCards = false;
+                    _creatingPlaylistCards = false;
                 }
 
             }
