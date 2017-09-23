@@ -316,7 +316,7 @@ namespace Equator
                         {
                             var artistName = QueryYoutube.SongSearchListResponse.Items[i].Snippet.ChannelTitle;
                             var songTitle = QueryYoutube.SongSearchListResponse.Items[i].Snippet.Title;
-                            if (!artistName.ToLower().Contains("topic") && !artistName.ToLower().Equals(songTitle) || i == 0)
+                            if ((!artistName.ToLower().Contains("topic") && !artistName.ToLower().Equals(songTitle.ToLower()))|| (i == 0 && !artistName.ToLower().Equals(songTitle)))
                             {
                                 _musicCards = new MusicCards(QueryYoutube.SongSearchListResponse.Items[i].Id.VideoId,
                                     QueryYoutube.SongSearchListResponse.Items[i].Snippet.Title, artistName,
