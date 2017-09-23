@@ -1,6 +1,6 @@
 <div class="container terms">
 			<h2>Equator Music Player - Terms and conditions</h2><ol><li>
-<p><strong>Preamble:</strong> This Agreement, signed on Sep 22, 2017 (hereinafter: Effective Date) governs the relationship between Any user of the application, a Business Entity, (hereinafter: Licensee) and Eric Zhu, a private person whose principal place of business is {location} (hereinafter: Licensor). This Agreement sets the terms, rights, restrictions and obligations on using Equator Music Player (hereinafter: The Software) created and owned by Licensor, as detailed herein</p>
+<p><strong>Preamble:</strong> This Agreement, signed on Sep 22, 2017 (hereinafter: Effective Date) governs the relationship between Any user of the application, a Business Entity, (hereinafter: Licensee) and Eric Zhu, a private person whose principal place of business is Massachusetts, United States (hereinafter: Licensor). This Agreement sets the terms, rights, restrictions and obligations on using Equator Music Player (hereinafter: The Software) created and owned by Licensor, as detailed herein</p>
 </li><li>
 <p><strong>License Grant:</strong> Licensor hereby grants Licensee a Personal, Non-assignable &amp; non-transferable, Pepetual, Commercial, Royalty free, Including the rights to distribute derivative works, Non-exclusive license, all with accordance with the terms set forth and other legal restrictions set forth in 3rd party software used while running Software.</p>
 <ol>
