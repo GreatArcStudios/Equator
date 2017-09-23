@@ -5,12 +5,18 @@ VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Equator", "Equator\Equator.csproj", "{7115494A-7AB2-4126-B2A6-CF027484C1BD}"
 EndProject
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "Equator Installer", "Equator Installer\Equator Installer.aiproj", "{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		DefaultBuild|Any CPU = DefaultBuild|Any CPU
+		DefaultBuild|ARM = DefaultBuild|ARM
+		DefaultBuild|x64 = DefaultBuild|x64
+		DefaultBuild|x86 = DefaultBuild|x86
 		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
@@ -26,6 +32,14 @@ Global
 		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Debug|x86.ActiveCfg = Debug|x86
 		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Debug|x86.Build.0 = Debug|x86
 		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Debug|x86.Deploy.0 = Debug|x86
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.DefaultBuild|Any CPU.ActiveCfg = Debug|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.DefaultBuild|Any CPU.Build.0 = Debug|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.DefaultBuild|ARM.ActiveCfg = Debug|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.DefaultBuild|ARM.Build.0 = Debug|Any CPU
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.DefaultBuild|x64.ActiveCfg = Debug|x64
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.DefaultBuild|x64.Build.0 = Debug|x64
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.DefaultBuild|x86.ActiveCfg = Debug|x86
+		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.DefaultBuild|x86.Build.0 = Debug|x86
 		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|ARM.ActiveCfg = Release|Any CPU
@@ -34,6 +48,30 @@ Global
 		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|x64.Build.0 = Release|x64
 		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|x86.ActiveCfg = Release|x86
 		{7115494A-7AB2-4126-B2A6-CF027484C1BD}.Release|x86.Build.0 = Release|x86
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Debug|Any CPU.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Debug|Any CPU.Build.0 = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Debug|ARM.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Debug|ARM.Build.0 = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Debug|x64.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Debug|x64.Build.0 = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Debug|x86.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Debug|x86.Build.0 = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.DefaultBuild|Any CPU.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.DefaultBuild|Any CPU.Build.0 = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.DefaultBuild|ARM.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.DefaultBuild|ARM.Build.0 = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.DefaultBuild|x64.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.DefaultBuild|x64.Build.0 = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.DefaultBuild|x86.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.DefaultBuild|x86.Build.0 = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Release|Any CPU.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Release|Any CPU.Build.0 = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Release|ARM.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Release|ARM.Build.0 = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Release|x64.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Release|x64.Build.0 = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Release|x86.ActiveCfg = DefaultBuild
+		{BA264486-23C6-4DDD-A5DC-4C5230C6FE1F}.Release|x86.Build.0 = DefaultBuild
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
