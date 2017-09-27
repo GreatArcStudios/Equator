@@ -5,24 +5,73 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
     <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_CefSharp.BrowserSubprocess.Core.dll_1" Value="..\packages\CefSharp.Common.57.0.0\CefSharp\x86"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_CefSharp.BrowserSubprocess.exe" Value="..\packages\CefSharp.Common.57.0.0\CefSharp\x86"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_CefSharp.Core.dll_1" Value="..\packages\CefSharp.Common.57.0.0\build\..\CefSharp\x86"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_CefSharp.Wpf.dll_1" Value="..\packages\CefSharp.Wpf.57.0.0\build\..\CefSharp\x86"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_CefSharp.dll_1" Value="..\packages\CefSharp.Common.57.0.0\build\..\CefSharp\x86"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_DeltaCompressionDotNet.MsDelta.dll_1" Value="..\packages\DeltaCompressionDotNet.1.1.0\lib\net20"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_DeltaCompressionDotNet.PatchApi.dll_1" Value="..\packages\DeltaCompressionDotNet.1.1.0\lib\net20"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_DeltaCompressionDotNet.dll_1" Value="..\packages\DeltaCompressionDotNet.1.1.0\lib\net20"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Equator.exe" Value="..\Equator\bin\x86\Release"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Equator.exe.config" Value="..\Equator\bin\x86\Release"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Google.Apis.Auth.PlatformServices.dll_1" Value="..\packages\Google.Apis.Auth.1.28.0\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Google.Apis.Auth.dll_1" Value="..\packages\Google.Apis.Auth.1.28.0\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Google.Apis.Core.dll_1" Value="..\packages\Google.Apis.Core.1.28.0\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Google.Apis.PlatformServices.dll_1" Value="..\packages\Google.Apis.1.28.0\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Google.Apis.Plus.v1.dll_1" Value="..\packages\Google.Apis.Plus.v1.1.28.0.928\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Google.Apis.YouTube.v3.dll_1" Value="..\packages\Google.Apis.YouTube.v3.1.28.0.760\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Google.Apis.dll_1" Value="..\packages\Google.Apis.1.28.0\lib\net45"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_GrassBlades.jpg" Value="..\Equator\bin\x86\Release\Images"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_IMG_0547.JPG" Value="..\Equator\bin\x86\Release\Images"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_MahApps.Metro.dll_1" Value="..\packages\MahApps.Metro.1.5.0\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Mono.Cecil.Mdb.dll_1" Value="..\packages\Mono.Cecil.0.9.6.4\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Mono.Cecil.Pdb.dll_1" Value="..\packages\Mono.Cecil.0.9.6.4\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Mono.Cecil.Rocks.dll_1" Value="..\packages\Mono.Cecil.0.9.6.4\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Mono.Cecil.dll_1" Value="..\packages\Mono.Cecil.0.9.6.4\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Newtonsoft.Json.dll_1" Value="..\packages\Newtonsoft.Json.10.0.3\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_SharpCompress.dll_1" Value="..\packages\SharpCompress.0.18.0\lib\net45"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Splat.dll_1" Value="..\packages\Splat.2.0.0\lib\Net45"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Windows.winmd" Value="C:\Program Files (x86)\Windows Kits\10\UnionMetadata"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_Xceed.Wpf.Toolkit.dll_1" Value="..\packages\Extended.Wpf.Toolkit.3.1\lib\net40"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_YoutubeExplode.dll_1" Value="..\packages\YoutubeExplode.3.2.3\lib\net45"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_CefSharp.BrowserSubprocess.Core.dll_1" Value="CefSharp.BrowserSubprocess.Core.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_CefSharp.BrowserSubprocess.exe" Value="CefSharp.BrowserSubprocess.exe"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_CefSharp.Core.dll_1" Value="CefSharp.Core.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_CefSharp.Wpf.dll_1" Value="CefSharp.Wpf.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_CefSharp.dll_1" Value="CefSharp.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_DeltaCompressionDotNet.MsDelta.dll_1" Value="DeltaCompressionDotNet.MsDelta.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_DeltaCompressionDotNet.PatchApi.dll_1" Value="DeltaCompressionDotNet.PatchApi.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_DeltaCompressionDotNet.dll_1" Value="DeltaCompressionDotNet.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Equator.exe" Value="Equator.exe"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Equator.exe.config" Value="Equator.exe.config"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Auth.PlatformServices.dll_1" Value="Google.Apis.Auth.PlatformServices.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Auth.dll_1" Value="Google.Apis.Auth.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Core.dll_1" Value="Google.Apis.Core.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.PlatformServices.dll_1" Value="Google.Apis.PlatformServices.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Plus.v1.dll_1" Value="Google.Apis.Plus.v1.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.YouTube.v3.dll_1" Value="Google.Apis.YouTube.v3.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.dll_1" Value="Google.Apis.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_GrassBlades.jpg" Value="Grass Blades.jpg"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_IMG_0547.JPG" Value="IMG_0547.JPG"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_MahApps.Metro.dll_1" Value="MahApps.Metro.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.Mdb.dll_1" Value="Mono.Cecil.Mdb.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.Pdb.dll_1" Value="Mono.Cecil.Pdb.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.Rocks.dll_1" Value="Mono.Cecil.Rocks.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.dll_1" Value="Mono.Cecil.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Newtonsoft.Json.dll_1" Value="Newtonsoft.Json.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_SharpCompress.dll_1" Value="SharpCompress.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Splat.dll_1" Value="Splat.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Windows.winmd" Value="Windows.winmd"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Xceed.Wpf.Toolkit.dll_1" Value="Xceed.Wpf.Toolkit.dll"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_YoutubeExplode.dll_1" Value="YoutubeExplode.dll"/>
     <ROW Property="ALLUSERS" Value="1"/>
-    <ROW Property="ARPCOMMENTS" Value="This installer is all you need to install [|ProductName]. You can delete it after you&apos;re done installing. " ValueLocId="*"/>
+    <ROW Property="ARPCOMMENTS" Value="This installer is all you need to install [|ProductName]. You can delete this after you&apos;re done installing." ValueLocId="*"/>
     <ROW Property="ARPCONTACT" Value="greatarkteam@gmail.com"/>
     <ROW Property="ARPPRODUCTICON" Value="EquatorLogo.exe" Type="8"/>
     <ROW Property="ARPURLINFOABOUT" Value="https://greatarcstudios.github.io/Equator-site/"/>
     <ROW Property="ARPURLUPDATEINFO" Value="https://github.com/GreatArcStudios/Equator/releases"/>
+    <ROW Property="CTRLS" Value="2"/>
     <ROW Property="Manufacturer" Value="Eric Zhu"/>
     <ROW Property="ProductCode" Value="1033:{9F560EC0-168B-4808-9ADE-347F1B09C043} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
@@ -42,37 +91,15 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
     <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
     <ROW Directory="Images_Dir" Directory_Parent="APPDIR" DefaultDir="Images"/>
+    <ROW Directory="SHORTCUTDIR" Directory_Parent="TARGETDIR" DefaultDir="SHORTC~1|SHORTCUTDIR" IsPseudoRoot="1"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="AI_PROPPATH_FILENAME_PERBUILD_Equator.ex" ComponentId="{77A26E93-23AD-4B0C-8461-1E3C3AFE8BB8}" Directory_="APPDIR" Attributes="0" KeyPath="Equator.exe"/>
-    <ROW Component="CefSharp.BrowserSubprocess.Core.dll" ComponentId="{5921270D-66EC-4F1D-9C89-EC313BAEEDB4}" Directory_="APPDIR" Attributes="0" KeyPath="CefSharp.BrowserSubprocess.Core.dll_1"/>
-    <ROW Component="CefSharp.Core.dll" ComponentId="{E7586326-FFA5-4759-9863-F6186AA179E3}" Directory_="APPDIR" Attributes="0" KeyPath="CefSharp.Core.dll_1"/>
-    <ROW Component="CefSharp.Wpf.dll" ComponentId="{E4AE64FA-DFED-411D-88E2-03FE75CC198B}" Directory_="APPDIR" Attributes="0" KeyPath="CefSharp.Wpf.dll_1"/>
-    <ROW Component="CefSharp.dll" ComponentId="{7BDFB473-DE94-46F6-904B-0F60A8F31F53}" Directory_="APPDIR" Attributes="0" KeyPath="CefSharp.dll_1"/>
-    <ROW Component="DeltaCompressionDotNet.MsDelta.dll" ComponentId="{66C7D66C-92ED-41E7-A3AC-58537CF35812}" Directory_="APPDIR" Attributes="0" KeyPath="DeltaCompressionDotNet.MsDelta.dll_1"/>
-    <ROW Component="DeltaCompressionDotNet.PatchApi.dll" ComponentId="{039563F9-0A9D-406C-A650-D4C8BD8BB011}" Directory_="APPDIR" Attributes="0" KeyPath="DeltaCompressionDotNet.PatchApi.dll_1"/>
-    <ROW Component="DeltaCompressionDotNet.dll" ComponentId="{879EF81B-8F5E-42A3-AB1E-FD0B537A64B6}" Directory_="APPDIR" Attributes="0" KeyPath="DeltaCompressionDotNet.dll_1"/>
-    <ROW Component="Google.Apis.Auth.PlatformServices.dll" ComponentId="{53A2105C-C8F6-4DB1-8E11-BAB7D4474700}" Directory_="APPDIR" Attributes="0" KeyPath="Google.Apis.Auth.PlatformServices.dll_1"/>
-    <ROW Component="Google.Apis.Auth.dll" ComponentId="{871BE2E1-FB3D-4D89-8C71-1EAADAFCFC5A}" Directory_="APPDIR" Attributes="0" KeyPath="Google.Apis.Auth.dll_1"/>
-    <ROW Component="Google.Apis.Core.dll" ComponentId="{0CC0DCE0-D93A-4130-A04F-8C9F8798F0FE}" Directory_="APPDIR" Attributes="0" KeyPath="Google.Apis.Core.dll_1"/>
-    <ROW Component="Google.Apis.PlatformServices.dll" ComponentId="{80504600-F322-4EEA-95FF-4F81445BAB77}" Directory_="APPDIR" Attributes="0" KeyPath="Google.Apis.PlatformServices.dll_1"/>
-    <ROW Component="Google.Apis.Plus.v1.dll" ComponentId="{BF0D41B6-B91E-4768-877C-B486AAAD2D23}" Directory_="APPDIR" Attributes="0" KeyPath="Google.Apis.Plus.v1.dll_1"/>
-    <ROW Component="Google.Apis.YouTube.v3.dll" ComponentId="{2F24FB00-2D54-4C68-A8A8-A4AD33D94960}" Directory_="APPDIR" Attributes="0" KeyPath="Google.Apis.YouTube.v3.dll_1"/>
-    <ROW Component="Google.Apis.dll" ComponentId="{91B50437-E0E6-4660-B2DF-FE20EB54AD7E}" Directory_="APPDIR" Attributes="0" KeyPath="Google.Apis.dll_1"/>
     <ROW Component="GrassBlades.jpg" ComponentId="{976D0987-0274-49B6-8739-290BDC64D981}" Directory_="Images_Dir" Attributes="0" KeyPath="GrassBlades.jpg" Type="0"/>
-    <ROW Component="MahApps.Metro.dll" ComponentId="{CE2171B8-59A3-41AA-B47A-FBFE90831319}" Directory_="APPDIR" Attributes="0" KeyPath="MahApps.Metro.dll_1"/>
-    <ROW Component="Mono.Cecil.Mdb.dll" ComponentId="{BEA28974-EB8E-40E8-9A44-A8A172D4A907}" Directory_="APPDIR" Attributes="0" KeyPath="Mono.Cecil.Mdb.dll_1"/>
-    <ROW Component="Mono.Cecil.Pdb.dll" ComponentId="{5991CBF8-0432-417A-9CAA-791592302F78}" Directory_="APPDIR" Attributes="0" KeyPath="Mono.Cecil.Pdb.dll_1"/>
-    <ROW Component="Mono.Cecil.Rocks.dll" ComponentId="{4F4B7F65-13EC-4F25-B6C1-32E45BE1EE0C}" Directory_="APPDIR" Attributes="0" KeyPath="Mono.Cecil.Rocks.dll_1"/>
-    <ROW Component="Mono.Cecil.dll" ComponentId="{C9371073-7476-4AF6-A4C2-EF73865DDDB5}" Directory_="APPDIR" Attributes="0" KeyPath="Mono.Cecil.dll_1"/>
-    <ROW Component="Newtonsoft.Json.dll" ComponentId="{873118B3-A670-4ADA-A55D-01F0BF10751A}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll_1"/>
     <ROW Component="ProductInformation" ComponentId="{04140EB6-F5C9-4E8B-B3D1-3E30283362B0}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
-    <ROW Component="SharpCompress.dll" ComponentId="{8DF0BE79-132D-44FA-BC70-4187B9255BD2}" Directory_="APPDIR" Attributes="0" KeyPath="SharpCompress.dll_1"/>
-    <ROW Component="Splat.dll" ComponentId="{403A2D39-A737-407B-AD71-9EBE3E58CC30}" Directory_="APPDIR" Attributes="0" KeyPath="Splat.dll_1"/>
+    <ROW Component="SHORTCUTDIR" ComponentId="{AF49554A-7FB9-4BB4-A207-577774738A9C}" Directory_="SHORTCUTDIR" Attributes="0"/>
     <ROW Component="System.Windows.Interactivity.dll" ComponentId="{3C3D0D49-EBF4-4C79-845F-D7985B93A0DF}" Directory_="APPDIR" Attributes="0" KeyPath="System.Windows.Interactivity.dll"/>
-    <ROW Component="Xceed.Wpf.Toolkit.dll" ComponentId="{5C021B73-8EF8-4764-9C34-E84EB4A104B7}" Directory_="APPDIR" Attributes="0" KeyPath="Xceed.Wpf.Toolkit.dll_1"/>
-    <ROW Component="YoutubeExplode.dll" ComponentId="{90DE7E69-5F25-42F8-97C4-DDAB560AC688}" Directory_="APPDIR" Attributes="0" KeyPath="YoutubeExplode.dll_1"/>
     <ROW Component="cef.pak" ComponentId="{CA3F5650-6B49-4CC1-8AF5-ED3CBC8AEC01}" Directory_="APPDIR" Attributes="0" KeyPath="cef.pak" Type="0"/>
     <ROW Component="chrome_elf.dll" ComponentId="{BD5C8502-3357-4924-8DC8-8B628434CE6C}" Directory_="APPDIR" Attributes="0" KeyPath="chrome_elf.dll"/>
     <ROW Component="d3dcompiler_47.dll" ComponentId="{892DE24A-8F58-4746-ABA9-FACD263BBF57}" Directory_="APPDIR" Attributes="0" KeyPath="d3dcompiler_47.dll"/>
@@ -82,59 +109,48 @@
     <ROW Component="widevinecdmadapter.dll" ComponentId="{0D3D7F4D-2D3B-49A3-B1FB-69A2FD2CAEBA}" Directory_="APPDIR" Attributes="0" KeyPath="widevinecdmadapter.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
-    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="AI_PROPPATH_FILENAME_PERBUILD_Equator.ex CefSharp.BrowserSubprocess.Core.dll CefSharp.Core.dll CefSharp.Wpf.dll CefSharp.dll DeltaCompressionDotNet.MsDelta.dll DeltaCompressionDotNet.PatchApi.dll DeltaCompressionDotNet.dll Google.Apis.Auth.PlatformServices.dll Google.Apis.Auth.dll Google.Apis.Core.dll Google.Apis.PlatformServices.dll Google.Apis.Plus.v1.dll Google.Apis.YouTube.v3.dll Google.Apis.dll GrassBlades.jpg MahApps.Metro.dll Mono.Cecil.Mdb.dll Mono.Cecil.Pdb.dll Mono.Cecil.Rocks.dll Mono.Cecil.dll Newtonsoft.Json.dll ProductInformation SharpCompress.dll Splat.dll System.Windows.Interactivity.dll Xceed.Wpf.Toolkit.dll YoutubeExplode.dll cef.pak chrome_elf.dll d3dcompiler_47.dll libEGL.dll libGLESv2.dll libcef.dll widevinecdmadapter.dll"/>
+    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="AI_PROPPATH_FILENAME_PERBUILD_Equator.ex GrassBlades.jpg ProductInformation SHORTCUTDIR System.Windows.Interactivity.dll cef.pak chrome_elf.dll d3dcompiler_47.dll libEGL.dll libGLESv2.dll libcef.dll widevinecdmadapter.dll"/>
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
-    <ROW File="CefSharp.BrowserSubprocess.Core.dll_1" Component_="CefSharp.BrowserSubprocess.Core.dll" FileName="CEFSHA~4.DLL|CefSharp.BrowserSubprocess.Core.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\CefSharp.BrowserSubprocess.Core.dll" SelfReg="false" NextFile="CefSharp.Core.dll_1"/>
+    <ROW File="CefSharp.BrowserSubprocess.Core.dll_1" Component_="cef.pak" FileName="CEFSHA~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_CefSharp.BrowserSubprocess.Core.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_CefSharp.BrowserSubprocess.Core.dll_1&gt;" SelfReg="false" NextFile="CefSharp.Core.dll_1"/>
     <ROW File="CefSharp.BrowserSubprocess.exe" Component_="cef.pak" FileName="CEFSHA~1.EXE|[|AI_PROPPATH_FILENAME_PERBUILD_CefSharp.BrowserSubprocess.exe]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_CefSharp.BrowserSubprocess.exe&gt;" SelfReg="false" NextFile="Windows.winmd" DigSign="true"/>
-    <ROW File="CefSharp.Core.dll_1" Component_="CefSharp.Core.dll" FileName="CEFSHA~5.DLL|CefSharp.Core.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\CefSharp.Core.dll" SelfReg="false" NextFile="CefSharp.dll_1"/>
-    <ROW File="CefSharp.Core.xml" Component_="cef.pak" FileName="CEFSHA~1.XML|CefSharp.Core.xml" Attributes="0" SourcePath="..\Equator\bin\x86\Release\CefSharp.Core.xml" SelfReg="false" NextFile="CefSharp.Wpf.xml"/>
-    <ROW File="CefSharp.Wpf.dll_1" Component_="CefSharp.Wpf.dll" FileName="CEFSHA~6.DLL|CefSharp.Wpf.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\CefSharp.Wpf.dll" SelfReg="false" NextFile="chrome_elf.dll"/>
-    <ROW File="CefSharp.Wpf.xml" Component_="cef.pak" FileName="CEFSHA~2.XML|CefSharp.Wpf.xml" Attributes="0" SourcePath="..\Equator\bin\x86\Release\CefSharp.Wpf.xml" SelfReg="false" NextFile="CefSharp.xml"/>
-    <ROW File="CefSharp.dll_1" Component_="CefSharp.dll" FileName="CefSharp.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\CefSharp.dll" SelfReg="false" NextFile="CefSharp.Wpf.dll_1"/>
-    <ROW File="CefSharp.xml" Component_="cef.pak" FileName="CefSharp.xml" Attributes="0" SourcePath="..\Equator\bin\x86\Release\CefSharp.xml" SelfReg="false" NextFile="Google.Apis.Auth.xml"/>
-    <ROW File="DeltaCompressionDotNet.MsDelta.dll_1" Component_="DeltaCompressionDotNet.MsDelta.dll" FileName="DELTAC~5.DLL|DeltaCompressionDotNet.MsDelta.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\DeltaCompressionDotNet.MsDelta.dll" SelfReg="false" NextFile="DeltaCompressionDotNet.PatchApi.dll_1"/>
-    <ROW File="DeltaCompressionDotNet.PatchApi.dll_1" Component_="DeltaCompressionDotNet.PatchApi.dll" FileName="DELTAC~6.DLL|DeltaCompressionDotNet.PatchApi.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\DeltaCompressionDotNet.PatchApi.dll" SelfReg="false" NextFile="Google.Apis.Auth.dll_1"/>
-    <ROW File="DeltaCompressionDotNet.dll_1" Component_="DeltaCompressionDotNet.dll" FileName="DELTAC~4.DLL|DeltaCompressionDotNet.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\DeltaCompressionDotNet.dll" SelfReg="false" NextFile="DeltaCompressionDotNet.MsDelta.dll_1"/>
+    <ROW File="CefSharp.Core.dll_1" Component_="cef.pak" FileName="CEFSHA~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_CefSharp.Core.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_CefSharp.Core.dll_1&gt;" SelfReg="false" NextFile="CefSharp.dll_1"/>
+    <ROW File="CefSharp.Wpf.dll_1" Component_="cef.pak" FileName="CEFSHA~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_CefSharp.Wpf.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_CefSharp.Wpf.dll_1&gt;" SelfReg="false" NextFile="chrome_elf.dll"/>
+    <ROW File="CefSharp.dll_1" Component_="cef.pak" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_CefSharp.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_CefSharp.dll_1&gt;" SelfReg="false" NextFile="CefSharp.Wpf.dll_1"/>
+    <ROW File="DeltaCompressionDotNet.MsDelta.dll_1" Component_="cef.pak" FileName="DELTAC~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_DeltaCompressionDotNet.MsDelta.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_DeltaCompressionDotNet.MsDelta.dll_1&gt;" SelfReg="false" NextFile="DeltaCompressionDotNet.PatchApi.dll_1"/>
+    <ROW File="DeltaCompressionDotNet.PatchApi.dll_1" Component_="cef.pak" FileName="DELTAC~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_DeltaCompressionDotNet.PatchApi.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_DeltaCompressionDotNet.PatchApi.dll_1&gt;" SelfReg="false" NextFile="Google.Apis.Auth.dll_1"/>
+    <ROW File="DeltaCompressionDotNet.dll_1" Component_="cef.pak" FileName="DELTAC~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_DeltaCompressionDotNet.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_DeltaCompressionDotNet.dll_1&gt;" SelfReg="false" NextFile="DeltaCompressionDotNet.MsDelta.dll_1"/>
     <ROW File="Equator.exe" Component_="AI_PROPPATH_FILENAME_PERBUILD_Equator.ex" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_Equator.exe]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Equator.exe&gt;" SelfReg="false" NextFile="Equator.exe.config" DigSign="true"/>
     <ROW File="Equator.exe.config" Component_="cef.pak" FileName="EQUATO~1.CON|[|AI_PROPPATH_FILENAME_PERBUILD_Equator.exe.config]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Equator.exe.config&gt;" SelfReg="false" NextFile="GrassBlades.jpg"/>
-    <ROW File="Google.Apis.Auth.PlatformServices.dll_1" Component_="Google.Apis.Auth.PlatformServices.dll" FileName="GOOGLE~9.DLL|Google.Apis.Auth.PlatformServices.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.Auth.PlatformServices.dll" SelfReg="false" NextFile="Google.Apis.Core.dll_1"/>
-    <ROW File="Google.Apis.Auth.dll_1" Component_="Google.Apis.Auth.dll" FileName="GOOGLE~8.DLL|Google.Apis.Auth.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.Auth.dll" SelfReg="false" NextFile="Google.Apis.Auth.PlatformServices.dll_1"/>
-    <ROW File="Google.Apis.Auth.xml" Component_="cef.pak" FileName="GOOGLE~1.XML|Google.Apis.Auth.xml" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.Auth.xml" SelfReg="false" NextFile="Google.Apis.Core.xml"/>
-    <ROW File="Google.Apis.Core.dll_1" Component_="Google.Apis.Core.dll" FileName="GOOGL~10.DLL|Google.Apis.Core.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.Core.dll" SelfReg="false" NextFile="Google.Apis.dll_1"/>
-    <ROW File="Google.Apis.Core.xml" Component_="cef.pak" FileName="GOOGLE~2.XML|Google.Apis.Core.xml" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.Core.xml" SelfReg="false" NextFile="Google.Apis.Plus.v1.xml"/>
-    <ROW File="Google.Apis.PlatformServices.dll_1" Component_="Google.Apis.PlatformServices.dll" FileName="GOOGL~12.DLL|Google.Apis.PlatformServices.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.PlatformServices.dll" SelfReg="false" NextFile="Google.Apis.Plus.v1.dll_1"/>
-    <ROW File="Google.Apis.Plus.v1.dll_1" Component_="Google.Apis.Plus.v1.dll" FileName="GOOGL~13.DLL|Google.Apis.Plus.v1.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.Plus.v1.dll" SelfReg="false" NextFile="Google.Apis.YouTube.v3.dll_1"/>
-    <ROW File="Google.Apis.Plus.v1.xml" Component_="cef.pak" FileName="GOOGLE~3.XML|Google.Apis.Plus.v1.xml" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.Plus.v1.xml" SelfReg="false" NextFile="Google.Apis.xml"/>
-    <ROW File="Google.Apis.YouTube.v3.dll_1" Component_="Google.Apis.YouTube.v3.dll" FileName="GOOGL~14.DLL|Google.Apis.YouTube.v3.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.YouTube.v3.dll" SelfReg="false" NextFile="libcef.dll"/>
-    <ROW File="Google.Apis.YouTube.v3.xml" Component_="cef.pak" FileName="GOOGLE~5.XML|Google.Apis.YouTube.v3.xml" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.YouTube.v3.xml" SelfReg="false" NextFile="MahApps.Metro.xml"/>
-    <ROW File="Google.Apis.dll_1" Component_="Google.Apis.dll" FileName="GOOGL~11.DLL|Google.Apis.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.dll" SelfReg="false" NextFile="Google.Apis.PlatformServices.dll_1"/>
-    <ROW File="Google.Apis.xml" Component_="cef.pak" FileName="GOOGLE~4.XML|Google.Apis.xml" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Google.Apis.xml" SelfReg="false" NextFile="Google.Apis.YouTube.v3.xml"/>
+    <ROW File="Google.Apis.Auth.PlatformServices.dll_1" Component_="cef.pak" FileName="GOOGLE~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Auth.PlatformServices.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Google.Apis.Auth.PlatformServices.dll_1&gt;" SelfReg="false" NextFile="Google.Apis.Core.dll_1"/>
+    <ROW File="Google.Apis.Auth.dll_1" Component_="cef.pak" FileName="GOOGLE~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Auth.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Google.Apis.Auth.dll_1&gt;" SelfReg="false" NextFile="Google.Apis.Auth.PlatformServices.dll_1"/>
+    <ROW File="Google.Apis.Core.dll_1" Component_="cef.pak" FileName="GOOGLE~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Core.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Google.Apis.Core.dll_1&gt;" SelfReg="false" NextFile="Google.Apis.dll_1"/>
+    <ROW File="Google.Apis.PlatformServices.dll_1" Component_="cef.pak" FileName="GOOGLE~5.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.PlatformServices.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Google.Apis.PlatformServices.dll_1&gt;" SelfReg="false" NextFile="Google.Apis.Plus.v1.dll_1"/>
+    <ROW File="Google.Apis.Plus.v1.dll_1" Component_="cef.pak" FileName="GOOGLE~6.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Plus.v1.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Google.Apis.Plus.v1.dll_1&gt;" SelfReg="false" NextFile="Google.Apis.YouTube.v3.dll_1"/>
+    <ROW File="Google.Apis.YouTube.v3.dll_1" Component_="cef.pak" FileName="GOOGLE~7.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.YouTube.v3.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Google.Apis.YouTube.v3.dll_1&gt;" SelfReg="false" NextFile="libcef.dll"/>
+    <ROW File="Google.Apis.dll_1" Component_="cef.pak" FileName="GOOGLE~4.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Google.Apis.dll_1&gt;" SelfReg="false" NextFile="Google.Apis.PlatformServices.dll_1"/>
     <ROW File="GrassBlades.jpg" Component_="GrassBlades.jpg" FileName="GRASSB~2.JPG|[|AI_PROPPATH_FILENAME_PERBUILD_GrassBlades.jpg]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_GrassBlades.jpg&gt;" SelfReg="false" NextFile="IMG_0547.JPG"/>
     <ROW File="IMG_0547.JPG" Component_="GrassBlades.jpg" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_IMG_0547.JPG]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_IMG_0547.JPG&gt;" SelfReg="false" NextFile="CefSharp.BrowserSubprocess.exe"/>
-    <ROW File="MahApps.Metro.dll_1" Component_="MahApps.Metro.dll" FileName="MAHAPP~2.DLL|MahApps.Metro.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\MahApps.Metro.dll" SelfReg="false" NextFile="Mono.Cecil.dll_1"/>
-    <ROW File="MahApps.Metro.xml" Component_="cef.pak" FileName="MAHAPP~1.XML|MahApps.Metro.xml" Attributes="0" SourcePath="..\Equator\bin\x86\Release\MahApps.Metro.xml" SelfReg="false" NextFile="Newtonsoft.Json.xml"/>
-    <ROW File="Mono.Cecil.Mdb.dll_1" Component_="Mono.Cecil.Mdb.dll" FileName="MONOCE~6.DLL|Mono.Cecil.Mdb.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Mono.Cecil.Mdb.dll" SelfReg="false" NextFile="Mono.Cecil.Pdb.dll_1"/>
-    <ROW File="Mono.Cecil.Pdb.dll_1" Component_="Mono.Cecil.Pdb.dll" FileName="MONOCE~7.DLL|Mono.Cecil.Pdb.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Mono.Cecil.Pdb.dll" SelfReg="false" NextFile="Mono.Cecil.Rocks.dll_1"/>
-    <ROW File="Mono.Cecil.Rocks.dll_1" Component_="Mono.Cecil.Rocks.dll" FileName="MONOCE~8.DLL|Mono.Cecil.Rocks.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Mono.Cecil.Rocks.dll" SelfReg="false" NextFile="Newtonsoft.Json.dll_1"/>
-    <ROW File="Mono.Cecil.dll_1" Component_="Mono.Cecil.dll" FileName="MONOCE~5.DLL|Mono.Cecil.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Mono.Cecil.dll" SelfReg="false" NextFile="Mono.Cecil.Mdb.dll_1"/>
-    <ROW File="Newtonsoft.Json.dll_1" Component_="Newtonsoft.Json.dll" FileName="NEWTON~2.DLL|Newtonsoft.Json.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Newtonsoft.Json.dll" SelfReg="false" NextFile="SharpCompress.dll_1"/>
-    <ROW File="Newtonsoft.Json.xml" Component_="cef.pak" FileName="NEWTON~1.XML|Newtonsoft.Json.xml" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Newtonsoft.Json.xml" SelfReg="false" NextFile="YoutubeExplode.xml"/>
-    <ROW File="SharpCompress.dll_1" Component_="SharpCompress.dll" FileName="SHARPC~2.DLL|SharpCompress.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\SharpCompress.dll" SelfReg="false" NextFile="Splat.dll_1"/>
-    <ROW File="Splat.dll_1" Component_="Splat.dll" FileName="Splat.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Splat.dll" SelfReg="false" NextFile="System.Windows.Interactivity.dll"/>
+    <ROW File="MahApps.Metro.dll_1" Component_="cef.pak" FileName="MAHAPP~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_MahApps.Metro.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_MahApps.Metro.dll_1&gt;" SelfReg="false" NextFile="Mono.Cecil.dll_1"/>
+    <ROW File="Mono.Cecil.Mdb.dll_1" Component_="cef.pak" FileName="MONOCE~2.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.Mdb.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Mono.Cecil.Mdb.dll_1&gt;" SelfReg="false" NextFile="Mono.Cecil.Pdb.dll_1"/>
+    <ROW File="Mono.Cecil.Pdb.dll_1" Component_="cef.pak" FileName="MONOCE~3.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.Pdb.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Mono.Cecil.Pdb.dll_1&gt;" SelfReg="false" NextFile="Mono.Cecil.Rocks.dll_1"/>
+    <ROW File="Mono.Cecil.Rocks.dll_1" Component_="cef.pak" FileName="MONOCE~4.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.Rocks.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Mono.Cecil.Rocks.dll_1&gt;" SelfReg="false" NextFile="Newtonsoft.Json.dll_1"/>
+    <ROW File="Mono.Cecil.dll_1" Component_="cef.pak" FileName="MONOCE~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Mono.Cecil.dll_1&gt;" SelfReg="false" NextFile="Mono.Cecil.Mdb.dll_1"/>
+    <ROW File="Newtonsoft.Json.dll_1" Component_="cef.pak" FileName="NEWTON~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Newtonsoft.Json.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Newtonsoft.Json.dll_1&gt;" SelfReg="false" NextFile="SharpCompress.dll_1"/>
+    <ROW File="SharpCompress.dll_1" Component_="cef.pak" FileName="SHARPC~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_SharpCompress.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_SharpCompress.dll_1&gt;" SelfReg="false" NextFile="Splat.dll_1"/>
+    <ROW File="Splat.dll_1" Component_="cef.pak" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_Splat.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Splat.dll_1&gt;" SelfReg="false" NextFile="System.Windows.Interactivity.dll"/>
     <ROW File="System.Windows.Interactivity.dll" Component_="System.Windows.Interactivity.dll" FileName="SYSTEM~1.DLL|System.Windows.Interactivity.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\System.Windows.Interactivity.dll" SelfReg="false" NextFile="widevinecdmadapter.dll"/>
     <ROW File="Windows.winmd" Component_="cef.pak" FileName="WINDOW~1.WIN|[|AI_PROPPATH_FILENAME_PERBUILD_Windows.winmd]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Windows.winmd&gt;" SelfReg="false" NextFile="icudtl.dat"/>
-    <ROW File="Xceed.Wpf.Toolkit.dll_1" Component_="Xceed.Wpf.Toolkit.dll" FileName="XCEEDW~2.DLL|Xceed.Wpf.Toolkit.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\Xceed.Wpf.Toolkit.dll" SelfReg="false" NextFile="YoutubeExplode.dll_1"/>
-    <ROW File="YoutubeExplode.dll_1" Component_="YoutubeExplode.dll" FileName="YOUTUB~2.DLL|YoutubeExplode.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\YoutubeExplode.dll" SelfReg="false"/>
-    <ROW File="YoutubeExplode.xml" Component_="cef.pak" FileName="YOUTUB~1.XML|YoutubeExplode.xml" Attributes="0" SourcePath="..\Equator\bin\x86\Release\YoutubeExplode.xml" SelfReg="false" NextFile="natives_blob.bin"/>
+    <ROW File="Xceed.Wpf.Toolkit.dll_1" Component_="cef.pak" FileName="XCEEDW~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_Xceed.Wpf.Toolkit.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_Xceed.Wpf.Toolkit.dll_1&gt;" SelfReg="false" NextFile="YoutubeExplode.dll_1"/>
+    <ROW File="YoutubeExplode.dll_1" Component_="cef.pak" FileName="YOUTUB~1.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_YoutubeExplode.dll_1]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_YoutubeExplode.dll_1&gt;" SelfReg="false"/>
     <ROW File="cef.pak" Component_="cef.pak" FileName="cef.pak" Attributes="0" SourcePath="..\Equator\bin\x86\Release\cef.pak" SelfReg="false" NextFile="cef_100_percent.pak"/>
     <ROW File="cef_100_percent.pak" Component_="cef.pak" FileName="CEF_10~1.PAK|cef_100_percent.pak" Attributes="0" SourcePath="..\Equator\bin\x86\Release\cef_100_percent.pak" SelfReg="false" NextFile="cef_200_percent.pak"/>
     <ROW File="cef_200_percent.pak" Component_="cef.pak" FileName="CEF_20~1.PAK|cef_200_percent.pak" Attributes="0" SourcePath="..\Equator\bin\x86\Release\cef_200_percent.pak" SelfReg="false" NextFile="cef_extensions.pak"/>
     <ROW File="cef_extensions.pak" Component_="cef.pak" FileName="CEF_EX~1.PAK|cef_extensions.pak" Attributes="0" SourcePath="..\Equator\bin\x86\Release\cef_extensions.pak" SelfReg="false" NextFile="devtools_resources.pak"/>
     <ROW File="chrome_elf.dll" Component_="chrome_elf.dll" FileName="CHROME~1.DLL|chrome_elf.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\chrome_elf.dll" SelfReg="false" NextFile="d3dcompiler_47.dll"/>
     <ROW File="d3dcompiler_47.dll" Component_="d3dcompiler_47.dll" FileName="D3DCOM~1.DLL|d3dcompiler_47.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\d3dcompiler_47.dll" SelfReg="false" NextFile="DeltaCompressionDotNet.dll_1"/>
-    <ROW File="devtools_resources.pak" Component_="cef.pak" FileName="DEVTOO~1.PAK|devtools_resources.pak" Attributes="0" SourcePath="..\Equator\bin\x86\Release\devtools_resources.pak" SelfReg="false" NextFile="CefSharp.Core.xml"/>
+    <ROW File="devtools_resources.pak" Component_="cef.pak" FileName="DEVTOO~1.PAK|devtools_resources.pak" Attributes="0" SourcePath="..\Equator\bin\x86\Release\devtools_resources.pak" SelfReg="false" NextFile="natives_blob.bin"/>
     <ROW File="icudtl.dat" Component_="cef.pak" FileName="icudtl.dat" Attributes="0" SourcePath="..\Equator\bin\x86\Release\icudtl.dat" SelfReg="false" NextFile="cef.pak"/>
     <ROW File="libEGL.dll" Component_="libEGL.dll" FileName="libEGL.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\libEGL.dll" SelfReg="false" NextFile="libGLESv2.dll"/>
     <ROW File="libGLESv2.dll" Component_="libGLESv2.dll" FileName="LIBGLE~1.DLL|libGLESv2.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\libGLESv2.dll" SelfReg="false" NextFile="MahApps.Metro.dll_1"/>
@@ -144,12 +160,36 @@
     <ROW File="widevinecdmadapter.dll" Component_="widevinecdmadapter.dll" FileName="WIDEVI~1.DLL|widevinecdmadapter.dll" Attributes="0" SourcePath="..\Equator\bin\x86\Release\widevinecdmadapter.dll" SelfReg="false" NextFile="Xceed.Wpf.Toolkit.dll_1"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.AppPathsComponent">
+    <ROW Name="AI_APPPATH_PERBUILD_CefSharp.BrowserSubprocess.Core.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_CefSharp.BrowserSubprocess.Core.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_CefSharp.BrowserSubprocess.Core.dll_1]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_CefSharp.BrowserSubprocess.exe" Path="[|AI_PROPPATH_DIR_PERBUILD_CefSharp.BrowserSubprocess.exe]\[|AI_PROPPATH_FILENAME_PERBUILD_CefSharp.BrowserSubprocess.exe]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_CefSharp.Core.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_CefSharp.Core.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_CefSharp.Core.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_CefSharp.Wpf.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_CefSharp.Wpf.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_CefSharp.Wpf.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_CefSharp.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_CefSharp.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_CefSharp.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_DeltaCompressionDotNet.MsDelta.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_DeltaCompressionDotNet.MsDelta.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_DeltaCompressionDotNet.MsDelta.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_DeltaCompressionDotNet.PatchApi.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_DeltaCompressionDotNet.PatchApi.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_DeltaCompressionDotNet.PatchApi.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_DeltaCompressionDotNet.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_DeltaCompressionDotNet.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_DeltaCompressionDotNet.dll_1]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_Equator.exe" Path="[|AI_PROPPATH_DIR_PERBUILD_Equator.exe]\[|AI_PROPPATH_FILENAME_PERBUILD_Equator.exe]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_Equator.exe.config" Path="[|AI_PROPPATH_DIR_PERBUILD_Equator.exe.config]\[|AI_PROPPATH_FILENAME_PERBUILD_Equator.exe.config]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Google.Apis.Auth.PlatformServices.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Google.Apis.Auth.PlatformServices.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Auth.PlatformServices.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Google.Apis.Auth.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Google.Apis.Auth.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Auth.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Google.Apis.Core.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Google.Apis.Core.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Core.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Google.Apis.PlatformServices.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Google.Apis.PlatformServices.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.PlatformServices.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Google.Apis.Plus.v1.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Google.Apis.Plus.v1.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.Plus.v1.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Google.Apis.YouTube.v3.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Google.Apis.YouTube.v3.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.YouTube.v3.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Google.Apis.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Google.Apis.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Google.Apis.dll_1]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_GrassBlades.jpg" Path="[|AI_PROPPATH_DIR_PERBUILD_GrassBlades.jpg]\[|AI_PROPPATH_FILENAME_PERBUILD_GrassBlades.jpg]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_IMG_0547.JPG" Path="[|AI_PROPPATH_DIR_PERBUILD_IMG_0547.JPG]\[|AI_PROPPATH_FILENAME_PERBUILD_IMG_0547.JPG]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_MahApps.Metro.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_MahApps.Metro.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_MahApps.Metro.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Mono.Cecil.Mdb.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Mono.Cecil.Mdb.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.Mdb.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Mono.Cecil.Pdb.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Mono.Cecil.Pdb.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.Pdb.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Mono.Cecil.Rocks.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Mono.Cecil.Rocks.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.Rocks.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Mono.Cecil.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Mono.Cecil.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Mono.Cecil.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Newtonsoft.Json.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Newtonsoft.Json.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Newtonsoft.Json.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_SharpCompress.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_SharpCompress.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_SharpCompress.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Splat.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Splat.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Splat.dll_1]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_Windows.winmd" Path="[|AI_PROPPATH_DIR_PERBUILD_Windows.winmd]\[|AI_PROPPATH_FILENAME_PERBUILD_Windows.winmd]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_Xceed.Wpf.Toolkit.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_Xceed.Wpf.Toolkit.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_Xceed.Wpf.Toolkit.dll_1]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_YoutubeExplode.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_YoutubeExplode.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_YoutubeExplode.dll_1]" Type="2" Content="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
     <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" Languages="en" InstallationType="4" UseLargeSchema="true"/>
@@ -199,11 +239,15 @@
     <ROW Dialog_="VerifyReadyDlg" Control_="Install" Event="EndDialog" Argument="Return" Condition="AI_PATCH" Ordering="199"/>
     <ROW Dialog_="VerifyReadyDlg" Control_="Back" Event="NewDialog" Argument="PatchWelcomeDlg" Condition="AI_PATCH" Ordering="203"/>
   </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCreateFolderComponent">
+    <ROW Directory_="SHORTCUTDIR" Component_="SHORTCUTDIR" ManualDelete="false"/>
+  </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCustActComponent">
     <ROW Action="AI_DOWNGRADE" Type="19" Target="4010"/>
     <ROW Action="AI_DpiContentScale" Type="1" Source="aicustact.dll" Target="DpiContentScale"/>
     <ROW Action="AI_EnableDebugLog" Type="321" Source="aicustact.dll" Target="EnableDebugLog"/>
     <ROW Action="AI_InstallModeCheck" Type="1" Source="aicustact.dll" Target="UpdateInstallMode" WithoutSeq="true"/>
+    <ROW Action="AI_LaunchApp" Type="1" Source="aicustact.dll" Target="[#Equator.exe]"/>
     <ROW Action="AI_PREPARE_UPGRADE" Type="65" Source="aicustact.dll" Target="PrepareUpgrade"/>
     <ROW Action="AI_RESTORE_LOCATION" Type="65" Source="aicustact.dll" Target="RestoreLocation"/>
     <ROW Action="AI_ResolveKnownFolders" Type="1" Source="aicustact.dll" Target="AI_ResolveKnownFolders"/>
@@ -240,6 +284,9 @@
     <ROW Registry="Path" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Path" Value="[APPDIR]" Component_="ProductInformation"/>
     <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
   </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
+    <ROW Shortcut="Equator" Directory_="SHORTCUTDIR" Name="Equator" Component_="AI_PROPPATH_FILENAME_PERBUILD_Equator.ex" Target="[#Equator.exe]" Hotkey="0" IconIndex="0" ShowCmd="1"/>
+  </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">
     <ATTRIBUTE name="UsedTheme" value="classic"/>
   </COMPONENT>
@@ -248,11 +295,35 @@
     <ROW UpgradeCode="[|UpgradeCode]" VersionMin="[|ProductVersion]" Attributes="2" ActionProperty="AI_NEWERPRODUCTFOUND"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.VsProjectComponent">
-    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="PrimaryOutput" OutputFile="Equator.exe"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="PrimaryOutput" OutputFile="Equator.exe" OutputFileShortcut="Equator"/>
     <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="PrimaryOutput" OutputFile="Equator.exe.config"/>
     <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="PrimaryOutput" OutputFile="GrassBlades.jpg"/>
     <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="PrimaryOutput" OutputFile="IMG_0547.JPG"/>
     <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="CefSharp.BrowserSubprocess.exe"/>
     <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Windows.winmd"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="CefSharp.BrowserSubprocess.Core.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="CefSharp.Core.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="CefSharp.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="CefSharp.Wpf.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="DeltaCompressionDotNet.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="DeltaCompressionDotNet.MsDelta.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="DeltaCompressionDotNet.PatchApi.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Google.Apis.Auth.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Google.Apis.Auth.PlatformServices.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Google.Apis.Core.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Google.Apis.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Google.Apis.PlatformServices.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Google.Apis.Plus.v1.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Google.Apis.YouTube.v3.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="MahApps.Metro.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Mono.Cecil.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Mono.Cecil.Mdb.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Mono.Cecil.Pdb.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Mono.Cecil.Rocks.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Newtonsoft.Json.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="SharpCompress.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Splat.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="Xceed.Wpf.Toolkit.dll_1"/>
+    <ROW ProjectId="{7115494a-7ab2-4126-b2a6-cf027484c1bd}" ProjectName="Equator" OutputGroup="References" OutputFile="YoutubeExplode.dll_1"/>
   </COMPONENT>
 </DOCUMENT>

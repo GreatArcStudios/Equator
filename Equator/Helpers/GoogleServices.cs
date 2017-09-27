@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Equator.Properties;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Plus.v1;
+using Google.Apis.Plus.v1.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
@@ -16,6 +17,7 @@ namespace Equator.Helpers
         public static string ApiKey = "AIzaSyCFb8JKlmaP95MqqwYYBDoqvsy7YwRxztM";
         public static UserCredential Credential;
         public static YouTubeService YoutubeService;
+        public static Person UserPerson; 
         private static PlusService _plusService;
 
         public static YouTubeService CreateYoutubeService(string apiKey, bool oAuth2, UserCredential credential)
@@ -70,8 +72,13 @@ namespace Equator.Helpers
                 CancellationToken.None,
                 new FileDataStore(FilePaths.UserCredLocation, true)
             );
+
             if(GetPicture)
             GetUserPicture();
+            else
+            {
+                UserPerson = CreatePlusService(ApiKey, true, Credential).People.Get("me").Execute();
+            }
             Console.WriteLine("Authenticated");
         }
 

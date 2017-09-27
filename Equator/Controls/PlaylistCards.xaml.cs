@@ -66,7 +66,12 @@ namespace Equator.Controls
                 UserPlaylistCover.Fill = userImageBrush;
                 PlaylistName.Text = "Your Playlists";
                 Panel.SetZIndex(SearchedPlaylistImagesCover, -9999);
-                ChannelName.Content = _userPlaylists.Items[0].Snippet.ChannelTitle;
+                if (_userPlaylists.Items != null)
+                    ChannelName.Content = _userPlaylists.Items[0].Snippet.ChannelTitle;
+                else
+                {
+                    ChannelName.Content = GoogleServices.UserPerson.DisplayName;
+                }
                 UserPlaylistsContainer = new UserPlaylistsContainer(this, _playlistScrollViewer);
 
             }
@@ -133,6 +138,7 @@ namespace Equator.Controls
             {
                 if (_isUserPlaylist)
                 {
+                    if(_userPlaylists.Items != null)
                     foreach (var userPlaylistResponse in _userPlaylists.Items)
                     {
                         var playlistItems = await QueryYoutube.PlaylistToPlaylistItems(userPlaylistResponse.Id);

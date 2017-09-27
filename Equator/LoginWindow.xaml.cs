@@ -20,7 +20,6 @@ namespace Equator
 
         private async void Login1_Click(object sender, RoutedEventArgs e)
         {
-            /*
             if (Equator.Properties.Settings.Default.FirstRun)
             {
                 CreateSaveLocation();
@@ -29,7 +28,7 @@ namespace Equator
                 CreateSaveUserCredsLocation();
                 Equator.Properties.Settings.Default.FirstRun = false;
                 Settings.Default.Save();
-            }*/
+            }
 #if DEBUG
             CreateSaveLocation();
             CreateSaveThumbLocation();

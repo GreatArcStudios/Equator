@@ -16,7 +16,7 @@ namespace Equator.Music
         //public static SongSearchListResponse TopicSearchListResponse;
         //public static string CurrentSongTitle; 
         public static int SongCount { get; set; } = 50;
-        public static int PlaylistCount { get; set; } = 20;
+        public static int PlaylistCount { get; set; } = 25;
         /// <summary>
         ///     Gets a list of songs of size <c>int SongCount</c>
         /// </summary>
@@ -57,7 +57,7 @@ namespace Equator.Music
                 var service = GoogleServices.YoutubeService;
                 var musicList = service.Search.List("snippet");
                 musicList.Q = song; // Replace with your search term.
-                musicList.MaxResults = SongCount;
+                musicList.MaxResults = PlaylistCount;
                 musicList.Type = "playlist";
                 // Call the search.list method to retrieve results matching the specified query term.
                 PlaylistSearchListResponse = await musicList.ExecuteAsync();
@@ -113,8 +113,18 @@ namespace Equator.Music
             var service = GoogleServices.YoutubeService;
             var userPlaylistRequest = service.Playlists.List("snippet");
             userPlaylistRequest.Mine = true;
-            var userPlaylistResponse = await userPlaylistRequest.ExecuteAsync();
-            Console.WriteLine("First id response from getuserplaylist " + userPlaylistResponse.Items[0].Id);
+            var userPlaylistResponse = new PlaylistListResponse();
+
+            try
+            {
+                userPlaylistResponse = await userPlaylistRequest.ExecuteAsync();
+                Console.WriteLine("First id response from getuserplaylist " + userPlaylistResponse.Items[0].Id);
+            }
+            catch
+            {
+                Console.WriteLine("No user playlists found ");
+            }
+           
             return userPlaylistResponse;
         }
 

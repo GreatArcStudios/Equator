@@ -346,8 +346,9 @@ namespace Equator
                     var oldText = CurrentSong.Text;
                     CurrentSong.Text = "Loading Playlists...";
                     var userPlaylists = await QueryYoutube.QueryUserPlaylistsAsync();
-                    PlaylistsHolder.Children.Add(new PlaylistCards(true, false, "null", userPlaylists
-                        , null, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null, PlaylistScrollView, PlayPauseButton));
+                        PlaylistsHolder.Children.Add(new PlaylistCards(true, false, "null", userPlaylists
+                            , null, CurrentSong, Background, Media.CefPlayer, ExpandedPlaylistHolder, null,
+                            PlaylistScrollView, PlayPauseButton));
                     if (QueryYoutube.PlaylistSearchListResponse.Items.Count > 0)
                     {
                         for (var i = 0; i < QueryYoutube.PlaylistSearchListResponse.Items.Count; i++)

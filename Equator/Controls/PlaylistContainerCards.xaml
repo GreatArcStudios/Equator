@@ -35,7 +35,7 @@
             <Label HorizontalAlignment="Left" VerticalAlignment="Top"
                    Height="62" Background="{x:Null}" Foreground="White" HorizontalContentAlignment="Center"
                    FontSize="30" FontWeight="SemiBold" FontStretch="SemiExpanded" FontFamily="Roboto" MinWidth="260" VerticalContentAlignment="Center" Padding="20,5,5,5" ToolTip="{Binding Text, ElementName=PlaylistTitle}">
-                <TextBlock x:Name="PlaylistTitle" TextTrimming="CharacterEllipsis" MaxWidth="730" ToolTip="{Binding Text, ElementName=PlaylistTitle}"></TextBlock>
+                <TextBlock x:Name="PlaylistTitle" TextTrimming="CharacterEllipsis" MaxWidth="680" ToolTip="{Binding Text, ElementName=PlaylistTitle}"></TextBlock>
             </Label>
             <Label VerticalAlignment="Top" Height="62" Background="{x:Null}"
                    Foreground="White" HorizontalContentAlignment="Center" FontSize="30" FontStretch="SemiExpanded"
