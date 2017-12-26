@@ -92,7 +92,7 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icons\Equator Logo.ico</ApplicationIcon>
+    <ApplicationIcon>Icons\EquatorLogo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -195,8 +195,8 @@
       <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="YoutubeExplode, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YoutubeExplode.3.2.3\lib\net45\YoutubeExplode.dll</HintPath>
+    <Reference Include="YoutubeExplode, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YoutubeExplode.3.3.0\lib\net45\YoutubeExplode.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -356,6 +356,8 @@
     <Resource Include="Icons\EquatorLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="favicon.ico" />
+    <Resource Include="Icons\EquatorLogo.ico" />
     <Content Include="Images\beach and coast.jpg" />
     <Content Include="Images\Dandelion no crop.jpg" />
     <Content Include="Images\fence.jpg" />
@@ -446,11 +448,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Icons\Stop.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\Equator Logo.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

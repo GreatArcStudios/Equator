@@ -87,23 +87,40 @@ namespace Equator.Controls
                 for (var i = 0; i < PlaylistItemListResponse.Items.Count; i++)
                 {
                     var playlistItem = PlaylistItemListResponse.Items[i];
-                    var backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.Medium.Url);
+                    Uri backgroundUri = new Uri("http://nullo");
                     try
                     {
-                        backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.High.Url);
+                        backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.Medium.Url);
+                        try
+                        {
+                            backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.High.Url);
+                        }
+                        finally
+                        {
+                            var request = service.Videos.List("snippet");
+                            request.Id = playlistItem.Snippet.ResourceId.VideoId;
+                            var response = request.ExecuteAsync();
+                            await response;
+                            try
+                            {
+                                PlaylistItemHolder.Children.Add(new PlaylistItem(backgroundUri,
+                                    SongLabel, playlistItem.Snippet.ResourceId.VideoId, playlistItem.Snippet.Title,
+                                    response.Result.Items[0].Snippet.ChannelTitle,
+                                    BackgroundRectangle, YoutubePlayer, i, PlaylistItemListResponse, _playButton));
+                                Console.WriteLine("Added item from " + PlaylistName + " " + playlistItem.Snippet.Title);
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Failed adding PlaylistItem");
+                            }
+
+                        }
                     }
-                    finally
+                    catch
                     {
-                        var request = service.Videos.List("snippet");
-                        request.Id = playlistItem.Snippet.ResourceId.VideoId;
-                        var response = request.ExecuteAsync();
-                        await response;
-                        PlaylistItemHolder.Children.Add(new PlaylistItem(backgroundUri,
-                            SongLabel, playlistItem.Snippet.ResourceId.VideoId, playlistItem.Snippet.Title,
-                            response.Result.Items[0].Snippet.ChannelTitle,
-                            BackgroundRectangle, YoutubePlayer, i, PlaylistItemListResponse, _playButton));
-                        Console.WriteLine("Added item from " + PlaylistName + " " + playlistItem.Snippet.Title);
+                        Console.WriteLine("Adding Playlist Item Failed");
                     }
+
                 }
             }
         }

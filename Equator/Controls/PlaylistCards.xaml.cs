@@ -77,18 +77,26 @@ namespace Equator.Controls
             }
             else
             {
-                for (var i = 0; i < 4; i++)
+                int thumbnailsAdded = 0, actualIndex = 0;
+                while(true)
                 {
                     Uri backgroundImageUri;
                     try
                     {
-                        backgroundImageUri = new Uri(_playlistItemListResponse.Items[i].Snippet.Thumbnails.Medium.Url);
+                        backgroundImageUri = new Uri(_playlistItemListResponse.Items[actualIndex].Snippet.Thumbnails.Medium.Url);
                         ImageSource tempSource = new BitmapImage(backgroundImageUri);
-                        ((Image)SearchedPlaylistImagesCover.Children[i]).Source = tempSource;
+                        ((Image)SearchedPlaylistImagesCover.Children[thumbnailsAdded]).Source = tempSource;
+                        thumbnailsAdded++;
+                        actualIndex++;
+                        if (thumbnailsAdded == 4)
+                            break;
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        Console.WriteLine("Adding song failed");
+                        Console.WriteLine("Adding song failed " + e);
+                        if(thumbnailsAdded != 0)
+                        thumbnailsAdded--;
+                        actualIndex++;
                     }
                 }
                 Panel.SetZIndex(UserPlaylistCover, -9999);

@@ -37,8 +37,6 @@ namespace Equator
             Equator.Properties.Settings.Default.FirstRun = false;
             Settings.Default.Save();
 #endif
-
-
             if (Directory.GetFiles(FilePaths.UserCredLocation).Length == 0)
             {
                 File.Delete(FilePaths.UserImageLocation + "\\Userimage.png");
