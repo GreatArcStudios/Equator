@@ -72,22 +72,17 @@ namespace Equator.Helpers
                 CancellationToken.None,
                 new FileDataStore(FilePaths.UserCredLocation, true)
             );
-
-            if(GetPicture)
+            UserPerson = CreatePlusService(ApiKey, true, Credential).People.Get("me").Execute();
+            if (GetPicture)
             GetUserPicture();
-            else
-            {
-                UserPerson = CreatePlusService(ApiKey, true, Credential).People.Get("me").Execute();
-            }
             Console.WriteLine("Authenticated");
         }
 
         public static string GetUserPicture()
         {
-            var userPerson = CreatePlusService(ApiKey, true, Credential).People.Get("me").Execute();
             try
             {
-                var userImageUrl = userPerson.Image.Url;
+                var userImageUrl = UserPerson.Image.Url;
                 userImageUrl = userImageUrl.Replace("sz=50", "sz=1000");
                 var webClient = new WebClient();
                 webClient.DownloadFile(userImageUrl,
