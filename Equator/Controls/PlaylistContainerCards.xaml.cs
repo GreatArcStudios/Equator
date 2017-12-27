@@ -61,7 +61,7 @@ namespace Equator.Controls
                 else
                 {
                     Panel.SetZIndex(_playlistScrollViewer, 3);
-                    _playlistScrollViewer.Opacity = 100;                
+                    _playlistScrollViewer.Opacity = 100;
                     /*
                     if (((Grid) VisualTreeHelper.GetParent(this)).Children.Count > 4)
                     {
@@ -87,10 +87,9 @@ namespace Equator.Controls
                 for (var i = 0; i < PlaylistItemListResponse.Items.Count; i++)
                 {
                     var playlistItem = PlaylistItemListResponse.Items[i];
-                    Uri backgroundUri = new Uri("http://nullo");
-                    try
+                    if (playlistItem.Snippet.Thumbnails != null)
                     {
-                        backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.Medium.Url);
+                        var backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.Medium.Url);
                         try
                         {
                             backgroundUri = new Uri(playlistItem.Snippet.Thumbnails.High.Url);
@@ -116,14 +115,11 @@ namespace Equator.Controls
 
                         }
                     }
-                    catch
-                    {
-                        Console.WriteLine("Adding Playlist Item Failed");
-                    }
 
                 }
             }
         }
+
 
         private async void Play_Click(object sender, RoutedEventArgs e)
         {
